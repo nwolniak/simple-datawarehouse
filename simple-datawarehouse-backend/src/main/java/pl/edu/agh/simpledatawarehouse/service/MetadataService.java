@@ -13,7 +13,10 @@ public class MetadataService {
 
     public MetadataDto getMetadata() {
         var metadataDto = new MetadataDto();
-        metadataDto.setTables(metaDataRepository.getTables());
+        var metadata = metaDataRepository.getMetadata();
+        metadataDto.setDatabase(metadata.database());
+        metadataDto.setHost(metadata.host());
+        metadataDto.setTables(metadata.tablesMetadata());
         return metadataDto;
     }
 

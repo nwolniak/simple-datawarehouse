@@ -1,0 +1,16 @@
+.database {
+  background-color: lightgrey;
+}
+
+ul, li {
+  list-style: none;
+}
+
+.fa-chevron-down {
+  margin-right: 5px;
+}
+
+.fa-chevron-right {
+  margin-right: 5px;
+}
+

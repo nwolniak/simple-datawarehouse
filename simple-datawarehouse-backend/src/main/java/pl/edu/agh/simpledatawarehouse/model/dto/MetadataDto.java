@@ -12,6 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public class MetadataDto {
 
+    String database;
+    String host;
     List<TableMetadata> tables;
 
 }

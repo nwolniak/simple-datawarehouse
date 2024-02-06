@@ -1,0 +1,69 @@
+<div class="database">
+  <ng-container *ngIf="metadata">
+    <li (click)="toggleMetadata(metadata)">
+      <i [ngClass]="['fa-solid fa-sm fa-fw', metadata.metadataCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></i>
+      <i class="fa-solid fa-database"></i>
+      {{ metadata.database }} [{{ metadata.host }}]
+    </li>
+    <ul *ngIf="metadata.metadataCollapsed">
+      <ng-container [ngTemplateOutlet]="tablesNode" [ngTemplateOutletContext]="{$implicit:metadata}"></ng-container>
+    </ul>
+  </ng-container>
+</div>
+
+<ng-template #tablesNode let-metadata>
+  <li (click)="toggleTablesCollapse(metadata)">
+    <i [ngClass]="['fa-solid fa-sm fa-fw', metadata.tablesCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></i>
+    <i class="fa-solid fa-folder"></i>
+    Tables
+  </li>
+  <ng-container *ngIf="metadata.tablesCollapsed">
+    <ul *ngFor="let table of metadata.tables">
+      <ng-container [ngTemplateOutlet]="tableNode" [ngTemplateOutletContext]="{$implicit:table}"></ng-container>
+    </ul>
+  </ng-container>
+</ng-template>
+
+<ng-template #tableNode let-table>
+  <li (click)="toggleTableCollapse(table)">
+    <i [ngClass]="['fa-solid fa-sm fa-fw', table.tableCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></i>
+    <i class="fa-solid fa-table"></i>
+    {{ table.tableName }}
+  </li>
+  <ul *ngIf="table.tableCollapsed">
+    <ng-container [ngTemplateOutlet]=" columnsNode"
+                  [ngTemplateOutletContext]="{$implicit:table}"></ng-container>
+  </ul>
+  <ul *ngIf="table.tableCollapsed">
+    <ng-container [ngTemplateOutlet]="keysNode"
+                  [ngTemplateOutletContext]="{$implicit:table}"></ng-container>
+  </ul>
+</ng-template>
+
+<ng-template #columnsNode let-table>
+  <li (click)="toggleColumnsCollapse(table)">
+    <i [ngClass]="['fa-solid fa-sm fa-fw', table.columnsCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></i>
+    <i class="fa-solid fa-folder"></i>
+    Columns
+  </li>
+  <ul *ngIf="table.columnsCollapsed">
+    <li *ngFor="let column of table.columnsMetadata">
+      <i class="fa-solid fa-table-columns"></i>
+      {{ column.name }} [{{ column.type }}]
+    </li>
+  </ul>
+</ng-template>
+
+<ng-template #keysNode let-table>
+  <li (click)="togglePrimaryKeysCollapse(table)">
+    <i [ngClass]="['fa-solid fa-sm fa-fw', table.primaryKeysCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></i>
+    <i class="fa-solid fa-folder"></i>
+    Keys
+  </li>
+  <ul *ngIf="table.primaryKeysCollapsed">
+    <li *ngFor="let key of table.primaryKeysMetadata">
+      <i class="fa-solid fa-key"></i>
+      {{ key.primaryKeyName }} ({{ key.columnName }})
+    </li>
+  </ul>
+</ng-template>
