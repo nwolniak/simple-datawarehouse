@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>New Data Source</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Host</mat-label>
+    <input matInput placeholder="Host" [(ngModel)]="host">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Database</mat-label>
+    <input matInput placeholder="Database" [(ngModel)]="database">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput placeholder="User" [(ngModel)]="username">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput type="password" placeholder="Password" [(ngModel)]="password">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" (click)="createDataSource()">Create</button>
+</mat-dialog-actions>
