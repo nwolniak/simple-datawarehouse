@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DatasourceDialogComponent } from './datasource-dialog.component';
+import {DatasourceDialogComponent} from './datasource-dialog.component';
 
 describe('DatasourceDialogComponent', () => {
   let component: DatasourceDialogComponent;
@@ -10,8 +10,8 @@ describe('DatasourceDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DatasourceDialogComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(DatasourceDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

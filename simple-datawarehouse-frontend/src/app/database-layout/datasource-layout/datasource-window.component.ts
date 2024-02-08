@@ -1,25 +1,28 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatDialog} from "@angular/material/dialog";
-import {DatasourceDialogComponent} from "@app/database/datasource-dialog.component";
+import {DatasourceDialogComponent} from "@app/database-layout/datasource-layout/datasource-dialog.component";
 import {MatButton} from "@angular/material/button";
 import {Metadata} from "@app/_models";
-import {DatabaseListComponent} from "@app/database/database.list.component";
+import {DatasourceListComponent} from "@app/database-layout/datasource-layout/datasource-list.component";
 
 @Component({
-  selector: 'app-database.window',
+  selector: 'app-datasource-window',
   standalone: true,
   imports: [
     MatToolbar,
     MatButton,
-    DatabaseListComponent,
+    DatasourceListComponent,
   ],
-  templateUrl: './database.window.component.html',
-  styleUrl: './database.window.component.css'
+  templateUrl: './datasource-window.component.html',
+  styleUrl: './datasource-window.component.css'
 })
-export class DatabaseWindowComponent {
+export class DatasourceWindowComponent {
 
   metadata?: Metadata;
+
+  @Output()
+  tableChosenEvent = new EventEmitter;
 
   constructor(
     private dialog: MatDialog,
@@ -37,7 +40,11 @@ export class DatabaseWindowComponent {
       } else {
         console.log("Dialog closed without metadata");
       }
-    })
-
+    });
   }
+
+  emitTableChosenEvent(table: string) {
+    this.tableChosenEvent.emit(table);
+  }
+
 }
