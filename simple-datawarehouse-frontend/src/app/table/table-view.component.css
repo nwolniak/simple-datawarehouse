@@ -1,0 +1,16 @@
+[class*="mat-mdc-header"] {
+  background-color: #353434;
+}
+
+[class*="mat-column"] {
+  background-color: grey;
+  color: white;
+  border: solid dimgrey;
+  font-size: 12px;
+}
+
+mat-paginator {
+  background-color: grey;
+  color: white;
+  border: solid dimgrey;
+}

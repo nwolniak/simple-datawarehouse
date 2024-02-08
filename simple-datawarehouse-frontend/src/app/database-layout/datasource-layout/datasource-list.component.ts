@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {Metadata, TableMetadata} from "@app/_models";
 
@@ -11,13 +11,16 @@ import {Metadata, TableMetadata} from "@app/_models";
     NgIf,
     NgClass
   ],
-  templateUrl: './database.list.component.html',
-  styleUrl: './database.list.component.css'
+  templateUrl: './datasource-list.component.html',
+  styleUrl: './datasource-list.component.css'
 })
-export class DatabaseListComponent {
+export class DatasourceListComponent {
 
   @Input()
   metadata?: Metadata;
+
+  @Output()
+  tableChosenEvent = new EventEmitter;
 
   toggleMetadata(metadata: Metadata) {
     metadata.metadataCollapsed = !metadata.metadataCollapsed;
@@ -51,6 +54,10 @@ export class DatabaseListComponent {
 
   toggleForeignKeysCollapse(table: TableMetadata) {
     table.foreignKeysCollapsed = !table.foreignKeysCollapsed;
+  }
+
+  emitTableChosenEvent(table: string) {
+    this.tableChosenEvent.emit(table);
   }
 
 }

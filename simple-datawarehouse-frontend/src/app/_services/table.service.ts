@@ -1,19 +1,19 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {Table} from "@app/_models";
 import {environment} from "@environments/environment";
 import {Observable} from "rxjs";
-import {Metadata} from "@app/_models";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MetadataService {
+export class TableService {
 
   constructor(private http: HttpClient) {
   }
 
-  getMetadata(): Observable<Metadata> {
-    return this.http.get<Metadata>(`${environment.metadataUrl}`);
+  getTable(name: string): Observable<Table> {
+    return this.http.get<Table>(`${environment.tablesUrl}/${name}`);
   }
 
 }
