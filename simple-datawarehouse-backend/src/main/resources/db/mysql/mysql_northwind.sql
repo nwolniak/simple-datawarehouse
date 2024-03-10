@@ -1,13 +1,15 @@
+START TRANSACTION;
+
 CREATE TABLE Categories
 (
-    CategoryID SERIAL PRIMARY KEY,
+    CategoryID INTEGER PRIMARY KEY AUTO_INCREMENT,
     CategoryName VARCHAR(25),
     Description VARCHAR(255)
 );
 
 CREATE TABLE Customers
 (
-    CustomerID SERIAL PRIMARY KEY,
+    CustomerID INTEGER PRIMARY KEY AUTO_INCREMENT,
     CustomerName VARCHAR(50),
     ContactName VARCHAR(50),
     Address VARCHAR(50),
@@ -18,22 +20,22 @@ CREATE TABLE Customers
 
 CREATE TABLE Employees
 (
-    EmployeeID SERIAL PRIMARY KEY,
+    EmployeeID INTEGER PRIMARY KEY AUTO_INCREMENT,
     LastName VARCHAR(15),
     FirstName VARCHAR(15),
-    BirthDate TIMESTAMP,
+    BirthDate DATETIME,
     Photo VARCHAR(25),
     Notes VARCHAR(1024)
 );
 
 CREATE TABLE Shippers(
-    ShipperID SERIAL PRIMARY KEY,
+    ShipperID INTEGER PRIMARY KEY AUTO_INCREMENT,
     ShipperName VARCHAR(25),
     Phone VARCHAR(15)
 );
 
 CREATE TABLE Suppliers(
-    SupplierID SERIAL PRIMARY KEY,
+    SupplierID INTEGER PRIMARY KEY AUTO_INCREMENT,
     SupplierName VARCHAR(50),
     ContactName VARCHAR(50),
     Address VARCHAR(50),
@@ -44,7 +46,7 @@ CREATE TABLE Suppliers(
 );
 
 CREATE TABLE Products(
-    ProductID SERIAL PRIMARY KEY,
+    ProductID INTEGER PRIMARY KEY AUTO_INCREMENT,
     ProductName VARCHAR(50),
     SupplierID INTEGER,
     CategoryID INTEGER,
@@ -55,10 +57,10 @@ CREATE TABLE Products(
 );
 
 CREATE TABLE Orders(
-    OrderID SERIAL PRIMARY KEY,
+    OrderID INTEGER PRIMARY KEY AUTO_INCREMENT,
     CustomerID INTEGER,
     EmployeeID INTEGER,
-    OrderDate TIMESTAMP,
+    OrderDate DATETIME,
     ShipperID INTEGER,
     FOREIGN KEY (EmployeeID) REFERENCES Employees (EmployeeID),
     FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID),
@@ -66,7 +68,7 @@ CREATE TABLE Orders(
 );
 
 CREATE TABLE OrderDetails(
-    OrderDetailID SERIAL PRIMARY KEY,
+    OrderDetailID INTEGER PRIMARY KEY AUTO_INCREMENT,
     OrderID INTEGER,
     ProductID INTEGER,
     Quantity INTEGER,
@@ -1013,3 +1015,5 @@ INSERT INTO OrderDetails VALUES(515,10442,54,80);
 INSERT INTO OrderDetails VALUES(516,10442,66,60);
 INSERT INTO OrderDetails VALUES(517,10443,11,6);
 INSERT INTO OrderDetails VALUES(518,10443,28,12);
+
+COMMIT;

@@ -1,6 +1,7 @@
 package pl.edu.agh.simpledatawarehouse.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.simpledatawarehouse.dao.MetaDataRepository;
 import pl.edu.agh.simpledatawarehouse.model.dto.MetadataDto;
@@ -9,6 +10,7 @@ import pl.edu.agh.simpledatawarehouse.model.dto.MetadataDto;
 @RequiredArgsConstructor
 public class MetadataService {
 
+    @Lazy
     private final MetaDataRepository metaDataRepository;
 
     public MetadataDto getMetadata() {

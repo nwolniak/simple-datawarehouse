@@ -1,6 +1,7 @@
 package pl.edu.agh.simpledatawarehouse.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.simpledatawarehouse.dao.TableRepository;
 import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
@@ -12,6 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TableService {
 
+    @Lazy
     private final TableRepository tableRepository;
 
     public TableDto getTable(String name) {

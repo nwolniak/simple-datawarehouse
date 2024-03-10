@@ -1,6 +1,7 @@
 package pl.edu.agh.simpledatawarehouse.dao;
 
 import lombok.SneakyThrows;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pl.edu.agh.simpledatawarehouse.model.metadata.*;
@@ -17,7 +18,7 @@ public class MetaDataRepository {
 
     private final JdbcTemplate jdbc;
 
-    public MetaDataRepository(DataSource dataSource) {
+    public MetaDataRepository(@Lazy DataSource dataSource) {
         this.jdbc = new JdbcTemplate(dataSource);
     }
 
