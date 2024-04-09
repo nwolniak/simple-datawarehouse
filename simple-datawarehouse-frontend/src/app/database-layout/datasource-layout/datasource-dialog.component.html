@@ -1,20 +1,32 @@
 <h2 mat-dialog-title>New Data Source</h2>
 <mat-dialog-content>
   <mat-form-field>
+    <mat-label>Driver Class Name</mat-label>
+    <input matInput type="text" placeholder="Driver Class Name" [(ngModel)]="driverClassName" required>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Driver</mat-label>
+    <input matInput type="text" placeholder="Driver" [(ngModel)]="driver" required>
+  </mat-form-field>
+  <mat-form-field>
     <mat-label>Host</mat-label>
-    <input matInput placeholder="Host" [(ngModel)]="host">
+    <input matInput type="text" placeholder="Host" [(ngModel)]="host" required>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Port</mat-label>
+    <input matInput type="number" placeholder="Port" [(ngModel)]="port" required>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Database</mat-label>
-    <input matInput placeholder="Database" [(ngModel)]="database">
+    <input matInput type="text" placeholder="Database" [(ngModel)]="database" required>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Username</mat-label>
-    <input matInput placeholder="User" [(ngModel)]="username">
+    <input matInput type="text" placeholder="User" [(ngModel)]="username" required>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput type="password" placeholder="Password" [(ngModel)]="password">
+    <input matInput type="password" placeholder="Password" [(ngModel)]="password" required>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>

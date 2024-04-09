@@ -6,6 +6,7 @@ import {first} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {Table} from "@app/_models";
 import {NgIf} from "@angular/common";
+import {ConsoleComponent} from "@app/console";
 
 @Component({
   selector: 'app-database-layout',
@@ -13,7 +14,8 @@ import {NgIf} from "@angular/common";
   imports: [
     DatasourceWindowComponent,
     TableViewComponent,
-    NgIf
+    NgIf,
+    ConsoleComponent
   ],
   templateUrl: './database-layout.component.html',
   styleUrl: './database-layout.component.css'

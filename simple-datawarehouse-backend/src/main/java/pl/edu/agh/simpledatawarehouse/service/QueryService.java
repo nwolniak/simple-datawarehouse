@@ -1,6 +1,7 @@
 package pl.edu.agh.simpledatawarehouse.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.simpledatawarehouse.dao.DataRepository;
 import pl.edu.agh.simpledatawarehouse.model.dto.QueryDto;
@@ -12,6 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class QueryService {
 
+    @Lazy
     private final DataRepository dataRepository;
 
     public List<Map<String, Object>> queryResults(final QueryDto queryDto) {

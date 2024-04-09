@@ -1,5 +1,6 @@
 package pl.edu.agh.simpledatawarehouse.dao;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,7 @@ public class DataRepository {
 
     private final JdbcClient jdbc;
 
-    public DataRepository(DataSource dataSource) {
+    public DataRepository(@Lazy DataSource dataSource) {
         this.jdbc = JdbcClient.create(dataSource);
     }
 
