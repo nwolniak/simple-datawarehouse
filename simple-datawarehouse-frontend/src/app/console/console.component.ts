@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
   selector: 'app-console',
   standalone: true,
   templateUrl: './console.component.html',
-  styleUrl: './console.component.css'
+  styleUrls: ['./console.component.css']
 })
 export class ConsoleComponent {
 

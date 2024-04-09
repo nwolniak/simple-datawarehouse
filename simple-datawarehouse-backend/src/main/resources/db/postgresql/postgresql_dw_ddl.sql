@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS dim_customer
 
 CREATE TABLE IF NOT EXISTS fact_table
 (
-    timeId     integer,
-    orderId    integer,
-    customerId integer,
-    addressId  integer,
+    timeId     integer REFERENCES dim_time(timeId),
+    orderId    integer REFERENCES dim_order(orderId),
+    customerId integer REFERENCES dim_customer(customerId),
+    addressId  integer REFERENCES dim_address(addressId),
     price      numeric(7, 2) NOT NULL,
     PRIMARY KEY (timeId, orderId, customerId, addressId)
 );

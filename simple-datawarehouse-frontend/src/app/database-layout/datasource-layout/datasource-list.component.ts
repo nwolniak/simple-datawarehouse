@@ -56,8 +56,36 @@ export class DatasourceListComponent {
     table.foreignKeysCollapsed = !table.foreignKeysCollapsed;
   }
 
+  toggleFactTablesCollapse(metadata: Metadata) {
+    metadata.factTablesCollapsed = !metadata.factTablesCollapsed;
+    metadata.factTables.forEach(factTable => {
+      factTable.tableCollapsed = false;
+      factTable.columnsCollapsed = false;
+      factTable.primaryKeysCollapsed = false;
+      factTable.foreignKeysCollapsed = false;
+    })
+  }
+
+  toggleDimensionsCollapse(metadata: Metadata) {
+    metadata.dimensionsCollapsed = !metadata.dimensionsCollapsed;
+    Object.entries(metadata.dimTables).forEach(([key, value]) => {
+      value.forEach((dimTable: TableMetadata) => {
+        dimTable.tableCollapsed = false;
+        dimTable.columnsCollapsed = false;
+        dimTable.primaryKeysCollapsed = false;
+        dimTable.foreignKeysCollapsed = false;
+      });
+    });
+  }
+
   emitTableChosenEvent(table: string) {
     this.tableChosenEvent.emit(table);
+  }
+
+  getAllMetadata(metadata: Metadata): TableMetadata[] {
+    return Object.entries(metadata.dimTables)
+      .map(([key, value]) => value)
+      .reduce((acc, curr) => acc.concat(curr), []);
   }
 
 }

@@ -23,7 +23,8 @@ public class MetadataController {
     public ResponseEntity<String> connectToDatabase(@RequestBody ConnectionParametersDto connectionParametersDto) {
         var databaseConnectionEvent = new DatabaseConnectionEvent(connectionParametersDto);
         applicationEventPublisher.publishEvent(databaseConnectionEvent);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK)
+                             .build();
     }
 
     @GetMapping("metadata")

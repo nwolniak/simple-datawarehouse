@@ -4,6 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record ForeignKeyMetadata(
+        String foreignKeyName,
         String primaryKeyTableName,
         String primaryKeyColumnName,
         String foreignKeyTableName,

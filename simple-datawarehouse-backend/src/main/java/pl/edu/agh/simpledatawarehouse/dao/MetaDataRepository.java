@@ -23,30 +23,40 @@ public class MetaDataRepository {
     }
 
     @SneakyThrows
-    public Metadata getMetadata() {
-        try (Connection connection = jdbc.getDataSource().getConnection()) {
+    public String getDatabase() {
+        try (Connection connection = jdbc.getDataSource()
+                                         .getConnection()) {
             var metaData = connection.getMetaData();
-            return Metadata.builder()
-                    .database(metaData.getDatabaseProductName())
-                    .host(metaData.getURL())
-                    .tablesMetadata(getTablesMetadata(metaData))
-                    .build();
+            return metaData.getDatabaseProductName();
         }
     }
 
     @SneakyThrows
-    public List<TableMetadata> getTablesMetadata(DatabaseMetaData metaData) {
+    public String getURL() {
+        try (Connection connection = jdbc.getDataSource()
+                                         .getConnection()) {
+            var metaData = connection.getMetaData();
+            return metaData.getURL();
+        }
+    }
+
+    @SneakyThrows
+    public List<TableMetadata> getTablesMetadata() {
         List<TableMetadata> tablesMetadata = new ArrayList<>();
-        var resultSet = metaData.getTables(null, null, null, new String[]{"TABLE"});
-        while (resultSet.next()) {
-            String table = resultSet.getString("TABLE_NAME");
-            var tableMetadata = TableMetadata.builder()
-                    .tableName(table)
-                    .columnsMetadata(getColumnsMetadata(metaData, table))
-                    .primaryKeysMetadata(getPrimaryKeysMetadata(metaData, table))
-                    .foreignKeysMetadata(getForeignKeysMetadata(metaData, table))
-                    .build();
-            tablesMetadata.add(tableMetadata);
+        try (Connection connection = jdbc.getDataSource()
+                                         .getConnection()) {
+            var metaData = connection.getMetaData();
+            var resultSet = metaData.getTables(null, null, null, new String[]{"TABLE"});
+            while (resultSet.next()) {
+                String table = resultSet.getString("TABLE_NAME");
+                var tableMetadata = TableMetadata.builder()
+                                                 .tableName(table)
+                                                 .columnsMetadata(getColumnsMetadata(metaData, table))
+                                                 .primaryKeysMetadata(getPrimaryKeysMetadata(metaData, table))
+                                                 .foreignKeysMetadata(getForeignKeysMetadata(metaData, table))
+                                                 .build();
+                tablesMetadata.add(tableMetadata);
+            }
         }
         return tablesMetadata;
     }
@@ -57,12 +67,12 @@ public class MetaDataRepository {
         var resultSet = metaData.getColumns(null, null, table, null);
         while (resultSet.next()) {
             var columnMetadata = ColumnMetadata.builder()
-                    .name(resultSet.getString("COLUMN_NAME"))
-                    .size(resultSet.getString("COLUMN_SIZE"))
-                    .type(resultSet.getString("TYPE_NAME"))
-                    .isNullable(resultSet.getBoolean("IS_NULLABLE"))
-                    .isAutoincrement(resultSet.getBoolean("IS_AUTOINCREMENT"))
-                    .build();
+                                               .name(resultSet.getString("COLUMN_NAME"))
+                                               .size(resultSet.getString("COLUMN_SIZE"))
+                                               .type(resultSet.getString("TYPE_NAME"))
+                                               .isNullable(resultSet.getBoolean("IS_NULLABLE"))
+                                               .isAutoincrement(resultSet.getBoolean("IS_AUTOINCREMENT"))
+                                               .build();
             columnsMetadata.add(columnMetadata);
         }
         return columnsMetadata;
@@ -74,9 +84,9 @@ public class MetaDataRepository {
         var resultSet = metaData.getPrimaryKeys(null, null, table);
         while (resultSet.next()) {
             var primaryKeyMetadata = PrimaryKeyMetadata.builder()
-                    .columnName(resultSet.getString("COLUMN_NAME"))
-                    .primaryKeyName(resultSet.getString("PK_NAME"))
-                    .build();
+                                                       .columnName(resultSet.getString("COLUMN_NAME"))
+                                                       .primaryKeyName(resultSet.getString("PK_NAME"))
+                                                       .build();
             primaryKeysMetadata.add(primaryKeyMetadata);
         }
         return primaryKeysMetadata;
@@ -88,11 +98,12 @@ public class MetaDataRepository {
         var resultSet = metaData.getImportedKeys(null, null, table);
         while (resultSet.next()) {
             var primaryKeyMetadata = ForeignKeyMetadata.builder()
-                    .primaryKeyTableName(resultSet.getString("PKTABLE_NAME"))
-                    .primaryKeyColumnName(resultSet.getString("PKCOLUMN_NAME"))
-                    .foreignKeyTableName(resultSet.getString("FKTABLE_NAME"))
-                    .foreignKeyColumnName(resultSet.getString("FKCOLUMN_NAME"))
-                    .build();
+                                                        .foreignKeyName(resultSet.getString("FK_NAME"))
+                                                       .primaryKeyTableName(resultSet.getString("PKTABLE_NAME"))
+                                                       .primaryKeyColumnName(resultSet.getString("PKCOLUMN_NAME"))
+                                                       .foreignKeyTableName(resultSet.getString("FKTABLE_NAME"))
+                                                       .foreignKeyColumnName(resultSet.getString("FKCOLUMN_NAME"))
+                                                       .build();
             foreignKeysMetadata.add(primaryKeyMetadata);
         }
         return foreignKeysMetadata;
