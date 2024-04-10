@@ -1,0 +1,35 @@
+<mat-dialog-content>
+  <div class="container">
+    <ul *ngIf="databaseMetadata">
+      <ng-container *ngFor="let table of databaseMetadata.tables">
+        <ng-container *ngIf="table.columnsMetadata.length != 0">
+          <i class="fa-solid fa-table"></i>
+          {{ table.tableName }}
+          <ul *ngFor="let columnMetadata of table.columnsMetadata">
+            <li>
+              {{ columnMetadata.name }} [{{ columnMetadata.type }}]
+            </li>
+          </ul>
+        </ng-container>
+      </ng-container>
+    </ul>
+
+    <ul *ngIf="datawarehouseMetadata">
+      <ng-container *ngFor="let table of datawarehouseMetadata.tables">
+        <ng-container *ngIf="table.columnsMetadata.length != 0">
+          <i class="fa-solid fa-table"></i>
+          {{ table.tableName }}
+          <ul *ngFor="let columnMetadata of table.columnsMetadata">
+            <li>
+              {{ columnMetadata.name }} [{{ columnMetadata.type }}]
+            </li>
+          </ul>
+        </ng-container>
+      </ng-container>
+    </ul>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" (click)="loadButton()">Load</button>
+</mat-dialog-actions>

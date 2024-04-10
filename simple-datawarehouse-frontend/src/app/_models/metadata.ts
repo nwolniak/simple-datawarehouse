@@ -4,6 +4,7 @@ export interface Metadata {
   tables: TableMetadata[];
   factTables: TableMetadata[];
   dimTables: Map<string, TableMetadata[]>;
+
   metadataCollapsed?: boolean;
   tablesCollapsed?: boolean;
   factTablesCollapsed?: boolean;
@@ -15,6 +16,7 @@ export interface TableMetadata {
   columnsMetadata: ColumnMetadata[];
   primaryKeysMetadata: PrimaryKeyMetadata[];
   foreignKeysMetadata: ForeignKeyMetadata[];
+
   tableCollapsed?: boolean;
   columnsCollapsed?: boolean;
   primaryKeysCollapsed?: boolean;
@@ -27,6 +29,8 @@ export interface ColumnMetadata {
   type: string;
   isNullable: boolean;
   isAutoincrement: boolean;
+
+  isChecked?: boolean;
 }
 
 export interface ForeignKeyMetadata {

@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {MatButton} from "@angular/material/button";
 import {
   MatDialogActions,
   MatDialogClose,
@@ -6,32 +7,33 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
-import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
-import {FormsModule} from "@angular/forms";
 import {MatInput} from "@angular/material/input";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MetadataService} from "@app/_services";
-import {first} from "rxjs";
 import {ConnectionParameters} from "@app/_models";
+import {first} from "rxjs";
+import {DatasourceDialogComponent} from "@app/database-layout";
 
 @Component({
-  selector: 'app-datasource-dialog',
+  selector: 'app-connect-popup',
   standalone: true,
   imports: [
-    MatDialogContent,
+    MatButton,
     MatDialogActions,
     MatDialogClose,
+    MatDialogContent,
     MatDialogTitle,
-    MatButton,
     MatFormField,
-    FormsModule,
     MatInput,
-    MatLabel
+    MatLabel,
+    ReactiveFormsModule,
+    FormsModule
   ],
-  templateUrl: './datasource-dialog.component.html',
-  styleUrl: './datasource-dialog.component.css'
+  templateUrl: './connect-popup.component.html',
+  styleUrl: './connect-popup.component.css'
 })
-export class DatasourceDialogComponent {
+export class ConnectPopupComponent {
   driverClassName: string;
   driver: string;
   host: string;
@@ -41,14 +43,14 @@ export class DatasourceDialogComponent {
   password: string;
 
   constructor(
-    private dialogRef: MatDialogRef<DatasourceDialogComponent>,
+    private dialogRef: MatDialogRef<ConnectPopupComponent>,
     private metadataService: MetadataService
   ) {
     this.driverClassName = "org.postgresql.Driver";
     this.driver = "postgresql";
     this.host = "localhost";
-    this.port = "5432";
-    this.database = "simple_datawarehouse";
+    this.port = "5433";
+    this.database = "database";
     this.username = "user";
     this.password = "password";
   }
@@ -66,7 +68,7 @@ export class DatasourceDialogComponent {
     this.metadataService.connectToDatabase(connectionParameters)
       .pipe(first())
       .subscribe(response => {
-        this.metadataService.getDatawarehouseMetadata()
+        this.metadataService.getDatabaseMetadata()
           .pipe(first())
           .subscribe(metadata => {
             this.dialogRef.close(metadata);

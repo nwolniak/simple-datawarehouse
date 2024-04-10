@@ -1,0 +1,11 @@
+.block {
+  width: 100px;
+  height: 100px;
+  background-color: lightblue;
+  border: 2px solid gray;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30%;
+}

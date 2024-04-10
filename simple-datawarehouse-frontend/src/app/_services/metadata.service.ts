@@ -21,10 +21,17 @@ export class MetadataService {
     return this.http.post(`${environment.dbConnectionUrl}`, connectionParameters);
   }
 
-  getMetadata(): Observable<Metadata> {
+  getDatawarehouseMetadata(): Observable<Metadata> {
     return this.http.get<Metadata>(`${environment.metadataUrl}`)
       .pipe(map(metadata => {
         this.metadataSubject.next(metadata);
+        return metadata;
+      }));
+  }
+
+  getDatabaseMetadata(): Observable<Metadata> {
+    return this.http.get<Metadata>(`${environment.metadataUrl}`)
+      .pipe(map(metadata => {
         return metadata;
       }));
   }
