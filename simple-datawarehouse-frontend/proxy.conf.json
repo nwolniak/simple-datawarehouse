@@ -1,0 +1,12 @@
+{
+  "/nifi": {
+    "target": "http://localhost:4201",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/nifi-api": {
+    "target": "http://localhost:4201",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

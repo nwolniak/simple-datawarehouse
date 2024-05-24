@@ -1,0 +1,9 @@
+2024-05-23 11:24:15,776 INFO [main] org.apache.nifi.NiFi Launching NiFi...
+2024-05-23 11:24:15,879 INFO [main] o.a.nifi.properties.NiFiPropertiesLoader Loading Application Properties [/opt/nifi/nifi-current/./conf/nifi.properties]
+2024-05-23 11:24:15,899 WARN [main] o.a.nifi.properties.NiFiPropertiesLoader Generating Random Sensitive Properties Key [nifi.sensitive.props.key]
+2024-05-23 11:24:15,948 INFO [main] o.a.nifi.properties.NiFiPropertiesLoader NiFi Properties [/opt/nifi/nifi-current/./conf/nifi.properties] updated with Sensitive Properties Key
+2024-05-23 11:24:15,949 INFO [main] o.a.nifi.properties.NiFiPropertiesLoader Loading Application Properties [/opt/nifi/nifi-current/./conf/nifi.properties]
+2024-05-23 11:24:15,957 INFO [main] org.apache.nifi.NiFi Application Properties loaded [204]
+2024-05-23 11:24:15,972 INFO [main] org.apache.nifi.BootstrapListener Started Bootstrap Listener, Listening for incoming requests on port 38595
+2024-05-23 11:24:16,008 INFO [main] org.apache.nifi.BootstrapListener Successfully initiated communication with Bootstrap
+2024-05-23 11:24:16,040 INFO [main] org.apache.nifi.nar.NarUnpacker Expanding 134 NAR files started

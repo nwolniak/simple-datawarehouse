@@ -5,12 +5,18 @@
   padding: 1rem;
 }
 
+.dw-icon {
+  max-width: 100%;
+  height: auto;
+}
+
 .navbar-nav {
   padding: 1rem;
 }
 
 .nav-item {
   padding-top: 2rem;
+  font-size: 1.2vw;
 }
 
 .nav-item.nav-link.active {

@@ -1,5 +1,15 @@
 .wrapper {
   display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  flex: 0 0 13vw;
+}
+
+.content {
+  flex: 1 1 auto;
+  background-color: lightblue;
 }
 
 

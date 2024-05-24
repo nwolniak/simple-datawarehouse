@@ -1,6 +1,3 @@
 <div class="container">
-  <connect-component (connectionEvent)="handleConnection($event)"></connect-component>
-  <extract-component [metadata]="metadata" (extractionEvent)="handleExtraction($event)"></extract-component>
-  <transform-component></transform-component>
-  <load-component [extractedMetadata]="extractedMetadata"></load-component>
+    <iframe [src]="nifiUrl" width="100%" height="100%"></iframe>
 </div>

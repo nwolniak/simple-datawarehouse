@@ -1,18 +1,14 @@
 import {Component} from '@angular/core';
-import {LoadComponent} from "@app/etl/load/load.component";
-import {ConnectComponent} from "@app/etl/connect/connect.component";
-import {TransformComponent} from "@app/etl/transform/transform.component";
-import {ExtractComponent} from "@app/etl/extract/extract.component";
 import {Metadata} from "@app/_models";
+import {environment} from "@environments/environment";
+import {NgIf} from "@angular/common";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-etl',
   standalone: true,
   imports: [
-    LoadComponent,
-    ConnectComponent,
-    TransformComponent,
-    ExtractComponent
+    NgIf
   ],
   templateUrl: './etl.component.html',
   styleUrl: './etl.component.css'
@@ -21,6 +17,12 @@ export class EtlComponent {
 
   metadata?: Metadata
   extractedMetadata?: Metadata
+  nifiUrl: SafeResourceUrl
+
+
+  constructor(private sanitizer: DomSanitizer) {
+    this.nifiUrl = this.sanitizer.bypassSecurityTrustResourceUrl(environment.nifiUrl)
+  }
 
   handleConnection(metadata: Metadata) {
     this.metadata = metadata;
