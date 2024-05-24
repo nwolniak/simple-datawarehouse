@@ -1,6 +1,59 @@
 version: "3.8"
 name: "datawarehouse"
 services:
+  backend:
+    build:
+      context: simple-datawarehouse-backend
+      dockerfile: Dockerfile
+    container_name: simple-datawarehouse-backend
+    ports:
+      - "8080:8080"
+    networks:
+      - reverse-proxy
+      - databases
+
+  frontend:
+    build:
+      context: simple-datawarehouse-frontend
+      dockerfile: Dockerfile
+    container_name: simple-datawarehouse-frontend
+    ports:
+      - "4200:4200"
+    networks:
+      - reverse-proxy
+
+  nifi:
+    image: apache/nifi:latest
+    container_name: nifi
+    ports:
+      - "4201:4201"
+    environment:
+      - NIFI_WEB_HTTP_PORT=4201
+    volumes:
+      - ./nifi/database_repository:/opt/nifi/nifi-current/database_repository
+      - ./nifi/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+      - ./nifi/content_repository:/opt/nifi/nifi-current/content_repository
+      - ./nifi/provenance_repository:/opt/nifi/nifi-current/provenance_repository
+      - ./nifi/state:/opt/nifi/nifi-current/state
+      - ./nifi/logs:/opt/nifi/nifi-current/logs
+      - ./nifi/drivers:/opt/nifi/nifi-current/drivers
+      - ./nifi/conf:/opt/nifi/nifi-current/conf
+    networks:
+      - reverse-proxy
+      - databases
+
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - reverse-proxy
+
   postgres:
     image: postgres:16-alpine
     container_name: postgres
@@ -12,6 +65,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - databases
 
   mysql:
     image: mysql:latest
@@ -25,6 +80,8 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - databases
 
   ds_postgresql:
     image: postgres:16-alpine
@@ -37,6 +94,8 @@ services:
       - "5433:5432"
     volumes:
       - ds_postgresql_data:/var/lib/postgresql/data
+    networks:
+      - databases
 
   ds_mysql:
     image: mysql:latest
@@ -50,6 +109,8 @@ services:
       - "3307:3306"
     volumes:
       - ds_mysql_data:/var/lib/mysql
+    networks:
+      - databases
 
 volumes:
   postgres_data:
@@ -60,3 +121,9 @@ volumes:
     driver: local
   ds_mysql_data:
     driver: local
+
+networks:
+  databases:
+    driver: bridge
+  reverse-proxy:
+    driver: bridge
