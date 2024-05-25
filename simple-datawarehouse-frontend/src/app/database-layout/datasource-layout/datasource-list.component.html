@@ -57,7 +57,7 @@
 </ng-template>
 
 <ng-template #tableNode let-table>
-  <li (dblclick)="emitTableChosenEvent(table.tableName)">
+  <li (dblclick)="getDatasource(table.tableName)">
     <i (click)="toggleTableCollapse(table)"
        [ngClass]="['fa-solid fa-sm fa-fw', table.tableCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></i>
     <i class="fa-solid fa-table"></i>

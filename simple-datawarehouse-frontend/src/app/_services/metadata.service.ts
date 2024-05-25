@@ -29,13 +29,6 @@ export class MetadataService {
       }));
   }
 
-  getDatabaseMetadata(): Observable<Metadata> {
-    return this.http.get<Metadata>(`${environment.metadataUrl}`)
-      .pipe(map(metadata => {
-        return metadata;
-      }));
-  }
-
   public get metadata(): Observable<Metadata | undefined> {
     return this._metadata;
   }

@@ -1,8 +1,0 @@
-<mat-toolbar>
-  <button mat-button (click)="openNewDataSourceDialog()">
-    <i class="fa-solid fa-plus"></i>
-    New Data Source
-  </button>
-</mat-toolbar>
-
-<app-database-list [metadata]="metadata" (tableChosenEvent)="emitTableChosenEvent($event)"></app-database-list>

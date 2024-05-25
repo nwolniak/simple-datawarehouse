@@ -1,5 +1,5 @@
 <div class="container">
-  <app-datasource-window (tableChosenEvent)="handleTableChosenEvent($event)"></app-datasource-window>
+  <app-database-list></app-database-list>
   <app-console></app-console>
-  <app-table-view *ngIf="table" [columns]="table.columns" [dataSource]="dataSource"></app-table-view>
+  <app-table-view></app-table-view>
 </div>

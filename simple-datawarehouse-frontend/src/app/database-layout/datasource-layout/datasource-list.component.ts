@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component} from '@angular/core';
 import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {Metadata, TableMetadata} from "@app/_models";
+import {DatasourceService, MetadataService} from "@app/_services";
 
 @Component({
   selector: 'app-database-list',
@@ -16,11 +17,16 @@ import {Metadata, TableMetadata} from "@app/_models";
 })
 export class DatasourceListComponent {
 
-  @Input()
   metadata?: Metadata;
 
-  @Output()
-  tableChosenEvent = new EventEmitter;
+  constructor(
+    private metadataService: MetadataService,
+    private datasourceService: DatasourceService
+  ) {
+    this.metadataService.metadata.subscribe(metadata =>
+      this.metadata = metadata
+    );
+  }
 
   toggleMetadata(metadata: Metadata) {
     metadata.metadataCollapsed = !metadata.metadataCollapsed;
@@ -78,8 +84,8 @@ export class DatasourceListComponent {
     });
   }
 
-  emitTableChosenEvent(table: string) {
-    this.tableChosenEvent.emit(table);
+  getDatasource(table: string) {
+    this.datasourceService.getDatasource(table).subscribe();
   }
 
   getAllMetadata(metadata: Metadata): TableMetadata[] {

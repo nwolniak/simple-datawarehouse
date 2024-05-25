@@ -36,8 +36,8 @@ services:
       - ./nifi/provenance_repository:/opt/nifi/nifi-current/provenance_repository
       - ./nifi/state:/opt/nifi/nifi-current/state
       - ./nifi/logs:/opt/nifi/nifi-current/logs
-      - ./nifi/drivers:/opt/nifi/nifi-current/drivers
-      - ./nifi/conf:/opt/nifi/nifi-current/conf
+#      - ./nifi/drivers:/opt/nifi/nifi-current/drivers
+#      - ./nifi/conf:/opt/nifi/nifi-current/conf
     networks:
       - reverse-proxy
       - databases
