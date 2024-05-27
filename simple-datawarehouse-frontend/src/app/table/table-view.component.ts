@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {
   MatCell,
   MatCellDef,
@@ -40,7 +40,7 @@ import {TableRow} from "@app/helpers";
   templateUrl: './table-view.component.html',
   styleUrl: './table-view.component.css'
 })
-export class TableViewComponent implements AfterViewInit, OnChanges {
+export class TableViewComponent {
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
@@ -59,18 +59,19 @@ export class TableViewComponent implements AfterViewInit, OnChanges {
     this.datasourceService.datasource.subscribe(datasource => {
       if (datasource) {
         this.dataSource = datasource;
+        this.updatePaginator();
       }
     });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes["dataSource"]) {
-      this.dataSource.paginator = this.paginator;
+  updatePaginator(): void {
+    if (!this.paginator) {
+      setTimeout(() => {
+        this.updatePaginator();
+      }, 100);
+      return;
     }
+    this.dataSource.paginator = this.paginator;
   }
 
 }

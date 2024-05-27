@@ -1,4 +1,5 @@
-.database {
+.container {
+  flex: 1 1 auto;
   background-color: lightgrey;
 }
 
