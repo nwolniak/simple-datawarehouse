@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {TableService} from "@app/_services/table.service";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
-import {TableRow} from "@app/helpers";
+import {TableRow} from "@app/_models";
 
 
 @Injectable({

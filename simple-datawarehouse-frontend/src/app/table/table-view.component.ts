@@ -15,7 +15,7 @@ import {
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {DatasourceService, TableService} from "@app/_services";
-import {TableRow} from "@app/helpers";
+import {TableRow} from "@app/_models";
 
 @Component({
   selector: 'app-table-view',

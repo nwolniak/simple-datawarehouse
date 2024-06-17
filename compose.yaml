@@ -54,6 +54,16 @@ services:
     networks:
       - reverse-proxy
 
+  schema-spy:
+    image: schemaspy/schemaspy:latest
+    container_name: schema-spy
+    volumes:
+      - ./schemaspy.properties:/schemaspy.properties
+      - ./diagrams:/output/diagrams/summary
+    networks:
+      - databases
+
+
   postgres:
     image: postgres:16-alpine
     container_name: postgres

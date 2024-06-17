@@ -11,9 +11,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TableDto {
-
-    String tableName;
-    List<String> columns;
-    List<Map<String, Object>> rows;
-
+    private String tableName;
+    private List<String> columns;
+    private List<Map<String, Object>> rows;
 }

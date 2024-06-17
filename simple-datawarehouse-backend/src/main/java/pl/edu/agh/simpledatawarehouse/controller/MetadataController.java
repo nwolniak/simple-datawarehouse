@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.simpledatawarehouse.model.dto.ConnectionParametersDto;
 import pl.edu.agh.simpledatawarehouse.model.dto.MetadataDto;
-import pl.edu.agh.simpledatawarehouse.model.event.DatabaseConnectionEvent;
+import pl.edu.agh.simpledatawarehouse.events.DatabaseConnectionEvent;
 import pl.edu.agh.simpledatawarehouse.service.MetadataService;
 
 @RestController

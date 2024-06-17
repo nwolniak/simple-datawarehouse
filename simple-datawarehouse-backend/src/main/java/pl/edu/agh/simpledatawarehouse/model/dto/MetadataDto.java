@@ -12,11 +12,9 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MetadataDto {
-
-    String database;
-    String host;
-    List<TableMetadata> tables;
-    List<TableMetadata> factTables;
-    Map<String, List<TableMetadata>> dimTables;
-
+    private String database;
+    private String host;
+    private List<TableMetadata> tables;
+    private List<TableMetadata> factTables;
+    private Map<String, List<TableMetadata>> dimTables;
 }

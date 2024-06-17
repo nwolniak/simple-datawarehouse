@@ -1,0 +1,205 @@
+<div class="query" *ngIf="metadata">
+  <div class="selection">
+    <h5>From</h5>
+    <p-dropdown
+      [options]="metadata.tables"
+      optionLabel="tableName"
+      [(ngModel)]="fromTable"
+      (onChange)="fromTableChange(fromTable)"
+      placeholder="Select Table">
+    </p-dropdown>
+  </div>
+  <div class="selection">
+    <h5>Join</h5>
+    <p-table
+      [value]="query.joins"
+      (onRowReorder)="updateQuery()"
+      stateStorage="local"
+      stateKey="join">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:3rem"></th>
+          <th>Select Table</th>
+          <th>Join Type</th>
+          <th>Left Operand</th>
+          <th>Operator</th>
+          <th>Right Operand</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-column let-index="rowIndex">
+        <tr [pReorderableRow]="index">
+          <td>
+            <span class="pi pi-bars" pReorderableRowHandle></span>
+          </td>
+          <td>
+            <p-dropdown
+              [options]="metadata.tables"
+              optionLabel="tableName"
+              (onChange)="joinTableChange($event.value, index)"
+              appendTo="body"
+              placeholder="Join Table">
+            </p-dropdown>
+          </td>
+          <td>
+            <p-dropdown
+              [options]="joinTypes"
+              [(ngModel)]="query.joins[index].type"
+              (onChange)="updateQuery()"
+              appendTo="body"
+              placeholder="Join Type">
+            </p-dropdown>
+          </td>
+          <td>
+            <p-dropdown
+              [options]="leftOperands()"
+              [(ngModel)]="query.joins[index].conditions[0].leftOperand"
+              (onChange)="updateQuery()"
+              appendTo="body"
+              placeholder="Select Field">
+            </p-dropdown>
+          </td>
+          <td>
+            <p-dropdown
+              [options]="operators"
+              [(ngModel)]="query.joins[index].conditions[0].operator"
+              (onChange)="updateQuery()"
+              appendTo="body"
+              placeholder="Select Operator">
+            </p-dropdown>
+          </td>
+          <td>
+            <p-dropdown
+              [options]="rightOperands(index)"
+              [(ngModel)]="query.joins[index].conditions[0].rightOperand"
+              (onChange)="updateQuery()"
+              appendTo="body"
+              placeholder="Select Field">
+            </p-dropdown>
+          </td>
+          <td>
+            <button (click)="deleteJoinTable(index)">Delete</button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <button (click)="newJoinTable()">+</button>
+  </div>
+  <div class="selection">
+    <h5>Select</h5>
+    <p-table
+      [value]="query.columns"
+      (onRowReorder)="updateQuery()">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:3rem"></th>
+          <th>Column</th>
+          <th>Alias</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-index="rowIndex">
+        <tr [pReorderableRow]="index">
+          <td>
+            <span class="pi pi-bars" pReorderableRowHandle></span>
+          </td>
+          <td>
+            <p-dropdown
+              [options]="columnOptions()"
+              (onChange)="columnChange($event.value, index)"
+              appendTo="body"
+              placeholder="Select Column">
+            </p-dropdown>
+          </td>
+          <td>
+            <p-floatLabel>
+              <input type="text" id="alias{{index}}" pInputText (input)="aliasChange($event, index)"/>
+              <label for="alias{{index}}">Alias</label>
+            </p-floatLabel>
+          </td>
+          <td>
+            <button (click)="deleteColumn(index)">Delete</button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <button (click)="newColumn()">+</button>
+  </div>
+  <div class="selection">
+    <h5>Group By</h5>
+    <p-table
+      [value]="query.groupByList"
+      (onRowReorder)="updateQuery()">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:3rem"></th>
+          <th>Column</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-index="rowIndex">
+        <tr [pReorderableRow]="index">
+          <td>
+            <span class="pi pi-bars" pReorderableRowHandle></span>
+          </td>
+          <td>
+            <p-dropdown
+              [options]="columnOptions()"
+              [(ngModel)]="query.groupByList[index]"
+              (onChange)="groupByChange($event.value, index)"
+              appendTo="body"
+              placeholder="Select Column">
+            </p-dropdown>
+          </td>
+          <td>
+            <button (click)="deleteGroupBy(index)">Delete</button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <button (click)="newGroupBy()">+</button>
+  </div>
+  <div class="selection">
+    <h5>Order By</h5>
+    <p-table
+      [value]="query.orderByList"
+      (onRowReorder)="updateQuery()">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:3rem"></th>
+          <th>Column</th>
+          <th>Order</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-column let-index="rowIndex">
+        <tr [pReorderableRow]="index">
+          <td>
+            <span class="pi pi-bars" pReorderableRowHandle></span>
+          </td>
+          <td>
+            <p-dropdown
+              [options]="columnOptions()"
+              (onChange)="orderByColumnChange($event.value, index)"
+              appendTo="body"
+              placeholder="Select Column">
+            </p-dropdown>
+          </td>
+          <td>
+            <p-toggleButton
+              [(ngModel)]="query.orderByList[index].ascending"
+              (onChange)="updateQuery()"
+              onLabel="Ascending"
+              offLabel="Descending"
+              onIcon="pi pi-sort-amount-up-alt"
+              offIcon="pi pi-sort-amount-down"/>
+          </td>
+          <td>
+            <button (click)="deleteOrderBy(index)">Delete</button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <button (click)="newOrderBy()">+</button>
+  </div>
+</div>

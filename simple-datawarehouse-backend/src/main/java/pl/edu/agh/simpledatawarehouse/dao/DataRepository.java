@@ -17,26 +17,6 @@ public class DataRepository {
         this.jdbc = JdbcClient.create(dataSource);
     }
 
-    public void selectPrototype1(String table) {
-        var sql = STR."""
-                SELECT * FROM \{table}
-                """;
-        var query = jdbc.sql(sql).query();
-        var results = query.listOfRows();
-        results.forEach(System.out::println);
-    }
-
-    public void selectPrototype2(String table1, String table2) {
-        var sql = STR."""
-                SELECT *
-                FROM \{table1}
-                INNER JOIN \{table2} ON \{table1}.categoryid = \{table2}.categoryid
-                """;
-        var query = jdbc.sql(sql).query();
-        var results = query.listOfRows();
-        results.forEach(System.out::println);
-    }
-
     public List<Map<String, Object>> selectPrototype3(String table1, String table2, String table3) {
         var sql = STR."""
                 SELECT \{table2}.orderid, SUM(\{table3}.price) as total_price

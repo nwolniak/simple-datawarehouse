@@ -46,7 +46,7 @@ export class DatasourceDialogComponent {
   ) {
     this.driverClassName = "org.postgresql.Driver";
     this.driver = "postgresql";
-    this.host = "postgres";
+    this.host = "localhost";
     this.port = "5432";
     this.database = "simple_datawarehouse";
     this.username = "user";
