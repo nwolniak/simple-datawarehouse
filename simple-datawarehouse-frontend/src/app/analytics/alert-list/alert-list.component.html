@@ -1,0 +1,25 @@
+<p-button pTooltip="Alerts" tooltipPosition="bottom" icon="pi pi-exclamation-circle" [severity]="severity()"
+          [badge]="badge()"
+          (click)="showAlerts()" class="alert-button">
+</p-button>
+<p-dialog [modal]="true" [(visible)]="alertsVisible" [style]="{ width: '50rem' }">
+  <ng-template pTemplate="header">
+    <p-toolbar>
+      <h4>Alerts</h4>
+      <button pButton label="Clear" icon="pi pi-trash" (click)="clearAlerts()"></button>
+    </p-toolbar>
+  </ng-template>
+  <p-dataView [value]="alerts">
+    <ng-template pTemplate="list" let-alerts>
+      <div class="alert-item" *ngFor="let alert of alerts; let i = index">
+        <div class="alert-message">
+          {{ timestampPipe(alert.error.timestamp) }} - {{ alert.error.message }}
+        </div>
+        <button pButton icon="pi pi-trash" (click)="removeAlert(i)"></button>
+      </div>
+    </ng-template>
+  </p-dataView>
+</p-dialog>
+
+
+

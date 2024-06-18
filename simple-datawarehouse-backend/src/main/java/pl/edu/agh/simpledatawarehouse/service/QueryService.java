@@ -27,7 +27,6 @@ public class QueryService {
 
     public TableDto queryResults(final QueryDto queryDto) {
         Query query = QueryMapper.INSTANCE.toQuery(queryDto);
-
         String sql = queryToSql(query);
         log.info(sql);
         List<Map<String, Object>> tableRows = dataRepository.execute(sql);
@@ -42,13 +41,13 @@ public class QueryService {
     }
 
     private String queryToSql(final Query query) {
-        var select = extractSelectedColumns(query);
+        var columns = extractSelectedColumns(query);
         var from = query.fromTable();
         var joins = extractJoinStatements(query);
         var groupBy = String.join(", ", query.groupByList());
         var orderBy = extractOrderByStatements(query);
 
-        var sql = new StringBuilder().append(STR."SELECT \{select}\n")
+        var sql = new StringBuilder().append(STR."SELECT \{columns}\n")
                                      .append(STR."FROM \{from}\n");
 
         if (!joins.isBlank()) {
@@ -66,7 +65,7 @@ public class QueryService {
     private String extractSelectedColumns(Query query) {
         return query.columns()
                     .stream()
-                    .map(Column::name)
+                    .map(Column::toString)
                     .collect(Collectors.joining(", "));
     }
 

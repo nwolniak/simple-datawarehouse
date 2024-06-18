@@ -7,9 +7,11 @@ import {ExportCSVOptions, TableModule} from "primeng/table";
 import {TooltipModule} from "primeng/tooltip";
 import {Table} from "@app/_models";
 import {QueryService} from "@app/_services";
-import {filter, first} from "rxjs";
+import {filter} from "rxjs";
 import {Table as PrimeNGTable} from "primeng/table/table";
 import {PaginatorModule} from "primeng/paginator";
+import {DialogModule} from "primeng/dialog";
+import {AlertListComponent} from "@app/analytics/alert-list/alert-list.component";
 
 @Component({
   selector: 'app-result-table',
@@ -22,7 +24,9 @@ import {PaginatorModule} from "primeng/paginator";
     PrimeTemplate,
     TableModule,
     TooltipModule,
-    PaginatorModule
+    PaginatorModule,
+    DialogModule,
+    AlertListComponent
   ],
   templateUrl: './result-table.component.html',
   styleUrl: './result-table.component.css'
@@ -59,9 +63,7 @@ export class ResultTableComponent implements OnInit {
   }
 
   reload(): void {
-    this.queryService.sendQuery()
-      .pipe(first())
-      .subscribe();
+    this.queryService.sendQuery();
   }
 
   clear(dt: PrimeNGTable): void {

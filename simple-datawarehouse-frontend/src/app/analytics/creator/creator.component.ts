@@ -9,6 +9,8 @@ import {InputTextModule} from "primeng/inputtext";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {TableModule} from "primeng/table";
 import {ToggleButtonModule} from "primeng/togglebutton";
+import {query} from "@angular/animations";
+import {ScrollPanelModule} from "primeng/scrollpanel";
 
 @Component({
   selector: 'app-creator',
@@ -22,17 +24,19 @@ import {ToggleButtonModule} from "primeng/togglebutton";
     InputTextModule,
     FloatLabelModule,
     TableModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    ScrollPanelModule
   ],
   templateUrl: './creator.component.html',
   styleUrl: './creator.component.css'
 })
 export class CreatorComponent implements OnInit {
 
-  metadata?: Metadata
+  metadata: any = {};
   query!: Query
   joinTypes: string[] = ["INNER", "LEFT", "RIGHT", "FULL", "CROSS", "SELF"];
-  operators: string[] = ["=", "<>", ">", ">=", "<", "<="]
+  operators: string[] = ["=", "<>", ">", ">=", "<", "<="];
+  aggregates: string[] = ["COUNT", "SUM", "AVG", "MAX", "MIN"];
 
   fromTable?: TableMetadata;
   joinTables: TableMetadata[] = [];
@@ -136,6 +140,11 @@ export class CreatorComponent implements OnInit {
 
   aliasChange($event: Event, index: number) {
     this.query.columns[index].alias = ($event.target as HTMLInputElement).value;
+    this.queryService.updateQuery(this.query);
+  }
+
+  aggregateChange(aggregate: string, index: number) {
+    this.query.columns[index].function = aggregate;
     this.queryService.updateQuery(this.query);
   }
 

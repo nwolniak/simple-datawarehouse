@@ -3,7 +3,7 @@ import {BehaviorSubject, map, Observable} from "rxjs";
 import {Query, Table} from "@app/_models";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "@environments/environment";
-import {query} from "@angular/animations";
+import {AlertService} from "@app/_services/alert.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,10 @@ export class QueryService {
   private tableSubject: BehaviorSubject<Table | undefined>;
   private _table: Observable<Table | undefined>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private alertService: AlertService
+  ) {
     let query: Query = {columns: [], fromTable: "", groupByList: [], havingList: [], joins: [], orderByList: []}
     this.querySubject = new BehaviorSubject<Query>(query);
     this._query = this.querySubject.asObservable();
@@ -25,15 +28,23 @@ export class QueryService {
 
   updateQuery(query: Query): void {
     this.querySubject.next(query);
-    console.log(query)
+    console.log(query);
   }
 
-  sendQuery(): Observable<Table> {
-    return this.http.post<Table>(`${environment.queryUrl}`, this.querySubject.value)
+  sendQuery() {
+    return this.http.post<Table>(`${environment.queryUrl}`, this.querySubject.getValue())
       .pipe(map(table => {
         this.tableSubject.next(table);
         return table;
-      }));
+      }))
+      .subscribe({
+        next: table => {
+          this.tableSubject.next(table);
+        },
+        error: err => {
+          this.alertService.addAlert(err);
+        }
+      });
   }
 
   public get table(): Observable<Table | undefined> {

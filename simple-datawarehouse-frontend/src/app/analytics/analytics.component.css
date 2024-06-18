@@ -1,4 +1,6 @@
-.query-table-container {
+.wrapper {
   display: flex;
-  gap: 20px;
+  flex-direction: row;
+  width: 100%;
+  height: 600px;
 }

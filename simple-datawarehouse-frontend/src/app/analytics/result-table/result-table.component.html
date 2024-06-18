@@ -1,4 +1,4 @@
-<div class="table-container">
+<div class="wrapper">
   <p-table
     #dt
     *ngIf="table"
@@ -35,6 +35,7 @@
                   (click)="save(dt, {selectionOnly:false})"></p-button>
         <p-button pTooltip="Selection Only" tooltipPosition="bottom" icon="pi pi-filter"
                   (click)="save(dt, {selectionOnly:true})"></p-button>
+        <app-alert-list></app-alert-list>
       </div>
     </ng-template>
     <ng-template pTemplate="header" let-columns>

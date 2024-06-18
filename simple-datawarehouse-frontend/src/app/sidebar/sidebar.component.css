@@ -1,13 +1,7 @@
 .navbar {
   flex-direction: column;
-  width: fit-content;
   height: 100vh;
   padding: 1rem;
-}
-
-.dw-icon {
-  max-width: 100%;
-  height: auto;
 }
 
 .navbar-nav {
@@ -16,7 +10,7 @@
 
 .nav-item {
   padding-top: 2rem;
-  font-size: 1.2vw;
+  font-size: 1vw;
 }
 
 .nav-item.nav-link.active {
