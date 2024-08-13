@@ -2,11 +2,13 @@
   "/nifi": {
     "target": "http://localhost:4201",
     "secure": false,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "timeout": 5000
   },
   "/nifi-api": {
     "target": "http://localhost:4201",
     "secure": false,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "timeout": 5000
   }
 }
