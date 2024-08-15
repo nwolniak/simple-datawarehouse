@@ -36,4 +36,24 @@ export class QueryComponent implements OnInit {
     this.queryService.updateQuery(this.query)
   }
 
+  columnOptions(index: number): string[] {
+    let columnOptions: string[] = []
+    const nonAvailableColumnOptions = [
+      ...this.query.columns.slice(0, index),
+      ...this.query.columns.slice(index + 1)
+    ]
+    if (this.fromTable) {
+      this.fromTable.columnsMetadata
+        .map(columnMetadata => this.fromTable?.tableName + "." + columnMetadata.name)
+        .filter(column => !nonAvailableColumnOptions.map(column => column.name).includes(column))
+        .forEach(column => columnOptions.push(column))
+    }
+    this.joinedTables
+      .forEach(joinTable => joinTable.columnsMetadata
+        .map(columnMetadata => joinTable.tableName + "." + columnMetadata.name)
+        .filter(column => !nonAvailableColumnOptions.map(column => column.name).includes(column))
+        .forEach(columnOption => columnOptions.push(columnOption)))
+    return columnOptions
+  }
+
 }

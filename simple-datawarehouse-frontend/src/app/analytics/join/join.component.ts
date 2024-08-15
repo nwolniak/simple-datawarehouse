@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {DataViewModule} from "primeng/dataview";
 import {DialogModule} from "primeng/dialog";
@@ -8,11 +8,8 @@ import {ToolbarModule} from "primeng/toolbar";
 import {TooltipModule} from "primeng/tooltip";
 import {DropdownModule} from "primeng/dropdown";
 import {TableModule} from "primeng/table";
-import {Metadata, Query, TableMetadata} from "@app/_models";
-import {MetadataService, QueryService} from "@app/_services";
 import {PaginatorModule} from "primeng/paginator";
-import {TableSelectedService} from "@app/_services/table-selected.service";
-import {JoinedTablesService} from "@app/_services/joined-tables.service";
+import {QueryComponent} from "@app/analytics";
 
 @Component({
   selector: 'app-join',
@@ -34,33 +31,10 @@ import {JoinedTablesService} from "@app/_services/joined-tables.service";
   templateUrl: './join.component.html',
   styleUrl: './join.component.css'
 })
-export class JoinComponent implements OnInit {
+export class JoinComponent extends QueryComponent {
 
   joinTypes: string[] = ["INNER", "LEFT", "RIGHT", "FULL", "CROSS", "SELF"]
   operators: string[] = ["=", "<>", ">", ">=", "<", "<="]
-
-  metadata?: Metadata
-  query!: Query
-  fromTable?: TableMetadata
-  joinedTables!: TableMetadata[]
-
-  constructor(
-    private metadataService: MetadataService,
-    private queryService: QueryService,
-    private tableSelectedService: TableSelectedService,
-    private joinedTablesService: JoinedTablesService) {
-  }
-
-  ngOnInit(): void {
-    this.metadataService.metadata.subscribe(metadata => this.metadata = metadata)
-    this.queryService.query.subscribe(query => this.query = query)
-    this.tableSelectedService.table.subscribe(table => this.fromTable = table)
-    this.joinedTablesService.joinedTables.subscribe(joinedTables => this.joinedTables = joinedTables)
-  }
-
-  updateQuery() {
-    this.queryService.updateQuery(this.query)
-  }
 
   joinTableOptions(index: number): string[] {
     let columnOptions: string[] = []
