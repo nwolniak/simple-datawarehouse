@@ -1,16 +1,12 @@
 import {Component} from '@angular/core';
-import {DropdownModule} from "primeng/dropdown";
-import {PrimeTemplate} from "primeng/api";
+import {QueryComponent} from "@app/analytics/query/query.component";
 import {TableModule} from "primeng/table";
 import {PaginatorModule} from "primeng/paginator";
-import {QueryComponent} from "@app/analytics";
 
 @Component({
   selector: 'app-group-by',
   standalone: true,
   imports: [
-    DropdownModule,
-    PrimeTemplate,
     TableModule,
     PaginatorModule
   ],

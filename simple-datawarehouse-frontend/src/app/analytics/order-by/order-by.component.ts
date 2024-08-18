@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {TableModule} from "primeng/table";
 import {PaginatorModule} from "primeng/paginator";
 import {ToggleButtonModule} from "primeng/togglebutton";
-import {QueryComponent} from "@app/analytics";
+import {QueryComponent} from "@app/analytics/query/query.component";
 
 @Component({
   selector: 'app-order-by',

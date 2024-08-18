@@ -1,4 +1,7 @@
 import {Component} from '@angular/core';
+import {QueryComponent} from "@app/analytics/query/query.component";
+import {TableModule} from "primeng/table";
+import {PaginatorModule} from "primeng/paginator";
 import {Button, ButtonDirective} from "primeng/button";
 import {DataViewModule} from "primeng/dataview";
 import {DialogModule} from "primeng/dialog";
@@ -7,9 +10,6 @@ import {PrimeTemplate} from "primeng/api";
 import {ToolbarModule} from "primeng/toolbar";
 import {TooltipModule} from "primeng/tooltip";
 import {DropdownModule} from "primeng/dropdown";
-import {TableModule} from "primeng/table";
-import {PaginatorModule} from "primeng/paginator";
-import {QueryComponent} from "@app/analytics";
 
 @Component({
   selector: 'app-join',
@@ -35,6 +35,12 @@ export class JoinComponent extends QueryComponent {
 
   joinTypes: string[] = ["INNER", "LEFT", "RIGHT", "FULL", "CROSS", "SELF"]
   operators: string[] = ["=", "<>", ">", ">=", "<", "<="]
+
+  visible: boolean = false;
+
+  show() {
+    this.visible = true;
+  }
 
   joinTableOptions(index: number): string[] {
     let columnOptions: string[] = []

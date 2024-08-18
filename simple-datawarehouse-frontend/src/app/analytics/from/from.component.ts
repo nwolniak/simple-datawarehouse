@@ -1,15 +1,15 @@
 import {Component} from '@angular/core';
-import {DropdownModule} from "primeng/dropdown";
 import {TableMetadata} from "@app/_models";
-import {PaginatorModule} from "primeng/paginator";
 import {QueryComponent} from "@app/analytics/query/query.component";
+import {PaginatorModule} from "primeng/paginator";
+import {ToolbarModule} from "primeng/toolbar";
 
 @Component({
   selector: 'app-from',
   standalone: true,
   imports: [
-    DropdownModule,
-    PaginatorModule
+    PaginatorModule,
+    ToolbarModule
   ],
   templateUrl: './from.component.html',
   styleUrl: './from.component.css'

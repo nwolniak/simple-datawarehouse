@@ -1,1 +1,31 @@
-<p>join-simple works!</p>
+<p-table
+  [value]="query.joins"
+  (onRowReorder)="updateQuery()">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width:3rem"></th>
+      <th>Select Table</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-column let-index="rowIndex">
+    <tr [pReorderableRow]="index">
+      <td>
+        <span class="pi pi-bars" pReorderableRowHandle></span>
+      </td>
+      <td>
+        <p-dropdown
+          [options]="joinTableOptions(index)"
+          [(ngModel)]="query.joins[index].table"
+          (onChange)="joinedTableChange($event.value, index)"
+          appendTo="body"
+          placeholder="Join Table">
+        </p-dropdown>
+      </td>
+      <td>
+        <button (click)="deleteJoinTable(index)">Delete</button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<button [disabled]="buttonDisabled()" (click)="newJoinTable()">+</button>

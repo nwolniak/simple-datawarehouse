@@ -5,7 +5,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {PaginatorModule} from "primeng/paginator";
-import {QueryComponent} from "@app/analytics";
+import {QueryComponent} from "@app/analytics/query/query.component";
 
 @Component({
   selector: 'app-select',
