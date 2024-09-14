@@ -15,8 +15,6 @@ import {PaginatorModule} from "primeng/paginator";
 })
 export class SelectSimpleComponent extends QueryComponent {
 
-  aggregates: string[] = ["COUNT", "SUM", "AVG", "MAX", "MIN"]
-
   columnChange(column: string, index: number) {
     this.query.columns[index].name = column
     this.queryService.updateQuery(this.query)

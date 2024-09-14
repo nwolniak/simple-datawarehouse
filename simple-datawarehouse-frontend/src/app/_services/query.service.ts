@@ -27,8 +27,25 @@ export class QueryService {
   }
 
   updateQuery(query: Query): void {
-    this.querySubject.next(query);
-    console.log(query);
+    this.updateAggregates(query)
+    this.querySubject.next(query)
+    console.log(query)
+  }
+
+  private updateAggregates(query: Query): void {
+    const aggregates: string[] = []
+    query.columns
+      .filter(column => column.function !== "")
+      .map(column => column.function)
+      .forEach(aggregate => aggregates.push(aggregate))
+    if (aggregates.length == 0) {
+      query.groupByList = []
+      return
+    }
+    console.log(aggregates)
+    const aggregatedColumns: string[] = []
+    query.columns.forEach(column => aggregatedColumns.push(column.name))
+    query.groupByList = aggregatedColumns
   }
 
   sendQuery() {

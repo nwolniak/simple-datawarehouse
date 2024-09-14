@@ -13,6 +13,8 @@ import {JoinedTablesService} from "@app/_services/joined-tables.service";
 })
 export class QueryComponent implements OnInit {
 
+  aggregates: string[] = ["COUNT", "SUM", "AVG", "MAX", "MIN"]
+
   metadata?: Metadata
   query!: Query
   fromTable?: TableMetadata

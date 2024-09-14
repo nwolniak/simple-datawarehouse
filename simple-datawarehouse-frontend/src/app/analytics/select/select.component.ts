@@ -23,8 +23,6 @@ import {QueryComponent} from "@app/analytics/query/query.component";
 })
 export class SelectComponent extends QueryComponent {
 
-  aggregates: string[] = ["COUNT", "SUM", "AVG", "MAX", "MIN"]
-
   columnChange(column: string, index: number) {
     this.query.columns[index].name = column
     this.queryService.updateQuery(this.query)
