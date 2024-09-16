@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {SidebarComponent} from "@app/sidebar";
 import {RouterOutlet} from "@angular/router";
 import {TopnavComponent} from "@app/topnav";
+import {AnalyticsComponent} from "@app/analytics";
 
 @Component({
   selector: 'app-layout',
@@ -9,7 +10,8 @@ import {TopnavComponent} from "@app/topnav";
   imports: [
     SidebarComponent,
     RouterOutlet,
-    TopnavComponent
+    TopnavComponent,
+    AnalyticsComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'

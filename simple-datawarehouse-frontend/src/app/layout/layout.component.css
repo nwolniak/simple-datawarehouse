@@ -7,9 +7,15 @@
 
 .content-wrapper {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  width: 92vw;
+  height: 100vh;
+}
+
+app-topnav {
+  width: 92vw;
+  height: 10vh;
 }
 
 .sidebar {
