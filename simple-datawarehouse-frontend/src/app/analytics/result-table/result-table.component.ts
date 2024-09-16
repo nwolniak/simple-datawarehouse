@@ -12,6 +12,7 @@ import {PaginatorModule} from "primeng/paginator";
 import {DialogModule} from "primeng/dialog";
 import {AlertListComponent} from "@app/analytics/alert-list/alert-list.component";
 import _ from "lodash";
+import {QueryViewComponent} from "@app/analytics/query-view/query-view.component";
 
 @Component({
   selector: 'app-result-table',
@@ -26,7 +27,8 @@ import _ from "lodash";
     TooltipModule,
     PaginatorModule,
     DialogModule,
-    AlertListComponent
+    AlertListComponent,
+    QueryViewComponent
   ],
   templateUrl: './result-table.component.html',
   styleUrl: './result-table.component.css'
@@ -36,7 +38,7 @@ export class ResultTableComponent implements OnInit {
   table!: Table
   query!: Query
   tableQuery!: Query
-  loading: boolean = true
+  loading: boolean = false
 
   filtersMap: { [key: string]: string } = {
     gt: ">",
@@ -74,7 +76,6 @@ export class ResultTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFilterState();
-    this.loading = false;
   }
 
   saveFilterState(event: TableFilterEvent) {
@@ -103,7 +104,6 @@ export class ResultTableComponent implements OnInit {
   }
 
   reload(): void {
-    this.loading = true
     this.removeFilterState()
     this.tableQuery = _.cloneDeep(this.query)
     this.updateTableQuery()
@@ -119,7 +119,6 @@ export class ResultTableComponent implements OnInit {
   }
 
   columnOptionChange() {
-    this.loading = true
     this.removeFilterState()
     const columns = [...this.table.selectedColumns]
     if (JSON.stringify(this.tableQuery.columns) === JSON.stringify(columns)) {
@@ -130,7 +129,6 @@ export class ResultTableComponent implements OnInit {
   }
 
   columnOrderChange() {
-    this.loading = true
     this.removeFilterState()
     const columns = [...this.table.selectedColumns]
     if (JSON.stringify(this.tableQuery.columns) === JSON.stringify(columns)) {

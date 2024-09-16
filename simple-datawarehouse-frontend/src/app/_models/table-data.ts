@@ -7,6 +7,7 @@ export interface Table {
   columnOptions: Column[];
   selectedColumns: Column[];
   selectedRows: TableRow[];
+  query: string;
 }
 
 export type TableRow = Record<string, any>

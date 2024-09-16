@@ -49,7 +49,8 @@ export class QueryService {
       rows: [{'not selected': ""}],
       columnOptions: [],
       selectedColumns: [],
-      selectedRows: []
+      selectedRows: [],
+      query: ""
     }
     this.tableSubject = new BehaviorSubject<Table>(table);
     this._table = this.tableSubject.asObservable();

@@ -25,6 +25,7 @@
       <div class="flex">
         <p-button label="Reload" [outlined]="true" icon="pi pi-refresh" (click)="reload()"/>
         <p-button label="Clear" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(dt)"/>
+        <app-query-view></app-query-view>
         <p-multiSelect
           display="chip"
           [options]="table.columnOptions"

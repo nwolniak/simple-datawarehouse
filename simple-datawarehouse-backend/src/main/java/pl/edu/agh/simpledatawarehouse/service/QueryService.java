@@ -28,6 +28,7 @@ public class QueryService {
         log.info(sql);
         List<Map<String, Object>> tableRows = dataRepository.execute(sql);
         TableDto tableDto = new TableDto();
+        tableDto.setQuery(sql);
         if (tableRows.isEmpty()) {
             tableDto.setColumns(query.columns()
                                      .stream()

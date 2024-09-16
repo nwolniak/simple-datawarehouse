@@ -1,6 +1,10 @@
-<p-button pTooltip="Alerts" tooltipPosition="bottom" icon="pi pi-exclamation-circle" [severity]="severity()"
-          [badge]="badge()"
-          (click)="showAlerts()" class="alert-button">
+<p-button
+  label="Alerts"
+  [outlined]="true"
+  icon="pi pi-exclamation-circle"
+  [severity]="severity()"
+  [badge]="badge()"
+  (click)="showAlerts()">
 </p-button>
 <p-dialog [modal]="true" [(visible)]="alertsVisible" [style]="{ width: '50rem' }">
   <ng-template pTemplate="header">
