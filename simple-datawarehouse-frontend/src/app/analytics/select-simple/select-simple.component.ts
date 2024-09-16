@@ -17,11 +17,13 @@ export class SelectSimpleComponent extends QueryComponent {
 
   columnChange(column: string, index: number) {
     this.query.columns[index].name = column
+    this.query.columns[index].alias = column.replace(".", "_")
     this.queryService.updateQuery(this.query)
   }
 
   aggregateChange(aggregate: string, index: number) {
     this.query.columns[index].function = aggregate
+    this.query.columns[index].alias = this.query.columns[index].name.replace(".", "_") + "_" + aggregate.toLowerCase()
     this.queryService.updateQuery(this.query)
   }
 

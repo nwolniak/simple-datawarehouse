@@ -7,8 +7,9 @@ public record Query(
         String fromTable,
         List<Join> joins,
         List<String> groupByList,
-        List<Condition> havingList,
-        List<OrderBy> orderByList
+        List<Having> havingList,
+        List<OrderBy> orderByList,
+        List<Where> whereList
 ) {
 }
 

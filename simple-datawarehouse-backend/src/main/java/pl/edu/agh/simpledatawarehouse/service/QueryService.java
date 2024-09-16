@@ -8,10 +8,7 @@ import pl.edu.agh.simpledatawarehouse.dao.DataRepository;
 import pl.edu.agh.simpledatawarehouse.mappers.QueryMapper;
 import pl.edu.agh.simpledatawarehouse.model.dto.QueryDto;
 import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
-import pl.edu.agh.simpledatawarehouse.model.query.Column;
-import pl.edu.agh.simpledatawarehouse.model.query.Join;
-import pl.edu.agh.simpledatawarehouse.model.query.OrderBy;
-import pl.edu.agh.simpledatawarehouse.model.query.Query;
+import pl.edu.agh.simpledatawarehouse.model.query.*;
 
 import java.util.List;
 import java.util.Map;
@@ -30,13 +27,24 @@ public class QueryService {
         String sql = queryToSql(query);
         log.info(sql);
         List<Map<String, Object>> tableRows = dataRepository.execute(sql);
-        List<String> columns = tableRows.getFirst()
-                                        .keySet()
-                                        .stream()
-                                        .toList();
         TableDto tableDto = new TableDto();
-        tableDto.setColumns(columns);
-        tableDto.setRows(tableRows);
+        if (tableRows.isEmpty()) {
+            tableDto.setColumns(query.columns()
+                                     .stream()
+                                     .map(Column::alias)
+                                     .toList());
+            tableDto.setRows(List.of(query.columns()
+                                          .stream()
+                                          .map(Column::alias)
+                                          .collect(Collectors.toMap(col -> col, col -> ""))));
+        } else {
+            List<String> columns = tableRows.getFirst()
+                                            .keySet()
+                                            .stream()
+                                            .toList();
+            tableDto.setColumns(columns);
+            tableDto.setRows(tableRows);
+        }
         return tableDto;
     }
 
@@ -46,6 +54,8 @@ public class QueryService {
         var joins = extractJoinStatements(query);
         var groupBy = String.join(", ", query.groupByList());
         var orderBy = extractOrderByStatements(query);
+        var where = extractWhereStatements(query);
+        var having = extractHavingStatements(query);
 
         var sql = new StringBuilder().append(STR."SELECT \{columns}\n")
                                      .append(STR."FROM \{from}\n");
@@ -53,13 +63,33 @@ public class QueryService {
         if (!joins.isBlank()) {
             sql.append(STR."\{joins}\n");
         }
+        if (!where.isBlank()) {
+            sql.append(STR."WHERE \{where}\n");
+        }
         if (!groupBy.isBlank()) {
             sql.append(STR."GROUP BY \{groupBy}\n");
+        }
+        if (!having.isBlank()) {
+            sql.append(STR."HAVING \{having}\n");
         }
         if (!orderBy.isBlank()) {
             sql.append(STR."ORDER BY \{orderBy}");
         }
         return sql.toString();
+    }
+
+    private String extractWhereStatements(Query query) {
+        return query.whereList()
+                    .stream()
+                    .map(Where::toString)
+                    .collect(Collectors.joining(" AND "));
+    }
+
+    private String extractHavingStatements(Query query) {
+        return query.havingList()
+                    .stream()
+                    .map(Having::toString)
+                    .collect(Collectors.joining(" AND "));
     }
 
     private String extractSelectedColumns(Query query) {

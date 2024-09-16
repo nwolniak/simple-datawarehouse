@@ -12,24 +12,57 @@ export class QueryService {
 
   private querySubject: BehaviorSubject<Query>;
   private _query: Observable<Query>;
-  private tableSubject: BehaviorSubject<Table | undefined>;
-  private _table: Observable<Table | undefined>;
+  private tableQuerySubject: BehaviorSubject<Query>;
+  private _tableQuery: Observable<Query>;
+  private tableSubject: BehaviorSubject<Table>;
+  private _table: Observable<Table>;
 
   constructor(
     private http: HttpClient,
     private alertService: AlertService
   ) {
-    let query: Query = {columns: [], fromTable: "", groupByList: [], havingList: [], joins: [], orderByList: []}
+    let query: Query = {
+      columns: [],
+      fromTable: "",
+      groupByList: [],
+      havingList: [],
+      joins: [],
+      orderByList: [],
+      whereList: []
+    }
     this.querySubject = new BehaviorSubject<Query>(query);
     this._query = this.querySubject.asObservable();
-    this.tableSubject = new BehaviorSubject<Table | undefined>(undefined);
+    let tableQuery: Query = {
+      columns: [],
+      fromTable: "",
+      groupByList: [],
+      havingList: [],
+      joins: [],
+      orderByList: [],
+      whereList: []
+    }
+    this.tableQuerySubject = new BehaviorSubject<Query>(tableQuery);
+    this._tableQuery = this.tableQuerySubject.asObservable();
+    let table: Table = {
+      tableName: "",
+      columns: [],
+      rows: [{'not selected': ""}],
+      columnOptions: [],
+      selectedColumns: [],
+      selectedRows: []
+    }
+    this.tableSubject = new BehaviorSubject<Table>(table);
     this._table = this.tableSubject.asObservable();
   }
 
   updateQuery(query: Query): void {
     this.updateAggregates(query)
     this.querySubject.next(query)
-    console.log(query)
+  }
+
+  updateTableQuery(query: Query): void {
+    this.updateAggregates(query)
+    this.tableQuerySubject.next(query)
   }
 
   private updateAggregates(query: Query): void {
@@ -50,10 +83,6 @@ export class QueryService {
 
   sendQuery() {
     return this.http.post<Table>(`${environment.queryUrl}`, this.querySubject.getValue())
-      .pipe(map(table => {
-        this.tableSubject.next(table);
-        return table;
-      }))
       .subscribe({
         next: table => {
           this.tableSubject.next(table);
@@ -64,12 +93,28 @@ export class QueryService {
       });
   }
 
-  public get table(): Observable<Table | undefined> {
+  sendTableQuery() {
+    return this.http.post<Table>(`${environment.queryUrl}`, this.tableQuerySubject.getValue())
+      .subscribe({
+        next: table => {
+          this.tableSubject.next(table);
+        },
+        error: err => {
+          this.alertService.addAlert(err);
+        }
+      });
+  }
+
+  public get table(): Observable<Table> {
     return this._table;
   }
 
   public get query(): Observable<Query> {
     return this._query;
+  }
+
+  public get tableQuery(): Observable<Query> {
+    return this._tableQuery;
   }
 
 }

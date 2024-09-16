@@ -3,8 +3,9 @@ export interface Query {
   fromTable: string;
   joins: Join[];
   groupByList: string[];
-  havingList: Condition[];
+  havingList: Having[];
   orderByList: OrderBy[];
+  whereList: Where[];
 }
 
 export interface Column {
@@ -28,4 +29,16 @@ export interface Condition {
 export interface OrderBy {
   columnName: string;
   ascending: boolean;
+}
+
+export interface Where {
+  columnName: string
+  operator: string
+  value: string
+}
+
+export interface Having {
+  columnName: string
+  operator: string
+  value: string
 }

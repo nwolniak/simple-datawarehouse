@@ -17,6 +17,7 @@ public interface QueryMapper {
     @Mapping(target = "groupByList", source = "groupByList")
     @Mapping(target = "havingList", source = "havingList")
     @Mapping(target = "orderByList", source = "orderByList")
+    @Mapping(target = "whereList", source = "whereList")
     Query toQuery(QueryDto queryDto);
 
 }

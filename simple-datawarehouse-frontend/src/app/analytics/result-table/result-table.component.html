@@ -12,6 +12,9 @@
     [(selection)]="table.selectedRows"
     [columns]="table.selectedColumns"
     [reorderableColumns]="true"
+    (onColReorder)="columnOrderChange()"
+    (onFilter)="onColumnFilter($event)"
+    [filters]="savedFilters"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [loading]="loading"
@@ -25,8 +28,9 @@
         <p-multiSelect
           display="chip"
           [options]="table.columnOptions"
-          optionLabel="field"
+          optionLabel="alias"
           [(ngModel)]="table.selectedColumns"
+          (onChange)="columnOptionChange()"
           selectedItemsLabel="{0} columns selected"
           [style]="{'min-width': '200px'}"
           placeholder="Choose Columns">
@@ -42,8 +46,15 @@
       <tr>
         <th pReorderableColumn *ngFor="let col of columns">
           <div class="flex align-items-center">
-            {{ col.field }}
-            <p-columnFilter type="text" field="{{col.field}}" display="menu"/>
+            {{ col.alias }}
+            <p-columnFilter
+              display="menu"
+              [type]="columnType(col.alias)"
+              field="{{col.alias}}"
+              [showOperator]="false"
+              [showMatchModes]="true"
+              [showAddButton]="false"
+            />
           </div>
         </th>
       </tr>
@@ -51,7 +62,7 @@
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr [pSelectableRow]="rowData" [pContextMenuRow]="rowData">
         <td *ngFor="let col of columns">
-          {{ rowData[col.field] }}
+          {{ rowData[col.alias] }}
         </td>
       </tr>
     </ng-template>
