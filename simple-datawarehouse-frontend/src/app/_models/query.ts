@@ -32,13 +32,13 @@ export interface OrderBy {
 }
 
 export interface Where {
-  columnName: string
-  operator: string
-  value: string
+  columnName: string;
+  operator: string;
+  value: string;
 }
 
 export interface Having {
-  columnName: string
-  operator: string
-  value: string
+  columnName: string;
+  operator: string;
+  value: string;
 }

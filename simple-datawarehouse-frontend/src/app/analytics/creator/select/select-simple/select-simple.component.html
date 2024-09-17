@@ -1,0 +1,46 @@
+<div class="wrapper">
+  <p-table
+    (onRowReorder)="updateQuery()"
+    [style]="{'table-layout': 'fixed', 'width': '100%'}"
+    [value]="query.columns">>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:2vw"></th>
+        <th style="width: 1fr;">Column</th>
+        <th style="width: 1fr;">Aggregate</th>
+        <th style="width: 1fr;">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template let-index="rowIndex" pTemplate="body">
+      <tr [pReorderableRow]="index">
+        <td style="width: 2vw;">
+          <span class="pi pi-bars" pReorderableRowHandle></span>
+        </td>
+        <td style="width: 10vw;">
+          <p-dropdown
+            (onChange)="columnChange($event.value, index)"
+            [(ngModel)]="query.columns[index].name"
+            [options]="columnOptions(index)"
+            [style]="{'minWidth':'100%'}"
+            appendTo="body"
+            placeholder="Column">
+          </p-dropdown>
+        </td>
+        <td style="width: 10vw;">
+          <p-dropdown
+            (onChange)="aggregateChange($event.value, index)"
+            [(ngModel)]="query.columns[index].function"
+            [options]="aggregates"
+            [style]="{'minWidth':'100%'}"
+            appendTo="body"
+            placeholder="">
+          </p-dropdown>
+        </td>
+        <td style="width: 5vw;">
+          <button (click)="deleteColumn(index)">Delete</button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button (click)="newColumn()" [disabled]="buttonDisabled()" class="add-button">+</button>
+</div>

@@ -1,18 +1,21 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AlertService {
-
   private alertsSubject: BehaviorSubject<HttpErrorResponse[]>;
-  private _alerts: Observable<HttpErrorResponse[]>;
+  private readonly _alerts: Observable<HttpErrorResponse[]>;
 
   constructor() {
     this.alertsSubject = new BehaviorSubject<HttpErrorResponse[]>([]);
     this._alerts = this.alertsSubject.asObservable();
+  }
+
+  public get alert(): Observable<HttpErrorResponse[]> {
+    return this._alerts;
   }
 
   addAlert(alert: HttpErrorResponse) {
@@ -29,9 +32,4 @@ export class AlertService {
   clear() {
     this.alertsSubject.next([]);
   }
-
-  public get alert(): Observable<HttpErrorResponse[]> {
-    return this._alerts;
-  }
-
 }

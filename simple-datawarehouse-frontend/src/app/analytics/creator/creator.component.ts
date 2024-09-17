@@ -1,13 +1,10 @@
-import {Component} from '@angular/core';
-import {FromComponent} from "@app/analytics/from/from.component";
-import {JoinComponent} from "@app/analytics/join/join.component";
-import {SelectComponent} from "@app/analytics/select/select.component";
-import {GroupByComponent} from "@app/analytics/group-by/group-by.component";
-import {OrderByComponent} from "@app/analytics/order-by/order-by.component";
-import {ScrollPanelModule} from "primeng/scrollpanel";
-import {JoinSimpleComponent} from "@app/analytics/join-simple/join-simple.component";
-import {SelectTabComponent} from "@app/analytics/select-tab/select-tab.component";
-import {SelectSimpleComponent} from "@app/analytics/select-simple/select-simple.component";
+import { Component } from '@angular/core';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { FromComponent } from '@app/analytics/creator/from/from.component';
+import { JoinAdvancedComponent } from '@app/analytics/creator/join/join-advanced/join-advanced.component';
+import { JoinSimpleComponent } from '@app/analytics/creator/join/join-simple/join-simple.component';
+import { SelectTabComponent } from '@app/analytics/creator/select/select-tab/select-tab.component';
+import { SelectSimpleComponent } from '@app/analytics/creator/select/select-simple/select-simple.component';
 
 @Component({
   selector: 'app-creator',
@@ -16,16 +13,11 @@ import {SelectSimpleComponent} from "@app/analytics/select-simple/select-simple.
   imports: [
     ScrollPanelModule,
     FromComponent,
-    JoinComponent,
-    SelectComponent,
-    GroupByComponent,
-    OrderByComponent,
-    ScrollPanelModule,
+    JoinAdvancedComponent,
     JoinSimpleComponent,
     SelectTabComponent,
-    SelectSimpleComponent
+    SelectSimpleComponent,
   ],
-  styleUrl: './creator.component.css'
+  styleUrl: './creator.component.css',
 })
-export class CreatorComponent {
-}
+export class CreatorComponent {}

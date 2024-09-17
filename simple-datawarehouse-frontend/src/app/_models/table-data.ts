@@ -1,4 +1,4 @@
-import {Column} from "@app/_models/query";
+import { Column } from '@app/_models/query';
 
 export interface Table {
   tableName: string;
@@ -10,4 +10,4 @@ export interface Table {
   query: string;
 }
 
-export type TableRow = Record<string, any>
+export type TableRow = Record<string, any>;

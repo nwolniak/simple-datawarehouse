@@ -6,6 +6,6 @@ export class ConnectionParameters {
     public port: string,
     public database: string,
     public username: string,
-    public password: string) {
-  }
+    public password: string,
+  ) {}
 }

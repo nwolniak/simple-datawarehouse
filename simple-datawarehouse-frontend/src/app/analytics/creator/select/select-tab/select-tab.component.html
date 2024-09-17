@@ -1,0 +1,18 @@
+<p-toolbar (click)="show()" pTooltip="Select Window" tooltipPosition="bottom">
+  <h5>Select</h5>
+</p-toolbar>
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '70rem' }">
+  <ng-template pTemplate="header">
+    <p-tabView>
+      <p-tabPanel header="Select">
+        <app-select></app-select>
+      </p-tabPanel>
+      <p-tabPanel header="Group By">
+        <app-group-by></app-group-by>
+      </p-tabPanel>
+      <p-tabPanel header="Order By">
+        <app-order-by></app-order-by>
+      </p-tabPanel>
+    </p-tabView>
+  </ng-template>
+</p-dialog>
