@@ -1,13 +1,30 @@
-.query {
+.wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  width: 34vw;
+  height: 90vh;
+}
+
+p-scrollPanell {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  gap: 20px;
+  width: 32vw;
+}
+
+.query {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 34vw;
+  height: 90vh;
 }
 
 .selection {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 34vw;
   border: 1px solid #ccc;
-  padding: 20px;
+  padding: 5px;
   border-radius: 5px;
 }
