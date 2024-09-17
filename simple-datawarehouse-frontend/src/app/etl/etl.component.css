@@ -1,5 +1,6 @@
 .wrapper {
   display: flex;
-  width: 100%;
-  height: 615px;
+  flex: 1 1 auto;
+  width: 92vw;
+  height: 90vh;
 }

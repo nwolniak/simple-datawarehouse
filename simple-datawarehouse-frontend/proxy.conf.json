@@ -2,13 +2,25 @@
   "/nifi": {
     "target": "http://localhost:4201",
     "secure": false,
-    "changeOrigin": true,
+    "changeOrigin": false,
     "timeout": 5000
   },
   "/nifi-api": {
     "target": "http://localhost:4201",
     "secure": false,
-    "changeOrigin": true,
+    "changeOrigin": false,
+    "timeout": 5000
+  },
+  "/nifi-api/processors": {
+    "target": "http://localhost:4201",
+    "secure": false,
+    "changeOrigin": false,
+    "timeout": 5000
+  },
+  "/nifi-api/process-groups": {
+    "target": "http://localhost:4201",
+    "secure": false,
+    "changeOrigin": false,
     "timeout": 5000
   }
 }
