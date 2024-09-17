@@ -115,7 +115,9 @@ export class ResultTableComponent implements OnInit {
   }
 
   save(dt: PrimeNGTable, options: ExportCSVOptions): void {
+    dt.columns = this.table.selectedColumns.map(col => ({field: col.alias, header: col.alias}))
     dt.exportCSV(options)
+    dt.columns = this.table.selectedColumns
   }
 
   columnOptionChange() {
