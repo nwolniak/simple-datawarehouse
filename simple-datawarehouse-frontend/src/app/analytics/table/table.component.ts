@@ -11,7 +11,7 @@ import { Table as PrimeNGTable } from 'primeng/table/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { DialogModule } from 'primeng/dialog';
 import { AlertListComponent } from '@app/analytics/table/alert-list/alert-list.component';
-import _ from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { QueryComponent } from '@app/analytics/table/query/query.component';
 
 @Component({
@@ -104,7 +104,7 @@ export class TableComponent implements OnInit {
 
   reload(): void {
     this.removeFilterState();
-    this.tableQuery = _.cloneDeep(this.query);
+    this.tableQuery = cloneDeep(this.query);
     this.updateTableQuery();
   }
 
