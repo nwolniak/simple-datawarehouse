@@ -16,4 +16,4 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=base /simple-datawarehouse-frontend/dist/simple-datawarehouse-frontend/browser /usr/share/nginx/html
+COPY --from=base /simple-datawarehouse-frontend/dist/simple-datawarehouse-frontend/browser /simple-datawarehouse-frontend

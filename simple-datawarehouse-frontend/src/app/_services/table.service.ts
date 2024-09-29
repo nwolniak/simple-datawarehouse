@@ -21,6 +21,7 @@ export class TableService {
   }
 
   getTable(name: string): Observable<Table> {
+    console.log(environment.production)
     return this.http.get<Table>(`${environment.tablesUrl}/${name}`).pipe(
       map((table) => {
         this.tableSubject.next(table);
