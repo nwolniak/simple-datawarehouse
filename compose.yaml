@@ -31,7 +31,8 @@ services:
       - NIFI_WEB_HTTP_PORT=8080
     volumes:
       - ./nifi/drivers:/opt/nifi/nifi-current/drivers
-      - ./nifi/scripts:/opt/nifi/scripts
+      - ./nifi/scripts/common.sh:/opt/nifi/scripts/common.sh
+      - ./nifi/scripts/start.sh:/opt/nifi/scripts/start.sh
     networks:
       - reverse-proxy
       - databases
