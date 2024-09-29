@@ -1,15 +1,23 @@
 .wrapper {
   display: flex;
+  flex-direction: row;
+  width: 100vw;
   height: 100vh;
 }
 
+.content-wrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  width: 92vw;
+  height: 100vh;
+}
+
+app-topnav {
+  width: 92vw;
+  height: 10vh;
+}
+
 .sidebar {
-  flex: 0 0 13vw;
+  display: flex;
 }
-
-.content {
-  flex: 1 1 auto;
-  background-color: lightblue;
-}
-
-

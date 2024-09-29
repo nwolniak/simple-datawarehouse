@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  flex-grow: 1;
+}
+
+mat-paginator {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: grey;
+  color: white;
+  border: solid dimgrey;
+  display: flex;
+  justify-content: center;
+}
+
+[class*="mat-mdc-header"] {
+  background-color: #353434;
+}
+
+[class*="mat-column"] {
+  background-color: grey;
+  color: white;
+  border: solid dimgrey;
+  font-size: 12px;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}

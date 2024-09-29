@@ -1,0 +1,11 @@
+<p-toolbar>
+  <h5>From</h5>
+</p-toolbar>
+<p-dropdown
+  (onChange)="fromTableChange($event.value)"
+  [(ngModel)]="fromTable"
+  [disabled]="!metadata"
+  [options]="metadata?.factTables"
+  optionLabel="tableName"
+  placeholder="Select Table">
+</p-dropdown>

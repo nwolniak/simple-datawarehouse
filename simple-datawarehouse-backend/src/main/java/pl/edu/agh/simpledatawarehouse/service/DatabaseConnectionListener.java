@@ -7,9 +7,9 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
-import pl.edu.agh.simpledatawarehouse.exception.DatabaseConnectionException;
+import pl.edu.agh.simpledatawarehouse.exceptions.DatabaseConnectionException;
 import pl.edu.agh.simpledatawarehouse.model.dto.ConnectionParametersDto;
-import pl.edu.agh.simpledatawarehouse.model.event.DatabaseConnectionEvent;
+import pl.edu.agh.simpledatawarehouse.events.DatabaseConnectionEvent;
 
 import java.sql.SQLException;
 

@@ -1,1 +1,1 @@
-export * from "./etl.component"
+export * from './etl.component';

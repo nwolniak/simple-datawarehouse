@@ -34,11 +34,3 @@ build/
 
 ### nx ###
 .nx/
-
-### nifi ###
-/nifi/content_repository
-/nifi/database_repository
-/nifi/flowfile_repository
-/nifi/logs
-/nifi/provenance_repository
-/nifi/state
