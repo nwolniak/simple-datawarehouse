@@ -20,6 +20,9 @@ services:
       - "80:80"
     networks:
       - reverse-proxy
+    depends_on:
+      - backend
+      - nifi
 
   nifi:
     image: apache/nifi:2.0.0-M2
@@ -37,72 +40,72 @@ services:
       - reverse-proxy
       - databases
 
-  postgres:
+  postgres_dw:
     image: postgres:16-alpine
-    container_name: postgres
+    container_name: postgres_dw
     environment:
-      - POSTGRES_DB=simple_datawarehouse
+      - POSTGRES_DB=postgres_dw
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_dw_data:/var/lib/postgresql/data
     networks:
       - databases
 
-  mysql:
-    image: mysql:latest
-    container_name: mysql
+  mysql_dw:
+    image: mysql:8.4.2
+    container_name: mysql_dw
     environment:
-      - MYSQL_DATABASE=simple_datawarehouse
+      - MYSQL_DATABASE=mysql_dw
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_dw_data:/var/lib/mysql
     networks:
       - databases
 
-  ds_postgresql:
+  postgres_ds:
     image: postgres:16-alpine
-    container_name: ds_postgresql
+    container_name: postgres_ds
     environment:
-      - POSTGRES_DB=database
+      - POSTGRES_DB=postgres_ds
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
     ports:
       - "5433:5432"
     volumes:
-      - ds_postgresql_data:/var/lib/postgresql/data
+      - postgres_ds_data:/var/lib/postgresql/data
     networks:
       - databases
 
-  ds_mysql:
-    image: mysql:latest
-    container_name: ds_mysql
+  mysql_ds:
+    image: mysql:8.4.2
+    container_name: mysql_ds
     environment:
-      - MYSQL_DATABASE=database
+      - MYSQL_DATABASE=mysql_ds
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
     ports:
       - "3307:3306"
     volumes:
-      - ds_mysql_data:/var/lib/mysql
+      - mysql_ds_data:/var/lib/mysql
     networks:
       - databases
 
 volumes:
-  postgres_data:
+  postgres_dw_data:
     driver: local
-  mysql_data:
+  postgres_ds_data:
     driver: local
-  ds_postgresql_data:
+  mysql_dw_data:
     driver: local
-  ds_mysql_data:
+  mysql_ds_data:
     driver: local
 
 networks:
