@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS products
 (
     product_id   serial PRIMARY KEY,
     product_name varchar(40)   NOT NULL,
-    price        numeric(7, 2) NOT NULL
+    price        numeric(7, 2) NOT NULL,
+    CONSTRAINT unique_product UNIQUE (product_name, price)
 );
 
 CREATE TABLE IF NOT EXISTS customers
@@ -21,7 +22,8 @@ CREATE TABLE IF NOT EXISTS customers
     date_of_birth date,
     city          varchar(40) NOT NULL,
     street        varchar(40) NOT NULL,
-    zip           varchar(6)  NOT NULL
+    zip           varchar(6)  NOT NULL,
+    CONSTRAINT unique_customer UNIQUE (email)
 );
 
 CREATE TABLE IF NOT EXISTS addresses
@@ -30,7 +32,8 @@ CREATE TABLE IF NOT EXISTS addresses
     country    varchar(40) NOT NULL,
     city       varchar(40) NOT NULL,
     street     varchar(40) NOT NULL,
-    zip        char(6)     NOT NULL
+    zip        char(6)     NOT NULL,
+    CONSTRAINT unique_address UNIQUE (country, city, street, zip)
 );
 
 CREATE TABLE IF NOT EXISTS orders

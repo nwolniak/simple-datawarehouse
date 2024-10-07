@@ -9,7 +9,7 @@ services:
     networks:
       - reverse-proxy
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host:host-gateway"
 
   frontend:
     build:
@@ -39,6 +39,8 @@ services:
     networks:
       - reverse-proxy
       - databases
+    extra_hosts:
+      - "host:host-gateway"
 
   postgres_dw:
     image: postgres:16-alpine
