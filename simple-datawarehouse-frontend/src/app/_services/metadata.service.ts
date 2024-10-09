@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { ConnectionParameters, Metadata } from '@app/_models';
+import { Metadata } from '@app/_models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,15 +18,6 @@ export class MetadataService {
 
   public get metadata(): Observable<Metadata | undefined> {
     return this._metadata;
-  }
-
-  connectToDatabase(
-    connectionParameters: ConnectionParameters,
-  ): Observable<any> {
-    return this.http.post(
-      `${environment.dbConnectionUrl}`,
-      connectionParameters,
-    );
   }
 
   getDatawarehouseMetadata(): Observable<Metadata> {

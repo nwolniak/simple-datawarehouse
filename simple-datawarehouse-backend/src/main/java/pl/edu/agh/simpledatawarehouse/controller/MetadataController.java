@@ -1,13 +1,11 @@
 package pl.edu.agh.simpledatawarehouse.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import pl.edu.agh.simpledatawarehouse.model.dto.ConnectionParametersDto;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.simpledatawarehouse.model.dto.MetadataDto;
-import pl.edu.agh.simpledatawarehouse.events.DatabaseConnectionEvent;
 import pl.edu.agh.simpledatawarehouse.service.MetadataService;
 
 @RestController
@@ -17,15 +15,6 @@ import pl.edu.agh.simpledatawarehouse.service.MetadataService;
 public class MetadataController {
 
     private final MetadataService metadataService;
-    private final ApplicationEventPublisher applicationEventPublisher;
-
-    @PostMapping("connect")
-    public ResponseEntity<String> connectToDatabase(@RequestBody ConnectionParametersDto connectionParametersDto) {
-        var databaseConnectionEvent = new DatabaseConnectionEvent(connectionParametersDto);
-        applicationEventPublisher.publishEvent(databaseConnectionEvent);
-        return ResponseEntity.status(HttpStatus.OK)
-                             .build();
-    }
 
     @GetMapping("metadata")
     public MetadataDto getMetadata() {

@@ -9,10 +9,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class DatawarehouseChecker {
+public class DatawarehouseMetadataExtractor implements MetadataExtractor {
 
-    private final static Set<String> ADDITIVE_TYPES = Set.of("numeric");
+    private final static Set<String> ADDITIVE_TYPES = Set.of("numeric", "int2", "int4", "int8");
 
+    @Override
     public List<TableMetadata> extractFactTables(List<TableMetadata> tablesMetadata) {
         return tablesMetadata
                        .stream()
@@ -20,6 +21,7 @@ public class DatawarehouseChecker {
                        .toList();
     }
 
+    @Override
     public Map<String, List<TableMetadata>> extractDimTables(List<TableMetadata> tablesMetadata, List<TableMetadata> factTables) {
         return factTables.stream()
                          .collect(Collectors.toMap(TableMetadata::tableName,
@@ -27,7 +29,7 @@ public class DatawarehouseChecker {
                          ));
     }
 
-    public List<TableMetadata> extractDimTable(List<TableMetadata> tablesMetadata, TableMetadata factTable) {
+    private List<TableMetadata> extractDimTable(List<TableMetadata> tablesMetadata, TableMetadata factTable) {
         return tablesMetadata
                        .stream()
                        .filter(tableMetadata -> isDimTable(tableMetadata, factTable))

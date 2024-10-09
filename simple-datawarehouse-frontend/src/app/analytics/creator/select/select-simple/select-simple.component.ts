@@ -32,7 +32,7 @@ export class SelectSimpleComponent extends BaseCreatorComponent {
   }
 
   newColumn() {
-    this.query.columns.push({ name: '', alias: '', function: '' });
+    this.query.columns.push({ name: '', alias: '', function: 'None' });
     this.queryService.updateQuery(this.query);
   }
 

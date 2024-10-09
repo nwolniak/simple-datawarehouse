@@ -56,10 +56,7 @@ public class WebSecurityConfig {
         configuration.setAllowCredentials(true);
         configuration.setAllowedMethods(List.of(
                 HttpMethod.GET.name(),
-                HttpMethod.POST.name(),
-                HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name(),
-                HttpMethod.PATCH.name()
+                HttpMethod.POST.name()
         ));
         configuration.setAllowedHeaders(List.of(
                 HttpHeaders.AUTHORIZATION,

@@ -1,35 +1,42 @@
-<h2 mat-dialog-title>New Data Source</h2>
+<h2 mat-dialog-title>Data Source</h2>
 <mat-dialog-content>
-  <mat-form-field>
-    <mat-label>Driver Class Name</mat-label>
-    <input matInput type="text" placeholder="Driver Class Name" [(ngModel)]="driverClassName" required>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Driver</mat-label>
-    <input matInput type="text" placeholder="Driver" [(ngModel)]="driver" required>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Host</mat-label>
-    <input matInput type="text" placeholder="Host" [(ngModel)]="host" required>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Port</mat-label>
-    <input matInput type="number" placeholder="Port" [(ngModel)]="port" required>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Database</mat-label>
-    <input matInput type="text" placeholder="Database" [(ngModel)]="database" required>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Username</mat-label>
-    <input matInput type="text" placeholder="User" [(ngModel)]="username" required>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Password</mat-label>
-    <input matInput type="password" placeholder="Password" [(ngModel)]="password" required>
-  </mat-form-field>
+  <form [formGroup]="parametersForm">
+    <mat-form-field>
+      <mat-label>Driver Class Name</mat-label>
+      <input matInput type="text" placeholder="Driver Class Name" formControlName="driverClassName">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Driver</mat-label>
+      <input matInput type="text" placeholder="Driver" formControlName="driver">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Host</mat-label>
+      <input matInput type="text" placeholder="Host" formControlName="host" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Port</mat-label>
+      <input matInput type="number" placeholder="Port" formControlName="port" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Database</mat-label>
+      <input matInput type="text" placeholder="Database" formControlName="database" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput type="text" placeholder="User" formControlName="username" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput type="password" placeholder="Password" formControlName="password" required>
+    </mat-form-field>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button color="primary" (click)="createDataSource()">Create</button>
+  <button mat-button
+          [disabled]="createButtonDisabled || createButtonLoading"
+          [color]="createButtonColor"
+          (click)="createDataSource()">
+    Create
+  </button>
 </mat-dialog-actions>

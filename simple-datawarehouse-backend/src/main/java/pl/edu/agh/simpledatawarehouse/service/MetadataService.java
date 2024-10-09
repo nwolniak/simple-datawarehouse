@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 import pl.edu.agh.simpledatawarehouse.dao.MetaDataRepository;
 import pl.edu.agh.simpledatawarehouse.model.dto.MetadataDto;
 import pl.edu.agh.simpledatawarehouse.model.metadata.Metadata;
-import pl.edu.agh.simpledatawarehouse.support.DatawarehouseChecker;
+import pl.edu.agh.simpledatawarehouse.support.MetadataExtractor;
 
 @Service
 @RequiredArgsConstructor
 public class MetadataService {
 
-    private final DatawarehouseChecker datawarehouseChecker;
+    private final MetadataExtractor metadataExtractor;
 
     @Lazy
     private final MetaDataRepository metaDataRepository;
@@ -20,9 +20,8 @@ public class MetadataService {
     public MetadataDto getMetadata() {
         var metadataDto = new MetadataDto();
         var tablesMetadata = metaDataRepository.getTablesMetadata();
-        var factTables = datawarehouseChecker.extractFactTables(tablesMetadata);
-        var dimTables = datawarehouseChecker.extractDimTables(tablesMetadata, factTables);
-        dimTables.forEach((k, v) -> System.out.println(k + " -> " + v));
+        var factTables = metadataExtractor.extractFactTables(tablesMetadata);
+        var dimTables = metadataExtractor.extractDimTables(tablesMetadata, factTables);
         var metadata = Metadata.builder()
                                .database(metaDataRepository.getDatabase())
                                .host(metaDataRepository.getURL())
