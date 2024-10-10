@@ -10,6 +10,12 @@ services:
       - reverse-proxy
     extra_hosts:
       - "host:host-gateway"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
 
   frontend:
     build:
@@ -21,8 +27,16 @@ services:
     networks:
       - reverse-proxy
     depends_on:
-      - backend
-      - nifi
+      backend:
+        condition: service_healthy
+      nifi:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost/ || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   nifi:
     image: apache/nifi:2.0.0-M2
@@ -38,9 +52,14 @@ services:
       - ./nifi/scripts/start.sh:/opt/nifi/scripts/start.sh
     networks:
       - reverse-proxy
-      - databases
     extra_hosts:
       - "host:host-gateway"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/nifi || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
 
   postgres_dw:
     image: postgres:16-alpine
@@ -53,8 +72,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_dw_data:/var/lib/postgresql/data
-    networks:
-      - databases
 
   mysql_dw:
     image: mysql:8.4.2
@@ -68,8 +85,6 @@ services:
       - "3306:3306"
     volumes:
       - mysql_dw_data:/var/lib/mysql
-    networks:
-      - databases
 
   postgres_ds:
     image: postgres:16-alpine
@@ -82,8 +97,6 @@ services:
       - "5433:5432"
     volumes:
       - postgres_ds_data:/var/lib/postgresql/data
-    networks:
-      - databases
 
   mysql_ds:
     image: mysql:8.4.2
@@ -97,8 +110,6 @@ services:
       - "3307:3306"
     volumes:
       - mysql_ds_data:/var/lib/mysql
-    networks:
-      - databases
 
 volumes:
   postgres_dw_data:
@@ -111,7 +122,5 @@ volumes:
     driver: local
 
 networks:
-  databases:
-    driver: bridge
   reverse-proxy:
     driver: bridge
