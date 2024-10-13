@@ -1,4 +1,3 @@
-version: "3.8"
 name: "datawarehouse"
 services:
   backend:
@@ -72,6 +71,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_dw_data:/var/lib/postgresql/data
+      - "./sql/datawarehouse/postgresql/postgresql_dw_ddl.sql:/docker-entrypoint-initdb.d/1.sql"
 
   mysql_dw:
     image: mysql:8.4.2
@@ -85,6 +85,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_dw_data:/var/lib/mysql
+      - "./sql/datawarehouse/mysql/mysql_dw_ddl.sql:/docker-entrypoint-initdb.d/1.sql"
 
   postgres_ds:
     image: postgres:16-alpine
@@ -97,6 +98,8 @@ services:
       - "5433:5432"
     volumes:
       - postgres_ds_data:/var/lib/postgresql/data
+      - "./sql/datasource/postgresql/postgresql_ds_ddl.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./sql/datasource/postgresql/postgresql_ds_dml.sql:/docker-entrypoint-initdb.d/2.sql"
 
   mysql_ds:
     image: mysql:8.4.2
@@ -110,6 +113,8 @@ services:
       - "3307:3306"
     volumes:
       - mysql_ds_data:/var/lib/mysql
+      - "./sql/datasource/mysql/mysql_ds_ddl.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./sql/datasource/mysql/mysql_ds_dml.sql:/docker-entrypoint-initdb.d/2.sql"
 
 volumes:
   postgres_dw_data:

@@ -4,13 +4,14 @@ source check-commands.sh
 
 checkCommands docker docker-compose
 
-DOCKER_COMPOSE="docker-compose.yaml"
+DOCKER_COMPOSE="../docker-compose.yaml"
 
 if [[ ! -f "$DOCKER_COMPOSE" ]]; then
   echo "No $DOCKER_COMPOSE file found!"
+  exit 1
 fi
 
-docker-compose up -d --build nifi
+docker-compose -f "$DOCKER_COMPOSE" up -d --build nifi
 
 while true; do
     status=$(docker inspect --format='{{.State.Health.Status}}' nifi)

@@ -4,12 +4,13 @@ source check-commands.sh
 
 checkCommands docker docker-compose
 
-DOCKER_COMPOSE="docker-compose.yaml"
+DOCKER_COMPOSE="../docker-compose.yaml"
 
 if [[ ! -f "$DOCKER_COMPOSE" ]]; then
   echo "No $DOCKER_COMPOSE file found!"
+  exit 1
 fi
 
-docker-compose down -v nifi
+docker-compose -f "$DOCKER_COMPOSE" down -v --rmi local
 
-echo "Apache NiFi instance stopped."
+echo "SimpleDatawarehouse has been removed."

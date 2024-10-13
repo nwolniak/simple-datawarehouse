@@ -1,10 +1,10 @@
 DROP TABLE IF EXISTS order_items;
-DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS mysql_ds.products;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS addresses;
 
-CREATE TABLE IF NOT EXISTS products
+CREATE TABLE IF NOT EXISTS mysql_ds.products
 (
     product_id   int AUTO_INCREMENT PRIMARY KEY,
     product_name varchar(40)   NOT NULL,
