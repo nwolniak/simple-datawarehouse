@@ -7,7 +7,7 @@ public record Column(String name, String alias, String function) {
     @Override
     public String toString() {
         var column = new StringBuilder();
-        if (StringUtils.isBlank(function)) {
+        if (StringUtils.isBlank(function) || "None".equals(function)) {
             column.append(name);
         } else {
             column.append(STR."\{function}(\{name})");

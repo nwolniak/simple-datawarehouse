@@ -106,16 +106,18 @@ export class QueryService {
   private updateAggregates(query: Query): void {
     const aggregates: string[] = [];
     query.columns
-      .filter((column) => column.function !== '')
+      .filter((column) => column.function !== 'None')
       .map((column) => column.function)
       .forEach((aggregate) => aggregates.push(aggregate));
     if (aggregates.length == 0) {
       query.groupByList = [];
       return;
     }
-    console.log(aggregates);
     const aggregatedColumns: string[] = [];
-    query.columns.forEach((column) => aggregatedColumns.push(column.name));
+    query.columns
+      .filter((column) => column.function === 'None')
+      .map((column) => column.name)
+      .forEach((columnName) => aggregatedColumns.push(columnName));
     query.groupByList = aggregatedColumns;
   }
 }

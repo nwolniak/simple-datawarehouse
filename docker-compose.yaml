@@ -1,0 +1,131 @@
+name: "datawarehouse"
+services:
+  backend:
+    build:
+      context: simple-datawarehouse-backend
+      dockerfile: Dockerfile
+    container_name: simple-datawarehouse-backend
+    networks:
+      - reverse-proxy
+    extra_hosts:
+      - "host:host-gateway"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  frontend:
+    build:
+      context: simple-datawarehouse-frontend
+      dockerfile: Dockerfile
+    container_name: simple-datawarehouse-frontend
+    ports:
+      - "80:80"
+    networks:
+      - reverse-proxy
+    depends_on:
+      backend:
+        condition: service_healthy
+      nifi:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost/ || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  nifi:
+    image: apache/nifi:2.0.0-M2
+    container_name: nifi
+    ports:
+      - "4201:8080"
+    environment:
+      - NIFI_WEB_HTTP_HOST=0.0.0.0
+      - NIFI_WEB_HTTP_PORT=8080
+    volumes:
+      - ./nifi/drivers:/opt/nifi/nifi-current/drivers
+      - ./nifi/scripts/common.sh:/opt/nifi/scripts/common.sh
+      - ./nifi/scripts/start.sh:/opt/nifi/scripts/start.sh
+    networks:
+      - reverse-proxy
+    extra_hosts:
+      - "host:host-gateway"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/nifi || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  postgres_dw:
+    image: postgres:16-alpine
+    container_name: postgres_dw
+    environment:
+      - POSTGRES_DB=postgres_dw
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dw_data:/var/lib/postgresql/data
+      - "./sql/datawarehouse/postgresql/postgresql_dw_ddl.sql:/docker-entrypoint-initdb.d/1.sql"
+
+  mysql_dw:
+    image: mysql:8.4.2
+    container_name: mysql_dw
+    environment:
+      - MYSQL_DATABASE=mysql_dw
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_dw_data:/var/lib/mysql
+      - "./sql/datawarehouse/mysql/mysql_dw_ddl.sql:/docker-entrypoint-initdb.d/1.sql"
+
+  postgres_ds:
+    image: postgres:16-alpine
+    container_name: postgres_ds
+    environment:
+      - POSTGRES_DB=postgres_ds
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_ds_data:/var/lib/postgresql/data
+      - "./sql/datasource/postgresql/postgresql_ds_ddl.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./sql/datasource/postgresql/postgresql_ds_dml.sql:/docker-entrypoint-initdb.d/2.sql"
+
+  mysql_ds:
+    image: mysql:8.4.2
+    container_name: mysql_ds
+    environment:
+      - MYSQL_DATABASE=mysql_ds
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_ds_data:/var/lib/mysql
+      - "./sql/datasource/mysql/mysql_ds_ddl.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./sql/datasource/mysql/mysql_ds_dml.sql:/docker-entrypoint-initdb.d/2.sql"
+
+volumes:
+  postgres_dw_data:
+    driver: local
+  postgres_ds_data:
+    driver: local
+  mysql_dw_data:
+    driver: local
+  mysql_ds_data:
+    driver: local
+
+networks:
+  reverse-proxy:
+    driver: bridge

@@ -23,7 +23,7 @@ export class DatasourceComponent {
   ) {
   }
 
-  openNewDataSourceDialog() {
+  openDataSourceDialog() {
     const dialogRef = this.dialog.open(DatasourceParametersComponent, {
       width: "400px"
     });

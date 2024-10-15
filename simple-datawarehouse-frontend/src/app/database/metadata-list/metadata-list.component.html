@@ -117,7 +117,7 @@
   <ul *ngIf="table.foreignKeysCollapsed">
     <li *ngFor="let key of table.foreignKeysMetadata">
       <i class="fa-solid fa-key"></i>
-      {{ key.foreignKeyName }} ({{ key.primaryKeyColumnName }} -> {{ key.foreignKeyTableName }}
+      {{ key.foreignKeyName }} ({{ key.primaryKeyColumnName }} -> {{ key.primaryKeyTableName }}
       ({{ key.foreignKeyColumnName }}))
     </li>
   </ul>

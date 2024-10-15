@@ -161,7 +161,7 @@ export class TableComponent implements OnInit {
       if (!operator || !value) {
         return;
       }
-      if (column.function.length > 0) {
+      if (column.function !== 'None') {
         havingList.push({
           columnName: column.name,
           operator: this.filtersMap[operator],

@@ -6,5 +6,6 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /simple-datawarehouse-backend
+RUN apk add --no-cache curl
 COPY --from=build /app/target/SimpleDataWarehouse-0.0.1.jar app.jar
 ENTRYPOINT ["java", "--enable-preview", "-jar", "app.jar"]

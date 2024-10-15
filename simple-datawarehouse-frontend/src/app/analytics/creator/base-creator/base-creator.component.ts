@@ -12,7 +12,7 @@ import { JoinedTablesService } from '@app/_services/joined-tables.service';
   styleUrl: './base-creator.component.css',
 })
 export class BaseCreatorComponent implements OnInit {
-  aggregates: string[] = ['COUNT', 'SUM', 'AVG', 'MAX', 'MIN'];
+  aggregates: string[] = ['None', 'COUNT', 'SUM', 'AVG', 'MAX', 'MIN'];
 
   metadata?: Metadata;
   query!: Query;

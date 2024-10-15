@@ -1,0 +1,21 @@
+.dialog-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.tabview {
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2rem;
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-left: 1rem;
+}

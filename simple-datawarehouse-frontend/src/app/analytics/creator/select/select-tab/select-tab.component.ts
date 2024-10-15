@@ -28,4 +28,9 @@ export class SelectTabComponent {
   show() {
     this.visible = true;
   }
+
+  hide() {
+    this.visible = false;
+  }
+
 }
