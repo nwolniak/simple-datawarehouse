@@ -6,6 +6,8 @@ data warehouses world.
 
 ## Table of Contents
 
+
+- [Presentation](#presentation)
 - [Instructions](#instructions)
     - [Requirements](#requirements)
     - [How to run application](#how-to-run-application)
@@ -20,10 +22,74 @@ data warehouses world.
     - [How to run Apache Nifi](#how-to-run-apache-nifi)
     - [How to clean databases](#how-to-clean-databases)
 
+## Presentation
+
+1. ETL view
+
+<div align="center">
+  <img src="resources/img/etl_view.png" width="600" height="340" alt="etl_view">
+</div>
+
+2. Datasouce view
+
+<div align="center">
+  <img src="resources/img/data_source_view.png" width="600" height="340" alt="data_source_view">
+</div>
+
+3. Database view
+
+<div align="center">
+  <img src="resources/img/database_view.png" width="600" height="340" alt="database_view">
+</div>
+
+4. Analytics view
+
+<div align="center">
+  <img src="resources/img/analytics_view.png" width="600" height="340" alt="analytics_view">
+</div>
+
+5. Join advanced view
+
+<div align="center">
+  <img src="resources/img/join_view.png" width="600" height="340" alt="join_view">
+</div>
+
+6. Select advanced view
+
+<div align="center">
+  <img src="resources/img/select_advanced_view.png" width="600" height="340" alt="select_advanced_view">
+</div>
+
+7. SQL query view
+
+<div align="center">
+  <img src="resources/img/sql_query_view.png" width="600" height="340" alt="sql_query_view">
+</div>
+
+8. Dynamic data filtering
+
+<div align="center">
+  <img src="resources/filter_video.gif" width="600" height="340" alt="filter_video">
+</div>
+
+9. Dynamic column change
+
+<div align="center">
+  <img src="resources/column_change_video.gif" width="600" height="340" alt="column_change_video">
+</div>
+
+10. Selection only data download
+
+<div align="center">
+  <img src="resources/selection_only_download_video.gif" width="600" height="340" alt="selection_only_download_video">
+</div>
+
+
 ## Instructions
 
 ### Requirements:
 
+- Cloned repository
 - [Docker](https://docs.docker.com/engine/install/) installed
 - docker and docker-compose commands available
 
@@ -95,6 +161,10 @@ resources/nifi_etl.json
 
 ### Application Containers
 
+<div align="center">
+  <img src="resources/img/docker_view.png" width="600" height="200" alt="docker_view">
+</div>
+
 1. simple-datawarehouse-backend\
   Java Spring Boot based application responsible for executing SQL queries on datawarehouse.
 2. simple-datawarehouse-frontend\
@@ -113,13 +183,13 @@ resources/nifi_etl.json
 ## Database Schema
 
 <div align="center">
-  <img src="resources/database_schema.png" width="600" height="600" alt="database_schema">
+  <img src="resources/img/database_schema.png" width="600" height="600" alt="database_schema">
 </div>
 
 ## Datawarehouse Schema
 
 <div align="center">
-  <img src="resources/datawarehouse_schema.png" width="600" height="600" alt="datawarehouse_schema">
+  <img src="resources/img/datawarehouse_schema.png" width="600" height="600" alt="datawarehouse_schema">
 </div>
 
 ## Development
