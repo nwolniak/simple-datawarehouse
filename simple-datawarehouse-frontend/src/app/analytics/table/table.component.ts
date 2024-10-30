@@ -13,6 +13,7 @@ import { DialogModule } from 'primeng/dialog';
 import { AlertListComponent } from '@app/analytics/table/alert-list/alert-list.component';
 import { cloneDeep } from 'lodash-es';
 import { QueryComponent } from '@app/analytics/table/query/query.component';
+import {delay} from "rxjs";
 
 @Component({
   selector: 'app-result-table',
@@ -63,7 +64,7 @@ export class TableComponent implements OnInit {
         this.sendTableQuery();
       }
     });
-    this.queryService.table.subscribe((table) => {
+    this.queryService.table.pipe(delay(250)).subscribe((table) => {
       this.table = table;
       if (this.query) {
         this.table.columnOptions = [...this.query.columns];
@@ -191,7 +192,7 @@ export class TableComponent implements OnInit {
     return this.isNumeric(value) ? 'numeric' : 'text';
   }
 
-  private isNumeric(value: string): boolean {
-    return !isNaN(parseFloat(value)) && isFinite(Number(value));
+  private isNumeric(value: any): boolean {
+    return typeof value === 'number';
   }
 }

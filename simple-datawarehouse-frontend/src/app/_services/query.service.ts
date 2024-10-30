@@ -104,15 +104,6 @@ export class QueryService {
   }
 
   private updateAggregates(query: Query): void {
-    const aggregates: string[] = [];
-    query.columns
-      .filter((column) => column.function !== 'None')
-      .map((column) => column.function)
-      .forEach((aggregate) => aggregates.push(aggregate));
-    if (aggregates.length == 0) {
-      query.groupByList = [];
-      return;
-    }
     const aggregatedColumns: string[] = [];
     query.columns
       .filter((column) => column.function === 'None')

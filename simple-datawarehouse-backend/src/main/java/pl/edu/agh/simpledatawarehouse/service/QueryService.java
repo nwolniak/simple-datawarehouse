@@ -12,6 +12,7 @@ import pl.edu.agh.simpledatawarehouse.model.query.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -87,7 +88,24 @@ public class QueryService {
     }
 
     private String extractHavingStatements(Query query) {
-        return query.havingList()
+        var functionColumns = query.columns()
+                                   .stream()
+                                   .filter(column -> !"None".equals(column.function()))
+                                   .collect(Collectors.toMap(Column::name, Function.identity()));
+
+        var havingList = query.havingList()
+                              .stream()
+                              .map(having -> {
+                                  var columnName = having.columnName();
+                                  if (functionColumns.containsKey(having.columnName())) {
+                                      var column = functionColumns.get(columnName);
+                                      columnName = STR."\{column.function()}(\{column.name()})";
+                                  }
+                                  return new Having(columnName, having.operator(), having.value());
+                              })
+                              .toList();
+
+        return havingList
                     .stream()
                     .map(Having::toString)
                     .collect(Collectors.joining(" AND "));
