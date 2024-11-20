@@ -1,4 +1,4 @@
-name: "datawarehouse"
+version: "3.8"
 services:
   backend:
     build:
