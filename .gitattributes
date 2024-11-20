@@ -1,2 +1,1 @@
-nifi/scripts/* text eol=LF
-scripts/* text eol=LF
+*.sh text eol=LF
