@@ -88,11 +88,13 @@ data warehouses world.
 ### Requirements:
 
 - Cloned repository
+- please ensure downloaded scripts from github have correct line endings (LF) especially under nifi/scripts/ path
 - [Docker Desktop](https://docs.docker.com/get-started/get-docker/) installed
 - docker command with minimum version 27.0.0 installed
 - docker-compose command with minimum version 2.28.1 installed
 - docker and docker-compose commands available
 - please ensure installed version of Docker Desktop is updated to the newest version higher than 4.32.x
+
 
 <div align="center">
   <img src="resources/img/docker_desktop_update.png" width="600" height="340" alt="docker_desktop_update">
