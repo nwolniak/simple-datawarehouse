@@ -6,7 +6,6 @@ data warehouses world.
 
 ## Table of Contents
 
-
 - [Presentation](#presentation)
 - [Instructions](#instructions)
     - [Requirements](#requirements)
@@ -84,14 +83,23 @@ data warehouses world.
   <img src="resources/selection_only_download_video.gif" width="600" height="340" alt="selection_only_download_video">
 </div>
 
-
 ## Instructions
 
 ### Requirements:
 
 - Cloned repository
-- [Docker](https://docs.docker.com/engine/install/) installed
+- [Docker Desktop](https://docs.docker.com/get-started/get-docker/) installed
+- docker command with minimum version 27.0.0 installed
+- docker-compose command with minimum version 2.28.1 installed
 - docker and docker-compose commands available
+- please ensure installed version of Docker Desktop is updated to the newest version higher than 4.32.x
+
+<div align="center">
+  <img src="resources/img/docker_desktop_update.png" width="600" height="340" alt="docker_desktop_update">
+</div>
+
+- above requirements are due to fact that the file running application (docker-compose.yml) was configured using newer
+  versions of Docker
 
 ### How to run application:
 
@@ -129,13 +137,14 @@ resources/nifi_etl.json
 
 2. Enable all controller services required by NiFi components in that group.
 
-- How to navigate:
-    - Right click on process group and select 'Enter group'.
-    - Alternatively right click anywhere and select 'Leave group'.
-
 <div align="center">
   <img src="resources/step2_video.gif" width="600" height="340" alt="step2">
 </div>
+
+- How to navigate between groups:
+    - Right click on process group and select 'Enter group'.
+    - Alternatively right click anywhere and select 'Leave group'.
+
 
 3. Start & Wait & Stop ETL processes in 'Dim Tables' group.
 
@@ -166,19 +175,19 @@ resources/nifi_etl.json
 </div>
 
 1. simple-datawarehouse-backend\
-  Java Spring Boot based application responsible for executing SQL queries on datawarehouse.
+   Java Spring Boot based application responsible for executing SQL queries on datawarehouse.
 2. simple-datawarehouse-frontend\
-  Angular web application providing a user interface.
+   Angular web application providing a user interface.
 3. nifi\
-  ETL (Extract, Transform, Load) tool.
+   ETL (Extract, Transform, Load) tool.
 4. postgres_ds\
-  PostgreSQL database that serves as a data source for ETL processes.
+   PostgreSQL database that serves as a data source for ETL processes.
 5. postgres_dw\
-  PostgreSQL database where the datawarehouse is modelled.
+   PostgreSQL database where the datawarehouse is modelled.
 6. mysql_ds\
-  MySQL database that serves as a data source for ETL processes.
+   MySQL database that serves as a data source for ETL processes.
 7. mysql_dw\
-  MySQL database where the datawarehouse is modelled.
+   MySQL database where the datawarehouse is modelled.
 
 ## Database Schema
 
