@@ -59,23 +59,35 @@ public class QueryService {
         var where = extractWhereStatements(query);
         var having = extractHavingStatements(query);
 
-        var sql = new StringBuilder().append(STR."SELECT \{columns}\n")
-                                     .append(STR."FROM \{from}\n");
+        var sql = new StringBuilder().append("SELECT ")
+                                     .append(columns)
+                                     .append("\nFROM ")
+                                     .append(from)
+                                     .append("\n");
 
         if (!joins.isBlank()) {
-            sql.append(STR."\{joins}\n");
+            sql.append(joins)
+               .append("\n");
         }
         if (!where.isBlank()) {
-            sql.append(STR."WHERE \{where}\n");
+            sql.append("WHERE ")
+               .append(where)
+               .append("\n");
         }
         if (!groupBy.isBlank()) {
-            sql.append(STR."GROUP BY \{groupBy}\n");
+            sql.append("GROUP BY ")
+               .append(groupBy)
+               .append("\n");
         }
         if (!having.isBlank()) {
-            sql.append(STR."HAVING \{having}\n");
+            sql.append("HAVING ")
+               .append(having)
+               .append("\n");
         }
         if (!orderBy.isBlank()) {
-            sql.append(STR."ORDER BY \{orderBy}");
+            sql.append("ORDER BY ")
+               .append(orderBy)
+               .append("\n");
         }
         return sql.toString();
     }
@@ -99,16 +111,16 @@ public class QueryService {
                                   var columnName = having.columnName();
                                   if (functionColumns.containsKey(having.columnName())) {
                                       var column = functionColumns.get(columnName);
-                                      columnName = STR."\{column.function()}(\{column.name()})";
+                                      columnName = column.function() + "(" + column.name() + ")";
                                   }
                                   return new Having(columnName, having.operator(), having.value());
                               })
                               .toList();
 
         return havingList
-                    .stream()
-                    .map(Having::toString)
-                    .collect(Collectors.joining(" AND "));
+                .stream()
+                .map(Having::toString)
+                .collect(Collectors.joining(" AND "));
     }
 
     private String extractSelectedColumns(Query query) {

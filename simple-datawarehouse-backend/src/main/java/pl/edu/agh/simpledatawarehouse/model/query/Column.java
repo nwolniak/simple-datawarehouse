@@ -10,10 +10,14 @@ public record Column(String name, String alias, String function) {
         if (StringUtils.isBlank(function) || "None".equals(function)) {
             column.append(name);
         } else {
-            column.append(STR."\{function}(\{name})");
+            column.append(function)
+                  .append("(")
+                  .append(name)
+                  .append(")");
         }
         if (StringUtils.isNotBlank(alias)) {
-            column.append(STR." AS \{alias}");
+            column.append(" AS ")
+                  .append(alias);
         }
         return column.toString();
     }

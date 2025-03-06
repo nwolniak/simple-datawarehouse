@@ -32,7 +32,7 @@ public class ConnectionController {
     private void tryConnectToDatabase(ConnectionParametersDto parameters) {
         var dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(parameters.getDriverClassName());
-        dataSource.setUrl(STR."jdbc:\{parameters.getDriver()}://\{parameters.getHost()}:\{parameters.getPort()}/\{parameters.getDatabase()}");
+        dataSource.setUrl(createConnectionString(parameters));
         dataSource.setUsername(parameters.getUsername());
         dataSource.setPassword(parameters.getPassword());
         try (var connection = dataSource.getConnection()) {
@@ -47,11 +47,17 @@ public class ConnectionController {
     }
 
     private void registerDataSourceBean(DriverManagerDataSource dataSource) {
-        var dataSourceBean = BeanDefinitionBuilder.genericBeanDefinition(DriverManagerDataSource.class, () -> dataSource).getBeanDefinition();
+        var dataSourceBean = BeanDefinitionBuilder
+                .genericBeanDefinition(DriverManagerDataSource.class, () -> dataSource)
+                .getBeanDefinition();
         if (beanFactory.containsBeanDefinition(DATA_SOURCE)) {
             beanFactory.removeBeanDefinition(DATA_SOURCE);
         }
         beanFactory.registerBeanDefinition(DATA_SOURCE, dataSourceBean);
+    }
+
+    private String createConnectionString(ConnectionParametersDto parameters) {
+        return "jdbc:" + parameters.getDriver() + "://" + parameters.getHost() + ":" + parameters.getPort() + "/" + parameters.getDatabase();
     }
 
 }
