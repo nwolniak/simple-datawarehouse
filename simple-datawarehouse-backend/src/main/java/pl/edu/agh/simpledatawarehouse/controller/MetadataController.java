@@ -1,6 +1,7 @@
 package pl.edu.agh.simpledatawarehouse.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +18,16 @@ public class MetadataController {
     private final MetadataService metadataService;
 
     @GetMapping("metadata")
-    public MetadataDto getMetadata() {
-        return metadataService.getMetadata();
+    public ResponseEntity<MetadataDto> getMetadata() {
+        try {
+            var metadataDto = metadataService.getMetadata();
+            return ResponseEntity
+                    .ok(metadataDto);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .internalServerError()
+                    .build();
+        }
     }
 
 }

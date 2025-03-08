@@ -1,6 +1,7 @@
 package pl.edu.agh.simpledatawarehouse.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.simpledatawarehouse.model.dto.QueryDto;
 import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
@@ -15,8 +16,16 @@ public class QueryController {
     private final QueryService queryService;
 
     @PostMapping("query")
-    public TableDto getQueryResults(@RequestBody QueryDto queryDto) {
-        return queryService.queryResults(queryDto);
+    public ResponseEntity<TableDto> getQueryResults(@RequestBody QueryDto queryDto) {
+        try {
+            var tableDto = queryService.queryResults(queryDto);
+            return ResponseEntity
+                    .ok(tableDto);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .internalServerError()
+                    .build();
+        }
     }
 
 }
