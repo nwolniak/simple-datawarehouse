@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.edu.agh.simpledatawarehouse.model.query.*;
+import pl.edu.agh.simpledatawarehouse.model.query.Column;
+import pl.edu.agh.simpledatawarehouse.model.query.Condition;
+import pl.edu.agh.simpledatawarehouse.model.query.Join;
+import pl.edu.agh.simpledatawarehouse.model.query.OrderBy;
 
 import java.util.List;
 
@@ -14,10 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 public class QueryDto {
     private List<Column> columns;
-    private String fromTable;
-    private List<Join> joins;
+    private String table;
+    private List<Join> joinList;
     private List<String> groupByList;
-    private List<Having> havingList;
+    private List<Condition> havingList;
     private List<OrderBy> orderByList;
-    private List<Where> whereList;
+    private List<Condition> whereList;
 }

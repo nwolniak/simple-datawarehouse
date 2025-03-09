@@ -4,6 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 
 public record Column(String name, String alias, String function) {
 
+    public Column {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("Column name cannot be blank");
+        }
+    }
+
     @Override
     public String toString() {
         var column = new StringBuilder();
@@ -16,7 +22,7 @@ public record Column(String name, String alias, String function) {
                   .append(")");
         }
         if (StringUtils.isNotBlank(alias)) {
-            column.append(" AS ")
+            column.append(" as ")
                   .append(alias);
         }
         return column.toString();

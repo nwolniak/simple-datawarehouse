@@ -8,11 +8,11 @@ import pl.edu.agh.simpledatawarehouse.dao.DataRepository;
 import pl.edu.agh.simpledatawarehouse.mappers.QueryMapper;
 import pl.edu.agh.simpledatawarehouse.model.dto.QueryDto;
 import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
-import pl.edu.agh.simpledatawarehouse.model.query.*;
+import pl.edu.agh.simpledatawarehouse.model.query.Column;
+import pl.edu.agh.simpledatawarehouse.model.query.Query;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,7 +25,7 @@ public class QueryService {
 
     public TableDto queryResults(final QueryDto queryDto) {
         Query query = QueryMapper.INSTANCE.toQuery(queryDto);
-        String sql = queryToSql(query);
+        String sql = query.toString();
         log.info(sql);
         List<Map<String, Object>> tableRows = dataRepository.execute(sql);
         TableDto tableDto = new TableDto();
@@ -48,100 +48,6 @@ public class QueryService {
             tableDto.setRows(tableRows);
         }
         return tableDto;
-    }
-
-    private String queryToSql(final Query query) {
-        var columns = extractSelectedColumns(query);
-        var from = query.fromTable();
-        var joins = extractJoinStatements(query);
-        var groupBy = String.join(", ", query.groupByList());
-        var orderBy = extractOrderByStatements(query);
-        var where = extractWhereStatements(query);
-        var having = extractHavingStatements(query);
-
-        var sql = new StringBuilder().append("SELECT ")
-                                     .append(columns)
-                                     .append("\nFROM ")
-                                     .append(from)
-                                     .append("\n");
-
-        if (!joins.isBlank()) {
-            sql.append(joins)
-               .append("\n");
-        }
-        if (!where.isBlank()) {
-            sql.append("WHERE ")
-               .append(where)
-               .append("\n");
-        }
-        if (!groupBy.isBlank()) {
-            sql.append("GROUP BY ")
-               .append(groupBy)
-               .append("\n");
-        }
-        if (!having.isBlank()) {
-            sql.append("HAVING ")
-               .append(having)
-               .append("\n");
-        }
-        if (!orderBy.isBlank()) {
-            sql.append("ORDER BY ")
-               .append(orderBy)
-               .append("\n");
-        }
-        return sql.toString();
-    }
-
-    private String extractWhereStatements(Query query) {
-        return query.whereList()
-                    .stream()
-                    .map(Where::toString)
-                    .collect(Collectors.joining(" AND "));
-    }
-
-    private String extractHavingStatements(Query query) {
-        var functionColumns = query.columns()
-                                   .stream()
-                                   .filter(column -> !"None".equals(column.function()))
-                                   .collect(Collectors.toMap(Column::name, Function.identity()));
-
-        var havingList = query.havingList()
-                              .stream()
-                              .map(having -> {
-                                  var columnName = having.columnName();
-                                  if (functionColumns.containsKey(having.columnName())) {
-                                      var column = functionColumns.get(columnName);
-                                      columnName = column.function() + "(" + column.name() + ")";
-                                  }
-                                  return new Having(columnName, having.operator(), having.value());
-                              })
-                              .toList();
-
-        return havingList
-                .stream()
-                .map(Having::toString)
-                .collect(Collectors.joining(" AND "));
-    }
-
-    private String extractSelectedColumns(Query query) {
-        return query.columns()
-                    .stream()
-                    .map(Column::toString)
-                    .collect(Collectors.joining(", "));
-    }
-
-    private String extractJoinStatements(Query query) {
-        return query.joins()
-                    .stream()
-                    .map(Join::toString)
-                    .collect(Collectors.joining("\n"));
-    }
-
-    private String extractOrderByStatements(Query query) {
-        return query.orderByList()
-                    .stream()
-                    .map(OrderBy::toString)
-                    .collect(Collectors.joining(", "));
     }
 
 }

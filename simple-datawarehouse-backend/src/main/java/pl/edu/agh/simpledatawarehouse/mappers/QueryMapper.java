@@ -12,8 +12,8 @@ public interface QueryMapper {
     QueryMapper INSTANCE = Mappers.getMapper(QueryMapper.class);
 
     @Mapping(target = "columns", source = "columns")
-    @Mapping(target = "fromTable", source = "fromTable")
-    @Mapping(target = "joins", source = "joins")
+    @Mapping(target = "table", source = "table")
+    @Mapping(target = "joinList", source = "joinList")
     @Mapping(target = "groupByList", source = "groupByList")
     @Mapping(target = "havingList", source = "havingList")
     @Mapping(target = "orderByList", source = "orderByList")
