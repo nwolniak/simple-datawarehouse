@@ -1,18 +1,10 @@
 package pl.edu.agh.simpledatawarehouse.model.dto;
 
-import lombok.*;
+import lombok.Builder;
 
 import java.util.List;
 import java.util.Map;
 
-@Data
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class TableDto {
-    private String tableName;
-    private List<String> columns;
-    private List<Map<String, Object>> rows;
-    private String query;
+@Builder
+public record TableDto(String tableName, List<String> columnList, List<Map<String, Object>> rowList) {
 }

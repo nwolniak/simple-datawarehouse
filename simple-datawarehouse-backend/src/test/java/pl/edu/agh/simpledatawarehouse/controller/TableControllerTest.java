@@ -13,6 +13,8 @@ import pl.edu.agh.simpledatawarehouse.configuration.WebSecurityConfig;
 import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
 import pl.edu.agh.simpledatawarehouse.service.TableService;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,14 +34,15 @@ class TableControllerTest {
     @Test
     @WithMockUser
     void testGetTableSuccess() throws Exception {
-        Mockito.doReturn(new TableDto())
+        TableDto tableDto = new TableDto("table_name", List.of(), List.of());
+        Mockito.doReturn(tableDto)
                .when(tableService)
                .getTable(anyString());
 
         mockMvc.perform(get("/simple-datawarehouse/tables/tableName"))
                .andExpect(status().isOk())
                .andExpect(content().contentType(APPLICATION_JSON))
-               .andExpect(content().json(new ObjectMapper().writeValueAsString(new TableDto())));
+               .andExpect(content().json(new ObjectMapper().writeValueAsString(tableDto)));
     }
 
     @Test

@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public record Query(
-        List<Column> columns,
+        List<Column> columnList,
         String table,
         List<Condition> whereList,
         List<Join> joinList,
@@ -17,7 +17,7 @@ public record Query(
 ) {
 
     public Query {
-        if (Objects.isNull(columns) || columns.isEmpty()) {
+        if (Objects.isNull(columnList) || columnList.isEmpty()) {
             throw new IllegalArgumentException("Columns cannot be empty");
         }
         if (StringUtils.isBlank(table)) {
@@ -31,12 +31,12 @@ public record Query(
     }
 
     private String queryToSql(final Query query) {
-        String columns = joinStatements(query.columns, ", ");
+        String columns = joinStatements(query.columnList, ", ");
         String from = query.table;
         String where = joinStatements(query.whereList, "\nand ");
         String joins = joinStatements(query.joinList, "\n");
         String groupBy = joinStatements(query.groupByList, ", ");
-        var havingList = enhanceHavingStatementsWithSelectFunctions(query.columns, query.havingList);
+        var havingList = enhanceHavingStatementsWithSelectFunctions(query.columnList, query.havingList);
         String having = joinStatements(havingList, " and ");
         String orderBy = joinStatements(query.orderByList(), ", ");
 

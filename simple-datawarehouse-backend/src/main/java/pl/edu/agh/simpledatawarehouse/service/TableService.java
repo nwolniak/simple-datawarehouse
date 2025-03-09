@@ -16,20 +16,19 @@ public class TableService {
     @Lazy
     private final TableRepository tableRepository;
 
-    public TableDto getTable(String name) {
-        String sql = "SELECT * FROM " + name;
+    public TableDto getTable(String tableName) {
+        String sql = "select * from " + tableName;
 
         List<Map<String, Object>> tableRows = tableRepository.getTableRows(sql);
         List<String> columns = tableRows.getFirst()
                                         .keySet()
                                         .stream()
                                         .toList();
-
-        TableDto tableDto = new TableDto();
-        tableDto.setTableName(name);
-        tableDto.setColumns(columns);
-        tableDto.setRows(tableRows);
-        return tableDto;
+        return TableDto.builder()
+                .tableName(tableName)
+                .columnList(columns)
+                .rowList(tableRows)
+                .build();
     }
 
 }

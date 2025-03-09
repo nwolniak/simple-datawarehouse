@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.simpledatawarehouse.model.dto.QueryDto;
-import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
+import pl.edu.agh.simpledatawarehouse.model.dto.QueryResult;
 import pl.edu.agh.simpledatawarehouse.service.QueryService;
 
 @RestController
@@ -16,11 +16,11 @@ public class QueryController {
     private final QueryService queryService;
 
     @PostMapping("query")
-    public ResponseEntity<TableDto> getQueryResults(@RequestBody QueryDto queryDto) {
+    public ResponseEntity<QueryResult> getQueryResults(@RequestBody QueryDto queryDto) {
         try {
-            var tableDto = queryService.queryResults(queryDto);
+            var queryResult = queryService.queryResults(queryDto);
             return ResponseEntity
-                    .ok(tableDto);
+                    .ok(queryResult);
         } catch (Exception e) {
             return ResponseEntity
                     .internalServerError()

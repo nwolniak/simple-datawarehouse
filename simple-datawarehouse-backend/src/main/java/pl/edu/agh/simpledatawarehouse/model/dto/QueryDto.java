@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueryDto {
-    private List<Column> columns;
+    private List<Column> columnList;
     private String table;
     private List<Join> joinList;
     private List<String> groupByList;

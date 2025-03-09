@@ -13,6 +13,7 @@ public class DataRepository {
 
     private final JdbcClient jdbc;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public DataRepository(@Lazy DataSource dataSource) {
         this.jdbc = JdbcClient.create(dataSource);
     }

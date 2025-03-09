@@ -18,6 +18,7 @@ public class MetaDataRepository {
 
     private final JdbcTemplate jdbc;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public MetaDataRepository(@Lazy DataSource dataSource) {
         this.jdbc = new JdbcTemplate(dataSource);
     }

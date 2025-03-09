@@ -14,10 +14,10 @@ public class TableController {
 
     private final TableService tableService;
 
-    @GetMapping("tables/{name}")
-    public ResponseEntity<TableDto> getTable(@PathVariable String name) {
+    @GetMapping("tables/{tableName}")
+    public ResponseEntity<TableDto> getTable(@PathVariable String tableName) {
         try {
-            var tableDto = tableService.getTable(name);
+            var tableDto = tableService.getTable(tableName);
             return ResponseEntity
                     .ok(tableDto);
         } catch (Exception e) {

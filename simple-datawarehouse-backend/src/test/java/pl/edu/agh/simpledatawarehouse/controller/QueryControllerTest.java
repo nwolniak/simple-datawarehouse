@@ -1,6 +1,7 @@
 package pl.edu.agh.simpledatawarehouse.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.edu.agh.simpledatawarehouse.configuration.WebSecurityConfig;
 import pl.edu.agh.simpledatawarehouse.model.dto.QueryDto;
-import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
+import pl.edu.agh.simpledatawarehouse.model.dto.QueryResult;
 import pl.edu.agh.simpledatawarehouse.service.QueryService;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -33,16 +36,15 @@ class QueryControllerTest {
     @Test
     @WithMockUser
     void testQueryResultsSuccess() throws Exception {
-        Mockito.doReturn(new TableDto())
+        Mockito.doReturn(new QueryResult(List.of(), List.of(), StringUtils.EMPTY))
                .when(queryService)
                .queryResults(any(QueryDto.class));
-
         mockMvc.perform(post("/simple-datawarehouse/query")
                                 .contentType(APPLICATION_JSON)
                                 .content(new ObjectMapper().writeValueAsString(new QueryDto())))
                .andExpect(status().isOk())
                .andExpect(content().contentType(APPLICATION_JSON))
-               .andExpect(content().json(new ObjectMapper().writeValueAsString(new TableDto())));
+               .andExpect(content().json(new ObjectMapper().writeValueAsString(new QueryResult(List.of(), List.of(), StringUtils.EMPTY))));
     }
 
     @Test
