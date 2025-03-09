@@ -18,7 +18,6 @@ public class MetadataService {
     private final MetaDataRepository metaDataRepository;
 
     public MetadataDto getMetadata() {
-        var metadataDto = new MetadataDto();
         var tablesMetadata = metaDataRepository.getTablesMetadata();
         var factTables = metadataExtractor.extractFactTables(tablesMetadata);
         var dimTables = metadataExtractor.extractDimTables(tablesMetadata, factTables);
@@ -29,6 +28,7 @@ public class MetadataService {
                                .factTables(factTables)
                                .dimTables(dimTables)
                                .build();
+        var metadataDto = new MetadataDto();
         metadataDto.setDatabase(metadata.database());
         metadataDto.setHost(metadata.host());
         metadataDto.setTables(metadata.tables());

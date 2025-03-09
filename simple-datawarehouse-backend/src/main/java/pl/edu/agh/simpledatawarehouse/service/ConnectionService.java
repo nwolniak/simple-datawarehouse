@@ -1,53 +1,48 @@
 package pl.edu.agh.simpledatawarehouse.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.simpledatawarehouse.exceptions.DatabaseConnectionException;
 import pl.edu.agh.simpledatawarehouse.model.dto.ConnectionParametersDto;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
 
 @Service
 @RequiredArgsConstructor
 public class ConnectionService {
 
     private static final String DATA_SOURCE = "datasource";
-    private static final int TIMEOUT = 3;
+    private static final int VALIDATION_TIMEOUT = 3;
 
+    private final DataSourceFactory dataSourceFactory;
     private final DefaultListableBeanFactory beanFactory;
 
-    public void tryConnectToDatabase(ConnectionParametersDto parameters) {
-        var dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(parameters.getDriverClassName());
-        dataSource.setUrl(createConnectionString(parameters));
-        dataSource.setUsername(parameters.getUsername());
-        dataSource.setPassword(parameters.getPassword());
-        try (var connection = dataSource.getConnection()) {
-            if (connection.isValid(TIMEOUT)) {
-                registerDataSourceBean(dataSource);
-            } else {
-                throw new DatabaseConnectionException("Database connection failed");
-            }
+    public void tryConnectToDatabase(ConnectionParametersDto parameters) throws SQLException {
+        var datasource = dataSourceFactory.createDataSource(parameters);
+        if (canEstablishConnection(datasource)) {
+            registerDataSourceBean(datasource);
+        } else {
+            throw new DatabaseConnectionException("Can't establish connection");
+        }
+    }
+
+    private boolean canEstablishConnection(DataSource datasource) {
+        try (var connection = datasource.getConnection()) {
+            return connection.isValid(VALIDATION_TIMEOUT);
+        } catch (SQLTimeoutException e) {
+            throw new DatabaseConnectionException("Database connection timed out");
         } catch (SQLException e) {
             throw new DatabaseConnectionException(e);
         }
     }
 
-    private void registerDataSourceBean(DriverManagerDataSource dataSource) {
-        var dataSourceBean = BeanDefinitionBuilder
-                .genericBeanDefinition(DriverManagerDataSource.class, () -> dataSource)
-                .getBeanDefinition();
-        if (beanFactory.containsBeanDefinition(DATA_SOURCE)) {
-            beanFactory.removeBeanDefinition(DATA_SOURCE);
+    private void registerDataSourceBean(DataSource dataSource) {
+        if (beanFactory.containsBean(DATA_SOURCE)) {
+            beanFactory.destroySingleton(DATA_SOURCE);
         }
-        beanFactory.registerBeanDefinition(DATA_SOURCE, dataSourceBean);
+        beanFactory.registerSingleton(DATA_SOURCE, dataSource);
     }
-
-    private String createConnectionString(ConnectionParametersDto parameters) {
-        return "jdbc:" + parameters.getDriver() + "://" + parameters.getHost() + ":" + parameters.getPort() + "/" + parameters.getDatabase();
-    }
-
 }

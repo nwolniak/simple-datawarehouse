@@ -62,7 +62,7 @@ public class MetaDataRepository {
     }
 
     @SneakyThrows
-    public List<ColumnMetadata> getColumnsMetadata(DatabaseMetaData metaData, String table) {
+    private List<ColumnMetadata> getColumnsMetadata(DatabaseMetaData metaData, String table) {
         List<ColumnMetadata> columnsMetadata = new LinkedList<>();
         var resultSet = metaData.getColumns(null, null, table, null);
         while (resultSet.next()) {
