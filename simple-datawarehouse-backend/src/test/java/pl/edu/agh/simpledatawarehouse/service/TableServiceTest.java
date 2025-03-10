@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edu.agh.simpledatawarehouse.dao.TableRepository;
-import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
+import pl.edu.agh.simpledatawarehouse.model.dto.TableResult;
 
 import java.util.List;
 import java.util.Map;
@@ -30,11 +30,11 @@ class TableServiceTest {
                .when(tableRepository)
                .getTableRows(Mockito.anyString());
 
-        TableDto tableDto = tableService.getTable("table_name");
+        TableResult tableResult = tableService.getTable("table_name");
 
-        assertThat(tableDto).isNotNull();
-        assertThat(tableDto.tableName()).isEqualTo("table_name");
-        assertThat(tableDto.columnList()).contains("column_name");
-        assertThat(tableDto.rowList()).contains(Map.of("column_name", "value"));
+        assertThat(tableResult).isNotNull();
+        assertThat(tableResult.tableName()).isEqualTo("table_name");
+        assertThat(tableResult.columnList()).contains("column_name");
+        assertThat(tableResult.rowList()).contains(Map.of("column_name", "value"));
     }
 }

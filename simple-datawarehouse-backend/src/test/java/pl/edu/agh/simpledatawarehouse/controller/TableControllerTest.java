@@ -10,7 +10,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.edu.agh.simpledatawarehouse.configuration.WebSecurityConfig;
-import pl.edu.agh.simpledatawarehouse.model.dto.TableDto;
+import pl.edu.agh.simpledatawarehouse.model.dto.TableResult;
 import pl.edu.agh.simpledatawarehouse.service.TableService;
 
 import java.util.List;
@@ -34,15 +34,15 @@ class TableControllerTest {
     @Test
     @WithMockUser
     void testGetTableSuccess() throws Exception {
-        TableDto tableDto = new TableDto("table_name", List.of(), List.of());
-        Mockito.doReturn(tableDto)
+        TableResult tableResult = new TableResult("table_name", List.of(), List.of());
+        Mockito.doReturn(tableResult)
                .when(tableService)
                .getTable(anyString());
 
         mockMvc.perform(get("/simple-datawarehouse/tables/tableName"))
                .andExpect(status().isOk())
                .andExpect(content().contentType(APPLICATION_JSON))
-               .andExpect(content().json(new ObjectMapper().writeValueAsString(tableDto)));
+               .andExpect(content().json(new ObjectMapper().writeValueAsString(tableResult)));
     }
 
     @Test
