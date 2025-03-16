@@ -20,7 +20,7 @@ public class ConnectionService {
     private final DataSourceFactory dataSourceFactory;
     private final DefaultListableBeanFactory beanFactory;
 
-    public void tryConnectToDatabase(ConnectionParametersDto parameters) throws SQLException {
+    public void tryConnectToDatabase(ConnectionParametersDto parameters) {
         var datasource = dataSourceFactory.createDataSource(parameters);
         if (canEstablishConnection(datasource)) {
             registerDataSourceBean(datasource);

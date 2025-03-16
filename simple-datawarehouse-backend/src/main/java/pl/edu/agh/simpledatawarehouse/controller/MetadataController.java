@@ -18,7 +18,7 @@ public class MetadataController {
     private final MetadataService metadataService;
 
     @GetMapping("metadata")
-    public ResponseEntity<MetadataDto> getMetadata() {
+    public ResponseEntity<?> getMetadata() {
         try {
             var metadataDto = metadataService.getMetadata();
             return ResponseEntity
@@ -26,7 +26,7 @@ public class MetadataController {
         } catch (Exception e) {
             return ResponseEntity
                     .internalServerError()
-                    .build();
+                    .body(e.getMessage());
         }
     }
 
