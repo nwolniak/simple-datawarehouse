@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -6,20 +6,13 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { ConnectionService, MetadataService } from '@app/_services';
-import { first } from 'rxjs';
-import { ConnectionParameters } from '@app/_models';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { NgIf } from '@angular/common';
+import {ConnectionService, MetadataService} from '@app/_services';
+import {first} from 'rxjs';
+import {ConnectionParameters} from '@app/_models';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatInput} from '@angular/material/input';
+import {MatButton} from '@angular/material/button';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {environment} from "@environments/environment";
 
 @Component({
@@ -36,7 +29,7 @@ import {environment} from "@environments/environment";
     FormsModule,
     MatDialogActions,
     ReactiveFormsModule,
-    NgIf,
+
   ],
   templateUrl: './datasource-parameters.component.html',
   styleUrl: './datasource-parameters.component.css',
@@ -104,7 +97,6 @@ export class DatasourceParametersComponent implements OnInit {
       error: (err) => {
         this.createButtonColor = 'warn';
         this.createButtonLoading = false;
-        console.error(err);
       },
     });
   }

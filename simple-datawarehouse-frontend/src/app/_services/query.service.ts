@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Query, Table } from '@app/_models';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
-import { AlertService } from '@app/_services/alert.service';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs';
+import {Query, Table} from '@app/_models';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {environment} from '@environments/environment';
+import {AlertService} from '@app/_services/alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,7 @@ export class QueryService {
     let table: Table = {
       tableName: '',
       columns: [],
-      rows: [{ 'not selected': '' }],
+      rows: [{'not selected': ''}],
       columnOptions: [],
       selectedColumns: [],
       selectedRows: [],
@@ -91,14 +91,19 @@ export class QueryService {
   }
 
   sendTableQuery() {
-    return this.http
-      .post<Table>(`${environment.queryUrl}`, this.tableQuerySubject.getValue())
+    return this.http.post<Table>(`${environment.queryUrl}`, this.tableQuerySubject.getValue())
+      .pipe(
+        tap(() => console.info('Query request success.')),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Query request error:', error.error);
+          return throwError(() => error);
+        }))
       .subscribe({
-        next: (table) => {
+        next: (table: Table) => {
           this.tableSubject.next(table);
         },
-        error: (err) => {
-          this.alertService.addAlert(err);
+        error: (error: HttpErrorResponse) => {
+          this.alertService.addAlert(error.error);
         },
       });
   }

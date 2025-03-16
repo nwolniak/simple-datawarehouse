@@ -1,0 +1,15 @@
+export const environment = {
+  production: false,
+  driverClassName: 'org.postgresql.Driver',
+  driver: 'postgresql',
+  host: 'localhost',
+  port: '5432',
+  database: 'postgres_dw',
+  username: 'user',
+  password: 'password',
+  dbConnectionUrl: 'http://localhost:8080/simple-datawarehouse/connect',
+  metadataUrl: 'http://localhost:8080/simple-datawarehouse/metadata',
+  tablesUrl: 'http://localhost:8080/simple-datawarehouse/tables',
+  queryUrl: 'http://localhost:8080/simple-datawarehouse/query',
+  nifiUrl: 'http://localhost:4200/nifi/',
+};

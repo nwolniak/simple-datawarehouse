@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Metadata } from '@app/_models';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '@environments/environment';
+import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs';
+import {Metadata} from '@app/_models';
 
 @Injectable({
   providedIn: 'root',
@@ -22,10 +22,14 @@ export class MetadataService {
 
   getDatawarehouseMetadata(): Observable<Metadata> {
     return this.http.get<Metadata>(`${environment.metadataUrl}`).pipe(
-      map((metadata) => {
+      tap((metadata: Metadata) => {
+        console.info('Metadata fetched successfully.');
         this.metadataSubject.next(metadata);
-        return metadata;
       }),
+      catchError(error => {
+        console.error('Metadata fetch error:', error.error);
+        return throwError(() => error);
+      })
     );
   }
 }
