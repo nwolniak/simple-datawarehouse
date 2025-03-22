@@ -2,8 +2,8 @@ import { Column } from '@app/_models/query';
 
 export interface Table {
   tableName: string;
-  columns: string[];
-  rows: TableRow[];
+  columnList: string[];
+  rowList: TableRow[];
   columnOptions: Column[];
   selectedColumns: Column[];
   selectedRows: TableRow[];

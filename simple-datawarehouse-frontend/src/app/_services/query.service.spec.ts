@@ -35,8 +35,8 @@ describe('QueryService', () => {
 
     const expectedResponse: Table = {
       tableName: '',
-      columns: [],
-      rows: [],
+      columnList: [],
+      rowList: [],
       columnOptions: [],
       selectedColumns: [],
       selectedRows: [],

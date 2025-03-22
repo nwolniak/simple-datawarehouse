@@ -44,8 +44,8 @@ export class QueryService {
     this._tableQuery = this.tableQuerySubject.asObservable();
     let table: Table = {
       tableName: '',
-      columns: [],
-      rows: [{'not selected': ''}],
+      columnList: [],
+      rowList: [{'not selected': ''}],
       columnOptions: [],
       selectedColumns: [],
       selectedRows: [],

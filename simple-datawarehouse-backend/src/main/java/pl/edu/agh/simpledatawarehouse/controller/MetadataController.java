@@ -1,6 +1,7 @@
 package pl.edu.agh.simpledatawarehouse.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.simpledatawarehouse.model.dto.MetadataDto;
 import pl.edu.agh.simpledatawarehouse.service.MetadataService;
 
+@Slf4j
 @RestController
 @RequestMapping("/simple-datawarehouse")
 @CrossOrigin
@@ -24,6 +26,7 @@ public class MetadataController {
             return ResponseEntity
                     .ok(metadataDto);
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return ResponseEntity
                     .internalServerError()
                     .body(e.getMessage());

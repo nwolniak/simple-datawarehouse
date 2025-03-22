@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { AnalyticsComponent } from '@app/analytics';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {SidebarComponent} from "@app/layout/sidebar/sidebar.component";
 import {TopbarComponent} from "@app/layout/topbar/topbar.component";
 
@@ -10,10 +9,10 @@ import {TopbarComponent} from "@app/layout/topbar/topbar.component";
   imports: [
     SidebarComponent,
     RouterOutlet,
-    TopbarComponent,
-    AnalyticsComponent,
+    TopbarComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })
-export class LayoutComponent {}
+export class LayoutComponent {
+}

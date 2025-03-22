@@ -17,13 +17,8 @@ public class TableService {
     private final TableRepository tableRepository;
 
     public TableResult getTable(String tableName) {
-        String sql = "select * from " + tableName;
-
-        List<Map<String, Object>> tableRows = tableRepository.getTableRows(sql);
-        List<String> columns = tableRows.getFirst()
-                                        .keySet()
-                                        .stream()
-                                        .toList();
+        List<Map<String, Object>> tableRows = tableRepository.getTableRows(tableName);
+        List<String> columns = tableRepository.getTableColumns(tableName);
         return TableResult.builder()
                           .tableName(tableName)
                           .columnList(columns)

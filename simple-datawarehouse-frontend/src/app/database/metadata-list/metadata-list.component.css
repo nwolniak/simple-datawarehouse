@@ -1,10 +1,28 @@
-.container {
-  flex: 1 1 auto;
-  background-color: lightgrey;
+:host {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: 30%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  background-color: white;
 }
 
 ul, li {
   list-style: none;
+}
+
+button {
+  border: none;
+  background-color: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+span {
+  white-space: nowrap;
 }
 
 .fa-chevron-down {

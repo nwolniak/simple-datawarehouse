@@ -24,7 +24,7 @@ public class ConnectionController {
                     .ok()
                     .build();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             return ResponseEntity
                     .internalServerError()
                     .body(e.getMessage());

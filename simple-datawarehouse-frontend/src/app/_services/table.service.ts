@@ -25,7 +25,7 @@ export class TableService {
     return this.http.get<Table>(`${environment.tablesUrl}/${name}`)
       .pipe(
         tap((table: Table) => {
-          console.info('Table request success.');
+          console.info('Table request success.', table);
           this.tableSubject.next(table);
         }),
         catchError((error: HttpErrorResponse) => {

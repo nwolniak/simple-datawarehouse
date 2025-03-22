@@ -26,8 +26,8 @@ describe('TableService', () => {
     const tableName = 'tableName';
     const expectedResponse: Table = {
       tableName: '',
-      columns: [],
-      rows: [],
+      columnList: [],
+      rowList: [],
       columnOptions: [],
       selectedColumns: [],
       selectedRows: [],

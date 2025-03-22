@@ -188,7 +188,7 @@ export class TableComponent implements OnInit {
   }
 
   columnType(column: string): string {
-    const value = this.table.rows[0][column];
+    const value = this.table.rowList[0][column];
     return this.isNumeric(value) ? 'numeric' : 'text';
   }
 

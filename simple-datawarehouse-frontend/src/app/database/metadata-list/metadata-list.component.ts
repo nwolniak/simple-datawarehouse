@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { NgClass, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Metadata, TableMetadata } from '@app/_models';
-import { DatasourceService, MetadataService } from '@app/_services';
+import {Component} from '@angular/core';
+import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
+import {Metadata, TableMetadata} from '@app/_models';
+import {MetadataService, TableService} from '@app/_services';
 
 @Component({
   selector: 'app-database-list',
@@ -13,10 +13,7 @@ import { DatasourceService, MetadataService } from '@app/_services';
 export class MetadataListComponent {
   metadata?: Metadata;
 
-  constructor(
-    private metadataService: MetadataService,
-    private datasourceService: DatasourceService,
-  ) {
+  constructor(private metadataService: MetadataService, private tableService: TableService) {
     this.metadataService.metadata.subscribe(
       (metadata) => (this.metadata = metadata),
     );
@@ -78,8 +75,8 @@ export class MetadataListComponent {
     });
   }
 
-  getDatasource(table: string) {
-    this.datasourceService.getDatasource(table).subscribe();
+  getTable(table: string) {
+    this.tableService.getTable(table).subscribe();
   }
 
   getAllMetadata(metadata: Metadata): TableMetadata[] {
