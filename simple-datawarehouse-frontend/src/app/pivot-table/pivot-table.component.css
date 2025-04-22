@@ -1,0 +1,8 @@
+/*.p-datatable-gridlines .p-datatable-tbody td,*/
+/*.p-datatable-gridlines .p-datatable-tbody th {*/
+/*  border: 1px solid #ddd;*/
+/*}*/
+
+/*.p-datatable-gridlines .p-datatable-tbody td[rowspan] {*/
+/*  border-bottom: 1px solid #ddd;  !* Ensure the bottom of the rowspan cell has a border *!*/
+/*}*/

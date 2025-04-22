@@ -17,7 +17,7 @@
     </tr>
   </ng-template>
 
-  <ng-template let-rowData pTemplate="body">
+  <ng-template pTemplate="body" let-rowData>
     <tr>
       <td *ngFor="let column of table.columnList">{{ rowData[column] }}</td>
     </tr>

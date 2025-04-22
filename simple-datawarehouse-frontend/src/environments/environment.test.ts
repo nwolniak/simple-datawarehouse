@@ -11,5 +11,6 @@ export const environment = {
   metadataUrl: 'http://localhost:8080/simple-datawarehouse/metadata',
   tablesUrl: 'http://localhost:8080/simple-datawarehouse/tables',
   queryUrl: 'http://localhost:8080/simple-datawarehouse/query',
+  queryPivotDataUrl: 'http://localhost:8080/simple-datawarehouse/queryPivotData',
   nifiUrl: 'http://localhost:4200/nifi/',
 };
