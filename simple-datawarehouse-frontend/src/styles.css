@@ -1,9 +1,3 @@
-@layer bootstrap-reboot, primeng;
-
-/* Bootstrap */
-/*@import "bootstrap/dist/css/bootstrap-reboot.css" layer(bootstrap-rebooot);*/
-@import "bootstrap/dist/css/bootstrap.min.css" layer(bootstrap-rebooot);
-
 /* Font Awesome */
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -11,9 +5,15 @@
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
 
 /* PrimeNG Theme and Core */
-@import "primeng/resources/primeng.min.css" layer(primeng);
-@import "primeng/resources/themes/lara-light-blue/theme.css" layer(primeng);
-/*@import "primeng/resources/themes/bootstrap4-light-blue/theme.css" layer(primeng);*/
+@import "primeng/resources/primeng.min.css";
+@import "primeng/resources/themes/lara-light-blue/theme.css";
 
 /* PrimeIcons */
-@import "primeicons/primeicons.css" layer(primeng);
+@import "primeicons/primeicons.css";
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

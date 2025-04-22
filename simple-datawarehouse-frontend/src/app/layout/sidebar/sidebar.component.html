@@ -1,9 +1,8 @@
-<nav class="navbar navbar-light bg-dark-subtle">
+<div class="sidebar">
   <img ngSrc="assets/dw_icon_smaller.png" alt="dw_icon.png" width="110" height="100" priority>
-  <div class="navbar-nav d-flex flex-grow-1 justify-content-evenly">
-    <a routerLink="/etl" class="nav-item nav-link" routerLinkActive="active">ETL</a>
-    <a routerLink="/database" class="nav-item nav-link" routerLinkActive="active">Database</a>
-    <a routerLink="/analytics" class="nav-item nav-link" routerLinkActive="active">Analytics</a>
-    <a routerLink="/analytics2" class="nav-item nav-link" routerLinkActive="active">Analytics2</a>
-  </div>
-</nav>
+  <nav class="nav-links">
+    @for (item of menuItems; track item) {
+      <a [routerLink]="item.routerLink" class="nav-item" routerLinkActive="active">{{ item.label }}</a>
+    }
+  </nav>
+</div>
