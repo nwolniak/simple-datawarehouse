@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
-import { DatasourceComponent } from '@app/layout/topbar/datasource/datasource.component';
+import {Component} from '@angular/core';
+import {DatasourceComponent} from '@app/layout/topbar/datasource/datasource.component';
+import {ToolbarModule} from "primeng/toolbar";
 
 @Component({
   selector: 'app-topbar',
   standalone: true,
-  imports: [DatasourceComponent],
+  imports: [DatasourceComponent, ToolbarModule],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.css',
 })
-export class TopbarComponent {}
+export class TopbarComponent {
+}

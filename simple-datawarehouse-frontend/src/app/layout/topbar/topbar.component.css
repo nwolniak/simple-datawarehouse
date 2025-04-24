@@ -8,8 +8,7 @@
 
 .topbar {
   display: flex;
-  flex: 1 1 auto;
-  align-items: center;
+  flex: 1;
   justify-content: space-around;
   height: 100%;
   background-color: var(--surface-b);

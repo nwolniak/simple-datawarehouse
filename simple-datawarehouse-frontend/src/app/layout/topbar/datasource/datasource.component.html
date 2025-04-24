@@ -1,6 +1,59 @@
-<mat-toolbar class="new-data-source">
-  <button mat-button (click)="openDataSourceDialog()">
-    <i class="fa-solid fa-plus"></i>
-    Data Source
-  </button>
-</mat-toolbar>
+<p-button
+  label="Data Source"
+  icon="pi pi-plus"
+  (click)="openDialog()">
+</p-button>
+
+<p-dialog
+  header="Data Source"
+  [(visible)]="dialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true">
+  <form [formGroup]="parametersForm">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="driverClassName">Driver Class Name</label>
+        <input pInputText id="driverClassName" type="text" placeholder="Driver Class Name"
+               formControlName="driverClassName"/>
+      </div>
+      <div class="p-field">
+        <label for="driver">Driver</label>
+        <input pInputText id="driver" type="text" placeholder="Driver" formControlName="driver"/>
+      </div>
+      <div class="p-field">
+        <label for="host">Host</label>
+        <input pInputText id="host" type="text" placeholder="Host" formControlName="host" required/>
+      </div>
+      <div class="p-field">
+        <label for="port">Port</label>
+        <input pInputText id="port" type="number" placeholder="Port" formControlName="port" required/>
+      </div>
+      <div class="p-field">
+        <label for="database">Database</label>
+        <input pInputText id="database" type="text" placeholder="Database" formControlName="database" required/>
+      </div>
+      <div class="p-field">
+        <label for="username">Username</label>
+        <input pInputText id="username" type="text" placeholder="User" formControlName="username" required/>
+      </div>
+      <div class="p-field">
+        <label for="password">Password</label>
+        <input pInputText id="password" type="password" placeholder="Password" formControlName="password" required/>
+      </div>
+    </div>
+  </form>
+  <p-footer class="footer">
+    <p-button label="Cancel"
+              icon="pi pi-times"
+              (click)=closeDialog()>
+    </p-button>
+    <p-button label="Create"
+              icon="pi pi-check"
+              [severity]="createButtonSeverity"
+              [loading]="createButtonLoading"
+              [disabled]="createButtonDisabled"
+              (click)="createDataSource()">
+    </p-button>
+  </p-footer>
+</p-dialog>
