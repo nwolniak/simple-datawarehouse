@@ -4,3 +4,6 @@ export * from './connection-parameters';
 export * from './query';
 export * from './pivot-table';
 export * from './pivot-table-query';
+export * from './draggable/draggable.type';
+export * from './draggable/dim-draggable';
+export * from './draggable/aggregate-draggable';

@@ -31,10 +31,10 @@ export class OrderByComponent extends BaseCreatorComponent {
     if (!this.fromTable) {
       return true;
     }
-    if (!this.query.columns[0]) {
+    if (!this.query.columnList[0]) {
       return true;
     }
-    if (this.query.columns[0].name === '') {
+    if (this.query.columnList[0].name === '') {
       return true;
     }
     return false;

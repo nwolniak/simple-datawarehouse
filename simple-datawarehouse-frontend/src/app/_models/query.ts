@@ -1,44 +1,58 @@
-export interface Query {
-  columns: Column[];
-  fromTable: string;
-  joins: Join[];
-  groupByList: string[];
-  havingList: Having[];
-  orderByList: OrderBy[];
-  whereList: Where[];
+export class Query {
+  constructor(
+    public columnList: Column[],
+    public table: string,
+    public joinList: Join[],
+    public groupByList: string[],
+    public havingList: Having[],
+    public orderByList: OrderBy[],
+    public whereList: Where[]) {
+  }
 }
 
-export interface Column {
-  name: string;
-  alias: string;
-  function: string;
+export class Column {
+  constructor(
+    public name: string,
+    public alias: string,
+    public aggregate: string) {
+  }
 }
 
-export interface Join {
-  type: string;
-  table: string;
-  conditions: Condition[];
+export class Join {
+  constructor(
+    public joinType: string,
+    public tableName: string,
+    public conditions: Condition[]) {
+  }
 }
 
-export interface Condition {
-  leftOperand: string;
-  operator: string;
-  rightOperand: string;
+export class Condition {
+  constructor(
+    public leftOperand: string,
+    public operator: string,
+    public rightOperand: string) {
+  }
 }
 
-export interface OrderBy {
-  columnName: string;
-  ascending: boolean;
+export class OrderBy {
+  constructor(
+    public columnName: string,
+    public ascending: boolean) {
+  }
 }
 
-export interface Where {
-  columnName: string;
-  operator: string;
-  value: string;
+export class Where {
+  constructor(
+    public columnName: string,
+    public operator: string,
+    public value: string) {
+  }
 }
 
-export interface Having {
-  columnName: string;
-  operator: string;
-  value: string;
+export class Having {
+  constructor(
+    public columnName: string,
+    public operator: string,
+    public value: string) {
+  }
 }

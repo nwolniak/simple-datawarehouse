@@ -21,14 +21,14 @@ class ColumnTest {
 
     @Test
     void testToStringWithColumnNameAndFunction() {
-        Column column = new Column("column_name", null, "function");
-        assertThat(column.toString()).isEqualTo("function(column_name)");
+        Column column = new Column("column_name", null, "aggregate");
+        assertThat(column.toString()).isEqualTo("aggregate(column_name)");
     }
 
     @Test
     void testToStringWithColumnNameAndFunctionAndAlias() {
-        Column column = new Column("column_name", "table.column_name", "function");
-        assertThat(column.toString()).isEqualTo("function(column_name) as table.column_name");
+        Column column = new Column("column_name", "table.column_name", "aggregate");
+        assertThat(column.toString()).isEqualTo("aggregate(column_name) as table.column_name");
     }
 
     @Test

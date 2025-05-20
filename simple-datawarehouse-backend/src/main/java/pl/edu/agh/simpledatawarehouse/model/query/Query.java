@@ -86,15 +86,15 @@ public record Query(
         }
         var functionColumns = columns
                 .stream()
-                .filter(column -> StringUtils.isNotBlank(column.function()))
-                .collect(Collectors.toMap(Column::name, Column::function));
+                .filter(column -> StringUtils.isNotBlank(column.aggregate()))
+                .collect(Collectors.toMap(Column::name, Column::aggregate));
 
         return havingList
                 .stream()
                 .map(condition -> {
                     var leftOperand = condition.leftOperand();
                     if (!functionColumns.containsKey(leftOperand)) {
-                        throw new IllegalArgumentException("Having statement used without aggregate function");
+                        throw new IllegalArgumentException("Having statement used without aggregate aggregate");
                     }
                     var function = functionColumns.get(leftOperand);
                     leftOperand = function + "(" + leftOperand + ")";

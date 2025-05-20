@@ -21,22 +21,24 @@ export class QueryService {
     private alertService: AlertService,
   ) {
     let query: Query = {
-      columns: [],
-      fromTable: '',
+      columnList: [],
+      table: '',
       groupByList: [],
       havingList: [],
-      joins: [],
+      joinList: [],
       orderByList: [],
       whereList: [],
     };
     this.querySubject = new BehaviorSubject<Query>(query);
     this._query = this.querySubject.asObservable();
+
+    //TODO remove
     let tableQuery: Query = {
-      columns: [],
-      fromTable: '',
+      columnList: [],
+      table: '',
       groupByList: [],
       havingList: [],
-      joins: [],
+      joinList: [],
       orderByList: [],
       whereList: [],
     };
@@ -110,8 +112,8 @@ export class QueryService {
 
   private updateAggregates(query: Query): void {
     const aggregatedColumns: string[] = [];
-    query.columns
-      .filter((column) => column.function === 'None')
+    query.columnList
+      .filter((column) => column.aggregate === 'None')
       .map((column) => column.name)
       .forEach((columnName) => aggregatedColumns.push(columnName));
     query.groupByList = aggregatedColumns;

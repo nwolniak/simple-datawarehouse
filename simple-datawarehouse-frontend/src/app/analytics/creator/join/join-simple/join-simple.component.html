@@ -1,7 +1,7 @@
 <div class="wrapper">
   <p-table
     (onRowReorder)="updateQuery()"
-    [value]="query.joins">
+    [value]="query.joinList">
     <ng-template pTemplate="header">
       <tr>
         <th style="width:3rem"></th>
@@ -17,7 +17,7 @@
         <td>
           <p-dropdown
             (onChange)="joinedTableChange($event.value, index)"
-            [(ngModel)]="query.joins[index].table"
+            [(ngModel)]="query.joinList[index].tableName"
             [options]="joinTableOptions(index)"
             appendTo="body"
             placeholder="Join Table">

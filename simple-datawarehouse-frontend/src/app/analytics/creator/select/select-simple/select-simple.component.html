@@ -2,7 +2,7 @@
   <p-table
     (onRowReorder)="updateQuery()"
     [style]="{'table-layout': 'fixed', 'width': '100%'}"
-    [value]="query.columns">>
+    [value]="query.columnList">>
     <ng-template pTemplate="header">
       <tr>
         <th style="width:2vw"></th>
@@ -19,7 +19,7 @@
         <td style="width: 10vw;">
           <p-dropdown
             (onChange)="columnChange($event.value, index)"
-            [(ngModel)]="query.columns[index].name"
+            [(ngModel)]="query.columnList[index].name"
             [options]="columnOptions(index)"
             [style]="{'minWidth':'100%'}"
             appendTo="body"
@@ -29,7 +29,7 @@
         <td style="width: 10vw;">
           <p-dropdown
             (onChange)="aggregateChange($event.value, index)"
-            [(ngModel)]="query.columns[index].function"
+            [(ngModel)]="query.columnList[index].aggregate"
             [options]="aggregates"
             [style]="{'minWidth':'100%'}"
             appendTo="body"

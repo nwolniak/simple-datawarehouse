@@ -9,7 +9,7 @@
   </ng-template>
   <p-table
     (onRowReorder)="updateQuery()"
-    [value]="query.joins">
+    [value]="query.joinList">
     <ng-template pTemplate="header">
       <tr>
         <th style="width:3rem"></th>
@@ -29,7 +29,7 @@
         <td>
           <p-dropdown
             (onChange)="joinedTableChange($event.value, index)"
-            [(ngModel)]="query.joins[index].table"
+            [(ngModel)]="query.joinList[index].tableName"
             [options]="joinTableOptions(index)"
             appendTo="body"
             placeholder="Join Table">
@@ -38,7 +38,7 @@
         <td>
           <p-dropdown
             (onChange)="updateQuery()"
-            [(ngModel)]="query.joins[index].type"
+            [(ngModel)]="query.joinList[index].joinType"
             [options]="joinTypes"
             appendTo="body"
             placeholder="Join Type">
@@ -47,7 +47,7 @@
         <td>
           <p-dropdown
             (onChange)="updateQuery()"
-            [(ngModel)]="query.joins[index].conditions[0].leftOperand"
+            [(ngModel)]="query.joinList[index].conditions[0].leftOperand"
             [options]="leftOperands()"
             appendTo="body"
             placeholder="Select Field">
@@ -56,7 +56,7 @@
         <td>
           <p-dropdown
             (onChange)="updateQuery()"
-            [(ngModel)]="query.joins[index].conditions[0].operator"
+            [(ngModel)]="query.joinList[index].conditions[0].operator"
             [options]="operators"
             appendTo="body"
             placeholder="Select Operator">
@@ -65,7 +65,7 @@
         <td>
           <p-dropdown
             (onChange)="updateQuery()"
-            [(ngModel)]="query.joins[index].conditions[0].rightOperand"
+            [(ngModel)]="query.joinList[index].conditions[0].rightOperand"
             [options]="rightOperands(index)"
             appendTo="body"
             placeholder="Select Field">

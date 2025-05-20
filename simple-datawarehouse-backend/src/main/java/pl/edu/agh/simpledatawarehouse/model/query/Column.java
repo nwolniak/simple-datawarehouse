@@ -2,7 +2,7 @@ package pl.edu.agh.simpledatawarehouse.model.query;
 
 import org.apache.commons.lang3.StringUtils;
 
-public record Column(String name, String alias, String function) {
+public record Column(String name, String alias, String aggregate) {
 
     public Column {
         if (StringUtils.isBlank(name)) {
@@ -13,10 +13,10 @@ public record Column(String name, String alias, String function) {
     @Override
     public String toString() {
         var column = new StringBuilder();
-        if (StringUtils.isBlank(function) || "None".equals(function)) {
+        if (StringUtils.isBlank(aggregate) || "None".equals(aggregate)) {
             column.append(name);
         } else {
-            column.append(function)
+            column.append(aggregate)
                   .append("(")
                   .append(name)
                   .append(")");

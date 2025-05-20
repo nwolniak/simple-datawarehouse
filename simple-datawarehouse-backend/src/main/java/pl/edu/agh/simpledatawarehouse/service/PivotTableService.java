@@ -1,72 +1,42 @@
 package pl.edu.agh.simpledatawarehouse.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.simpledatawarehouse.model.dto.PivotTableQuery;
 import pl.edu.agh.simpledatawarehouse.model.dto.PivotTableResult;
+import pl.edu.agh.simpledatawarehouse.model.dto.QueryResult;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class PivotTableService {
 
-    private final List<Map<String, Object>> data = List.of(
-            Map.of("year", 2023, "quarter", "Q1", "region", "North", "category", "Electronics", "product", "TV", "sales", 101, "discount", 10),
-            Map.of("year", 2023, "quarter", "Q1", "region", "North", "category", "Electronics", "product", "Phone", "sales", 150, "discount", 15),
-            Map.of("year", 2023, "quarter", "Q1", "region", "South", "category", "Furniture", "product", "Chair", "sales", 201, "discount", 20),
-            Map.of("year", 2023, "quarter", "Q2", "region", "North", "category", "Electronics", "product", "TV", "sales", 102, "discount", 10),
-            Map.of("year", 2023, "quarter", "Q2", "region", "South", "category", "Furniture", "product", "Chair", "sales", 202, "discount", 20),
-            Map.of("year", 2023, "quarter", "Q3", "region", "North", "category", "Electronics", "product", "TV", "sales", 103, "discount", 10),
-            Map.of("year", 2023, "quarter", "Q3", "region", "South", "category", "Furniture", "product", "Chair", "sales", 203, "discount", 20),
-            Map.of("year", 2023, "quarter", "Q4", "region", "North", "category", "Electronics", "product", "TV", "sales", 104, "discount", 10),
-            Map.of("year", 2023, "quarter", "Q4", "region", "South", "category", "Furniture", "product", "Chair", "sales", 204, "discount", 20),
-            Map.of("year", 2024, "quarter", "Q1", "region", "North", "category", "Furniture", "product", "Table", "sales", 120, "discount", 12),
-            Map.of("year", 2024, "quarter", "Q1", "region", "South", "category", "Electronics", "product", "Phone", "sales", 180, "discount", 18)
-    );
-
-    private static final List<String> rowLabels = List.of("year", "quarter", "region");
-    private static final List<String> columnLabels = List.of("category", "product");
-    private static final List<String> valueLabels = List.of("sales", "discount");
-
-    private static final PivotTableQuery pivotTableQuery = new PivotTableQuery(
-            rowLabels,
-            columnLabels,
-            valueLabels
-    );
+    private final QueryService queryService;
 
     public PivotTableResult getPivotTable(PivotTableQuery pivotTableQuery) {
-        var combinedRowList = combineRows(pivotTableQuery);
+        log.info(pivotTableQuery.toString());
+        QueryResult queryResult = queryService.executeQuery(pivotTableQuery.query());
+        var combinedRowList = combineRows(pivotTableQuery, queryResult.rowList());
         var rowRepresentation = rowRepresentation(combinedRowList);
         var rowLabelCountMap = countRowLabelSizes(combinedRowList);
         var columnLabelCountList = countColumnLabelSizes(combinedRowList);
-        var rowRepresentationWithoutDuplicated = removeDuplicateRowLabels(rowRepresentation, rowLabelCountMap);
+//        var rowRepresentationWithoutDuplicated = removeDuplicateRowLabels(rowRepresentation, rowLabelCountMap);
 
         return PivotTableResult.builder()
+                .rowLabelList(pivotTableQuery.rowLabels())
                 .rowLabelMap(rowLabelCountMap)
                 .columnLabelList(columnLabelCountList)
-                .rowList(rowRepresentationWithoutDuplicated)
+                .rowList(rowRepresentation)
                 .build();
-    }
-
-    public static void main(String[] args) {
-        PivotTableService pivotTableService = new PivotTableService();
-        var combinedRowList = pivotTableService.combineRows(pivotTableQuery);
-        var rowRepresentation = pivotTableService.rowRepresentation(combinedRowList);
-        var rowLabelCountMap = pivotTableService.countRowLabelSizes(combinedRowList);
-        var columnLabelCountList = pivotTableService.countColumnLabelSizes(combinedRowList);
-        rowRepresentation.forEach(System.out::println);
-        rowLabelCountMap.entrySet().forEach(System.out::println);
-        columnLabelCountList.forEach(System.out::println);
-        rowRepresentation = pivotTableService.removeDuplicateRowLabels(rowRepresentation, rowLabelCountMap);
-        rowRepresentation.forEach(System.out::println);
     }
 
     private List<Map<String, Object>> removeDuplicateRowLabels(
@@ -92,7 +62,7 @@ public class PivotTableService {
                 .toList();
     }
 
-    private List<CombinedRow> combineRows(PivotTableQuery pivotTableQuery) {
+    private List<CombinedRow> combineRows(final PivotTableQuery pivotTableQuery, final List<Map<String, Object>> data) {
         Map<GroupedByRowLabel, Map<GroupedByColumnLabel, List<ValueRecord>>> grouped = data.stream()
                 .collect(
                         Collectors.groupingBy(
@@ -168,6 +138,7 @@ public class PivotTableService {
                 .flatMap(CombinedRow::getColumnAndValueEntries)
                 .map(Map.Entry::getKey)
                 .distinct()
+                .sorted()
                 .toList();
 
         Map<Integer, Map<String, Long>> counted = distinctKeyList.stream()

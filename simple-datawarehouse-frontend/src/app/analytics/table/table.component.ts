@@ -60,15 +60,15 @@ export class TableComponent implements OnInit {
     this.queryService.tableQuery.subscribe((tableQuery) => {
       this.tableQuery = tableQuery;
       console.log(this.tableQuery);
-      if (this.tableQuery.columns.length > 0) {
+      if (this.tableQuery.columnList.length > 0) {
         this.sendTableQuery();
       }
     });
     this.queryService.table.pipe(delay(250)).subscribe((table) => {
       this.table = table;
       if (this.query) {
-        this.table.columnOptions = [...this.query.columns];
-        this.table.selectedColumns = [...this.tableQuery.columns];
+        this.table.columnOptions = [...this.query.columnList];
+        this.table.selectedColumns = [...this.tableQuery.columnList];
       }
       this.loading = false;
     });
@@ -126,20 +126,20 @@ export class TableComponent implements OnInit {
   columnOptionChange() {
     this.removeFilterState();
     const columns = [...this.table.selectedColumns];
-    if (JSON.stringify(this.tableQuery.columns) === JSON.stringify(columns)) {
+    if (JSON.stringify(this.tableQuery.columnList) === JSON.stringify(columns)) {
       return;
     }
-    this.tableQuery.columns = columns;
+    this.tableQuery.columnList = columns;
     this.updateTableQuery();
   }
 
   columnOrderChange() {
     this.removeFilterState();
     const columns = [...this.table.selectedColumns];
-    if (JSON.stringify(this.tableQuery.columns) === JSON.stringify(columns)) {
+    if (JSON.stringify(this.tableQuery.columnList) === JSON.stringify(columns)) {
       return;
     }
-    this.tableQuery.columns = columns;
+    this.tableQuery.columnList = columns;
     this.updateTableQuery();
   }
 
@@ -151,7 +151,7 @@ export class TableComponent implements OnInit {
     if (!filters) {
       return;
     }
-    this.tableQuery.columns.forEach((column) => {
+    this.tableQuery.columnList.forEach((column) => {
       if (!filters[column.alias]) {
         return;
       }
@@ -162,7 +162,7 @@ export class TableComponent implements OnInit {
       if (!operator || !value) {
         return;
       }
-      if (column.function !== 'None') {
+      if (column.aggregate !== 'None') {
         havingList.push({
           columnName: column.name,
           operator: this.filtersMap[operator],

@@ -1,47 +1,65 @@
-<p-table
-  [value]="pivotTable.rowList"
-  responsiveLayout="scroll"
-  styleClass="p-datatable-gridlines p-datatable-striped">
-  <ng-template pTemplate="header">
-    <tr>
-      <!-- Row Labels -->
-      @for (rowLabel of rowLabelMap | keyvalue: unsorted; track rowLabel.key) {
-        <th [attr.rowspan]="pivotTable.columnLabelList.length"> {{ rowLabel.key }}</th>
-      }
-      <!-- First row of Column LabelS -->
-      @for (columnLabel of pivotTable.columnLabelList[0] | keyvalue: unsorted; track columnLabel.key) {
-        <th [attr.colspan]="columnLabel.value"> {{ columnLabel.key | lastKey }}</th>
-      }
-    </tr>
-    <!-- The rest of Column Labels -->
-    @for (columnLabel of pivotTable.columnLabelList | slice: 1; track columnLabel) {
+@if (pivotTable) {
+  <p-table
+    [value]="pivotTable.rowList"
+    [scrollable]="true"
+    scrollHeight="flex"
+    frozenWidth="20px"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
       <tr>
-        @for (columnLabelElement of columnLabel | keyvalue: unsorted; track columnLabelElement.key) {
-          <th [attr.colspan]="columnLabelElement.value"> {{ columnLabelElement.key | lastKey }}</th>
+        <!-- Row Labels -->
+        @for (rowLabel of pivotTable.rowLabelList; track rowLabel) {
+          <th
+            pFrozenColumn
+            [attr.rowspan]="pivotTable.columnLabelList.length">
+            {{ rowLabel }}
+          </th>
+        }
+        <!-- First row of Column LabelS -->
+        @for (columnLabel of pivotTable.columnLabelList[0] | keyvalue: unsorted; track columnLabel.key) {
+          <th
+            [attr.colspan]="columnLabel.value">
+            {{ columnLabel.key | lastKey }}
+          </th>
         }
       </tr>
-    }
-  </ng-template>
+      <!-- The rest of Column Labels -->
+      @for (columnLabel of pivotTable.columnLabelList | slice: 1; track columnLabel) {
+        <tr>
+          @for (columnLabelElement of columnLabel | keyvalue: unsorted; track columnLabelElement.key) {
+            <th
+              [attr.colspan]="columnLabelElement.value">
+              {{ columnLabelElement.key | lastKey }}
+            </th>
+          }
+        </tr>
+      }
+    </ng-template>
 
-  <ng-template pTemplate="body" let-row>
-    <tr>
-<!--       Data for Row Labels-->
-      @for (rowElement of row | keyvalue: unsorted | slice: 0:3; track rowElement.key) {
-        @if (checkRowLabelIsAvailable(String(rowElement.key), String(rowElement.value))) {
-          <th [attr.rowspan]="getRowLabelSize(String(rowElement.key), String(rowElement.value))">{{ rowElement.value ?? "-" }}</th>
+    <ng-template pTemplate="body" let-row>
+      <tr>
+        <!-- Data for Row Labels-->
+        @for (rowElement of row | keyvalue: unsorted | slice: 0:pivotTable.rowLabelList.length; track rowElement.key) {
+          @if (checkRowLabelIsAvailable(String(rowElement.key), String(rowElement.value))) {
+            <th
+              pFrozenColumn>
+              <!--[attr.rowspan]="getRowLabelSize(String(rowElement.key), String(rowElement.value))">-->
+              {{ rowElement.value ?? "-" }}
+            </th>
+          } @else {
+            <th pFrozenColumn>
+            </th>
+          }
         }
-      }
-      <!-- Data for Column Labels -->
-      @for (columnLabel of pivotTable.columnLabelList.slice(-1)[0] | keyvalue: unsorted; track columnLabel.key) {
-        <td>{{ row[columnLabel.key] ?? "-" }}</td>
-      }
-    </tr>
+        <!-- Data for Column Labels -->
+        @for (columnLabel of pivotTable.columnLabelList.slice(-1)[0] | keyvalue: unsorted; track columnLabel.key) {
+          <td>
+            {{ row[columnLabel.key] ?? "-" }}
+          </td>
+        }
+      </tr>
+    </ng-template>
 
-  </ng-template>
+  </p-table>
+}
 
-</p-table>
-<!--      @for (rowLabel of pivotTable.rowLabelList; track rowLabel) {-->
-<!--        @for (rowLabelElement of rowLabel | keyvalue: unsorted; track rowLabelElement.key) {-->
-<!--          <th [attr.rowspan]="rowLabelElement.value"> {{ rowLabelElement.key | lastKey }}</th>-->
-<!--        }-->
-<!--      }-->

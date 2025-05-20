@@ -23,7 +23,7 @@ public class QueryService {
 
     private final QueryMapper queryMapper;
 
-    public QueryResult queryResults(final QueryDto queryDto) {
+    public QueryResult executeQuery(final QueryDto queryDto) {
         Query query = queryMapper.toQuery(queryDto);
         String sql = query.toString();
         log.info("Executing query: {}", sql);
@@ -34,6 +34,18 @@ public class QueryService {
                           .rowList(rowList)
                           .sql(sql)
                           .build();
+    }
+
+    public QueryResult executeQuery(final Query query) {
+        String sql = query.toString();
+        log.info("Executing query: {}", sql);
+        var rowList = dataRepository.execute(sql);
+        var columnList = extractQueryResultColumnList(query);
+        return QueryResult.builder()
+                .columnList(columnList)
+                .rowList(rowList)
+                .sql(sql)
+                .build();
     }
 
     private List<String> extractQueryResultColumnList(final Query query) {

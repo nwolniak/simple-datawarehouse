@@ -1,6 +1,5 @@
 package pl.edu.agh.simpledatawarehouse.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +31,7 @@ class QueryServiceTest {
     private QueryMapper queryMapper;
 
     @Test
-    void queryResults() {
+    void executeQuery() {
         Query query = new Query(
                 List.of(new Column("column_name", null, null)),
                 "table_name",
@@ -49,7 +48,7 @@ class QueryServiceTest {
                .when(dataRepository)
                .execute(anyString());
 
-        QueryResult queryResult = queryService.queryResults(new QueryDto());
+        QueryResult queryResult = queryService.executeQuery(new QueryDto());
         assertThat(queryResult).isNotNull();
         assertThat(queryResult.columnList()).isNotEmpty();
         assertThat(queryResult.rowList()).isEmpty();

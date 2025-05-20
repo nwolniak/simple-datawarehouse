@@ -1,6 +1,6 @@
 <p-table
   (onRowReorder)="updateQuery()"
-  [value]="query.columns">
+  [value]="query.columnList">
   <ng-template pTemplate="header">
     <tr>
       <th style="width:3rem"></th>
@@ -18,7 +18,7 @@
       <td>
         <p-dropdown
           (onChange)="columnChange($event.value, index)"
-          [(ngModel)]="query.columns[index].name"
+          [(ngModel)]="query.columnList[index].name"
           [options]="columnOptions(index)"
           appendTo="body"
           placeholder="Select Column">
@@ -28,7 +28,7 @@
         <p-floatLabel>
           <input
             (input)="aliasChange($event, index)"
-            [(ngModel)]="query.columns[index].alias"
+            [(ngModel)]="query.columnList[index].alias"
             id="alias{{index}}"
             pInputText
             type="text"
@@ -39,7 +39,7 @@
       <td>
         <p-dropdown
           (onChange)="aggregateChange($event.value, index)"
-          [(ngModel)]="query.columns[index].function"
+          [(ngModel)]="query.columnList[index].aggregate"
           [options]="aggregates"
           appendTo="body"
           placeholder="Select Aggregate">

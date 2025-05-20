@@ -1,0 +1,13 @@
+<div class="box-container" pDroppable (onDrop)="onDrop()">
+  <div class="caption">
+    <h5>Columns</h5>
+  </div>
+  @for (dimTable of dimTables; track dimTable) {
+    <div class="box-item"
+         pDraggable
+         (onDragStart)="onDragStart(dimTable)"
+         (onDragEnd)="onDragEnd()">
+      {{ dimTable.item.tableName }}
+    </div>
+  }
+</div>

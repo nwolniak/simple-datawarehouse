@@ -17,7 +17,7 @@ export class FromComponent extends BaseCreatorComponent {
       return;
     }
     this.tableSelectedService.changeTable(table);
-    this.query.fromTable = table.tableName;
+    this.query.table = table.tableName;
     this.queryService.updateQuery(this.query);
   }
 }

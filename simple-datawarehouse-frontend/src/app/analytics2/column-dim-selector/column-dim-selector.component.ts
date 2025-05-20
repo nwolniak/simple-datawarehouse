@@ -1,0 +1,58 @@
+import {Component} from '@angular/core';
+import {DimDraggable} from "@app/_models";
+import {AnalyticsService, DragDropService, MetadataService} from "@app/_services";
+import {DragDropModule} from "primeng/dragdrop";
+import {ToolbarModule} from "primeng/toolbar";
+
+@Component({
+  selector: 'app-column-dim-selector',
+  standalone: true,
+  imports: [
+    DragDropModule,
+    ToolbarModule
+  ],
+  templateUrl: './column-dim-selector.component.html',
+  styleUrl: './column-dim-selector.component.css'
+})
+export class ColumnDimSelectorComponent {
+
+  dimTables: DimDraggable[] = [];
+
+  constructor(
+    private metadataService: MetadataService,
+    private analyticsService: AnalyticsService,
+    private dragDropService: DragDropService) {
+    this.dimTables = this.analyticsService.getColumnDimTables();
+  }
+
+  onDragStart(draggedItem: DimDraggable) {
+    this.dragDropService.startDragging(draggedItem);
+  }
+
+  onDragEnd() {
+    const draggedItem = this.dragDropService.getDraggedItem();
+    if (!draggedItem || !(draggedItem instanceof DimDraggable)) {
+      return;
+    }
+    if (!this.dragDropService.selfDropEventHappened && this.dragDropService.wasDroppedSuccessfully) {
+      this.dimTables = this.dimTables.filter(dimTable => dimTable.item.tableName !== draggedItem.item.tableName);
+      this.analyticsService.setColumnDimTables(this.dimTables);
+    }
+    this.dragDropService.clear();
+  }
+
+  onDrop() {
+    const draggedItem = this.dragDropService.getDraggedItem();
+    if (!draggedItem || !(draggedItem instanceof DimDraggable)) {
+      return;
+    }
+    const selfDropEventHappened = this.dimTables.some(dimTable => dimTable.item.tableName == draggedItem.item.tableName);
+    if (selfDropEventHappened) {
+      this.dragDropService.setSelfDropEventHappened();
+      return;
+    }
+    this.dimTables = [...this.dimTables, draggedItem];
+    this.analyticsService.setColumnDimTables(this.dimTables);
+    this.dragDropService.setWasDroppedSuccessfully();
+  }
+}

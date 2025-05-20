@@ -1,0 +1,17 @@
+<div class="box-container" pDroppable (onDrop)="onDrop()">
+  <div class="caption">
+    <h5>Options</h5>
+  </div>
+  @for (draggable of draggables; track draggable) {
+    <div class="box-item"
+         pDraggable
+         (onDragStart)="onDragStart(draggable)"
+         (onDragEnd)="onDragEnd()">
+      @if (instanceof(draggable, DimDraggable)) {
+        {{ dimLabel(draggable) }}
+      } @else if (instanceof(draggable, AggregateDraggable)) {
+        {{ aggregateLabel(draggable) }}
+      }
+    </div>
+  }
+</div>

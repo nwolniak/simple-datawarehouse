@@ -38,7 +38,7 @@ class QueryControllerTest {
     void testQueryResultsSuccess() throws Exception {
         Mockito.doReturn(new QueryResult(List.of(), List.of(), StringUtils.EMPTY))
                .when(queryService)
-               .queryResults(any(QueryDto.class));
+               .executeQuery(any(QueryDto.class));
         mockMvc.perform(post("/simple-datawarehouse/query")
                                 .contentType(APPLICATION_JSON)
                                 .content(new ObjectMapper().writeValueAsString(new QueryDto())))
@@ -52,7 +52,7 @@ class QueryControllerTest {
     void testQueryResultsFailed() throws Exception {
         Mockito.doThrow(new RuntimeException())
                .when(queryService)
-               .queryResults(any(QueryDto.class));
+               .executeQuery(any(QueryDto.class));
 
         mockMvc.perform(post("/simple-datawarehouse/query")
                                 .contentType(APPLICATION_JSON)

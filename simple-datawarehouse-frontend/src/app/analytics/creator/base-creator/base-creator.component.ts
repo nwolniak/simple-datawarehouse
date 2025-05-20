@@ -46,8 +46,8 @@ export class BaseCreatorComponent implements OnInit {
   columnOptions(index: number): string[] {
     let columnOptions: string[] = [];
     const nonAvailableColumnOptions = [
-      ...this.query.columns.slice(0, index),
-      ...this.query.columns.slice(index + 1),
+      ...this.query.columnList.slice(0, index),
+      ...this.query.columnList.slice(index + 1),
     ];
     if (this.fromTable) {
       this.fromTable.columnsMetadata

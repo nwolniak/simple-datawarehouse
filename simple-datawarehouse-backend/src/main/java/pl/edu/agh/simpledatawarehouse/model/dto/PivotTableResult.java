@@ -7,6 +7,7 @@ import java.util.Map;
 
 @Builder
 public record PivotTableResult(
+        List<String> rowLabelList,
         Map<String, Long> rowLabelMap,
         List<Map<String, Long>> columnLabelList,
         List<Map<String, Object>> rowList) {}

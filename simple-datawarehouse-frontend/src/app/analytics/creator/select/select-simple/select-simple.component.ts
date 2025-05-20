@@ -12,27 +12,27 @@ import { BaseCreatorComponent } from '@app/analytics/creator/base-creator/base-c
 })
 export class SelectSimpleComponent extends BaseCreatorComponent {
   columnChange(column: string, index: number) {
-    this.query.columns[index].name = column;
-    this.query.columns[index].alias = column.replace('.', '_');
+    this.query.columnList[index].name = column;
+    this.query.columnList[index].alias = column.replace('.', '_');
     this.queryService.updateQuery(this.query);
   }
 
   aggregateChange(aggregate: string, index: number) {
-    this.query.columns[index].function = aggregate;
-    this.query.columns[index].alias =
-      this.query.columns[index].name.replace('.', '_') +
+    this.query.columnList[index].aggregate = aggregate;
+    this.query.columnList[index].alias =
+      this.query.columnList[index].name.replace('.', '_') +
       '_' +
       aggregate.toLowerCase();
     this.queryService.updateQuery(this.query);
   }
 
   deleteColumn(index: number) {
-    this.query.columns.splice(index, 1);
+    this.query.columnList.splice(index, 1);
     this.queryService.updateQuery(this.query);
   }
 
   newColumn() {
-    this.query.columns.push({ name: '', alias: '', function: 'None' });
+    this.query.columnList.push({ name: '', alias: '', aggregate: 'None' });
     this.queryService.updateQuery(this.query);
   }
 
@@ -41,8 +41,8 @@ export class SelectSimpleComponent extends BaseCreatorComponent {
       return true;
     }
     if (
-      this.query.columns.length > 0 &&
-      this.query.columns[this.query.columns.length - 1].name === ''
+      this.query.columnList.length > 0 &&
+      this.query.columnList[this.query.columnList.length - 1].name === ''
     ) {
       return true;
     }
@@ -50,6 +50,6 @@ export class SelectSimpleComponent extends BaseCreatorComponent {
     const joinedTablesItems = this.joinedTables
       .map((table) => table.columnsMetadata.length)
       .reduce((acc, i) => acc + i, 0);
-    return this.query.columns.length === fromTableItems + joinedTablesItems;
+    return this.query.columnList.length === fromTableItems + joinedTablesItems;
   }
 }

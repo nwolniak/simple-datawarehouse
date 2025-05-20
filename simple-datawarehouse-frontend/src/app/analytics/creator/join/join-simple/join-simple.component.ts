@@ -19,14 +19,14 @@ export class JoinSimpleComponent extends BaseCreatorComponent {
       return columnOptions;
     }
     const nonAvailableJoinTables = [
-      ...this.query.joins.slice(0, index),
-      ...this.query.joins.slice(index + 1),
+      ...this.query.joinList.slice(0, index),
+      ...this.query.joinList.slice(index + 1),
     ];
     this.metadata.tables
       .filter(
         (table) =>
           !nonAvailableJoinTables
-            .map((join) => join.table)
+            .map((join) => join.tableName)
             .includes(table.tableName),
       )
       .filter((table) => !(this.fromTable == table))
@@ -51,12 +51,12 @@ export class JoinSimpleComponent extends BaseCreatorComponent {
       this.joinedTables[index] = table;
     }
     this.joinedTablesService.changeJoinedTables(this.joinedTables);
-    this.query.joins[index].table = table.tableName;
-    this.query.joins[index].conditions[0].leftOperand = this.leftOperand(
+    this.query.joinList[index].tableName = table.tableName;
+    this.query.joinList[index].conditions[0].leftOperand = this.leftOperand(
       this.fromTable,
       table,
     );
-    this.query.joins[index].conditions[0].rightOperand = this.rightOperand(
+    this.query.joinList[index].conditions[0].rightOperand = this.rightOperand(
       this.fromTable,
       table,
     );
@@ -94,9 +94,9 @@ export class JoinSimpleComponent extends BaseCreatorComponent {
   }
 
   newJoinTable() {
-    this.query.joins.push({
-      table: '',
-      type: 'INNER',
+    this.query.joinList.push({
+      tableName: '',
+      joinType: 'INNER',
       conditions: [{ leftOperand: '', operator: '=', rightOperand: '' }],
     });
     this.queryService.updateQuery(this.query);
@@ -104,7 +104,7 @@ export class JoinSimpleComponent extends BaseCreatorComponent {
 
   deleteJoinTable(index: number) {
     this.joinedTables.splice(index, 1);
-    this.query.joins.splice(index, 1);
+    this.query.joinList.splice(index, 1);
     this.joinedTablesService.changeJoinedTables(this.joinedTables);
     this.queryService.updateQuery(this.query);
   }
@@ -117,8 +117,8 @@ export class JoinSimpleComponent extends BaseCreatorComponent {
       return true;
     }
     if (
-      this.query.joins.length > 0 &&
-      this.joinedTables.length < this.query.joins.length
+      this.query.joinList.length > 0 &&
+      this.joinedTables.length < this.query.joinList.length
     ) {
       return true;
     }

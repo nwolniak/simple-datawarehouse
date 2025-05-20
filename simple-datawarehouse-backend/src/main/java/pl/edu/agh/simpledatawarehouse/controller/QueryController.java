@@ -24,7 +24,7 @@ public class QueryController {
     @PostMapping("query")
     public ResponseEntity<QueryResult> getQueryResults(@RequestBody QueryDto queryDto) {
         try {
-            var queryResult = queryService.queryResults(queryDto);
+            var queryResult = queryService.executeQuery(queryDto);
             return ResponseEntity
                     .ok(queryResult);
         } catch (Exception e) {

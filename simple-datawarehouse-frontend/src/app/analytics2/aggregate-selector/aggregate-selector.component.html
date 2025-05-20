@@ -1,0 +1,13 @@
+<div class="box-container" pDroppable (onDrop)="onDrop()">
+  <div class="caption">
+    <h5>Aggregates</h5>
+  </div>
+  @for (aggregate of aggregates; track aggregate) {
+    <div class="box-item"
+         pDraggable
+         (onDragStart)="onDragStart(aggregate)"
+         (onDragEnd)="onDragEnd()">
+      {{ aggregate.item }}
+    </div>
+  }
+</div>
