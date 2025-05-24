@@ -29,7 +29,7 @@ describe('MetadataService', () => {
 
     spyOn(console, 'info');
 
-    service.getDatawarehouseMetadata().subscribe(response => {
+    service.requestDatawarehouseMetadata().subscribe(response => {
       expect(console.info).toHaveBeenCalledWith('Metadata fetched successfully.');
       expect(response).toEqual(expectedResponse);
     });
@@ -44,7 +44,7 @@ describe('MetadataService', () => {
 
     spyOn(console, 'error');
 
-    service.getDatawarehouseMetadata().subscribe({
+    service.requestDatawarehouseMetadata().subscribe({
       next: () => fail('Expected an error, but got success response'),
       error: (error) => {
         expect(error).toBeTruthy();

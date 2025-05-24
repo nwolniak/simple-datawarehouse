@@ -14,7 +14,7 @@ export class MetadataListComponent {
   metadata?: Metadata;
 
   constructor(private metadataService: MetadataService, private tableService: TableService) {
-    this.metadataService.metadata.subscribe(
+    this.metadataService.metadata$.subscribe(
       (metadata) => (this.metadata = metadata),
     );
   }

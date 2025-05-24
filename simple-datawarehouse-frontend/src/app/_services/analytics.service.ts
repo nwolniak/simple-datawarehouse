@@ -62,7 +62,7 @@ export class AnalyticsService {
     return this.aggregatesSubject.value;
   }
 
-  reset(): void {
+  clear(): void {
     this.factTableSubject.next(null);
     this.availableDraggablesSubject.next(null);
     this.rowDimTablesSubject.next(Array.of());

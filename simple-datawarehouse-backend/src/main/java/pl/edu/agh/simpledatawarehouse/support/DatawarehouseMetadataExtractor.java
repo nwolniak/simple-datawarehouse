@@ -3,9 +3,11 @@ package pl.edu.agh.simpledatawarehouse.support;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.simpledatawarehouse.model.metadata.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,6 +30,53 @@ public class DatawarehouseMetadataExtractor implements MetadataExtractor {
                                                    factTable -> extractDimTable(tablesMetadata, factTable)
                          ));
     }
+
+    @Override
+    public List<TableMetadata> markAggregateColumns(List<TableMetadata> factTables) {
+        var newFactTables = new LinkedList<TableMetadata>();
+        factTables.forEach(factTableMetadata -> {
+            Set<String> columns = factTableMetadata.columnsMetadata()
+                    .stream()
+                    .map(ColumnMetadata::name)
+                    .collect(Collectors.toSet());
+            Set<String> foreignKeys = factTableMetadata.foreignKeysMetadata()
+                    .stream()
+                    .map(ForeignKeyMetadata::foreignKeyColumnName)
+                    .collect(Collectors.toSet());
+            Set<String> primaryKeys = factTableMetadata.primaryKeysMetadata()
+                    .stream()
+                    .map(PrimaryKeyMetadata::columnName)
+                    .collect(Collectors.toSet());
+            columns.removeAll(foreignKeys);
+            columns.removeAll(primaryKeys);
+            List<ColumnMetadata> additiveColumns = factTableMetadata.columnsMetadata()
+                    .stream()
+                    .filter(columnMetadata -> columns.contains(columnMetadata.name()))
+                    .filter(columnMetadata -> ADDITIVE_TYPES.contains(columnMetadata.type()))
+                    .map(columnMetadata -> ColumnMetadata.builder()
+                            .name(columnMetadata.name())
+                            .size(columnMetadata.size())
+                            .type(columnMetadata.type())
+                            .isNullable(columnMetadata.isNullable())
+                            .isAutoincrement(columnMetadata.isAutoincrement())
+                            .isAggregate(true)
+                            .build())
+                    .toList();
+            List<ColumnMetadata> columnMetadataList = factTableMetadata.columnsMetadata().stream()
+                    .filter(Predicate.not(additiveColumns::contains))
+                    .collect(Collectors.toCollection(LinkedList::new));
+            columnMetadataList.addAll(additiveColumns);
+            var newFactTable = TableMetadata.builder()
+                    .tableName(factTableMetadata.tableName())
+                    .columnsMetadata(columnMetadataList)
+                    .foreignKeysMetadata(factTableMetadata.foreignKeysMetadata())
+                    .primaryKeysMetadata(factTableMetadata.primaryKeysMetadata())
+                    .build();
+            newFactTables.add(newFactTable);
+        });
+        return newFactTables;
+    }
+
 
     private List<TableMetadata> extractDimTable(List<TableMetadata> tablesMetadata, TableMetadata factTable) {
         return tablesMetadata
@@ -58,6 +107,7 @@ public class DatawarehouseMetadataExtractor implements MetadataExtractor {
         }
 
         columns.removeAll(primaryKeys);
+        columns.removeAll(foreignKeys);
 
         List<ColumnMetadata> additiveColumns = tableMetadata.columnsMetadata()
                                                             .stream()

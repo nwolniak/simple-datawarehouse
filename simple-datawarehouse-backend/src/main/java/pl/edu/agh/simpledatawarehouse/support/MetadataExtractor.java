@@ -12,4 +12,5 @@ public interface MetadataExtractor {
     Map<String, List<TableMetadata>> extractDimTables(List<TableMetadata> tablesMetadata,
                                                       List<TableMetadata> factTables);
 
+    List<TableMetadata> markAggregateColumns(List<TableMetadata> factTables);
 }

@@ -9,9 +9,9 @@ import {AnalyticsToolBar} from "@app/analytics2/analytics-toolbar/analytics-tool
 import {AggregateSelectorComponent} from "@app/analytics2/aggregate-selector/aggregate-selector.component";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {ToolbarModule} from "primeng/toolbar";
-import {AnalyticsService, DragDropService, MetadataService} from "@app/_services";
+import {AnalyticsService, MetadataService} from "@app/_services";
 import {filter} from "rxjs";
-import {AggregateDraggable, DimDraggable, Metadata, TableMetadata} from "@app/_models";
+import {AggregateDraggable, ColumnMetadata, DimDraggable, Metadata, TableMetadata} from "@app/_models";
 
 @Component({
   selector: 'app-analytics2',
@@ -38,7 +38,7 @@ export class Analytics2Component {
   constructor(
     private metadataService: MetadataService,
     private analyticsService: AnalyticsService) {
-    this.metadataService.metadata
+    this.metadataService.metadata$
       .pipe(
         filter((metadata): metadata is Metadata => !!metadata),
       )
@@ -59,7 +59,7 @@ export class Analytics2Component {
           const dimDraggables = Array.from(dimTables.values())[0]
             .map(dimTable => new DimDraggable(dimTable));
           const aggregateDraggables = Array.from(factTables.values())[0].columnsMetadata
-            .filter(column => ["sub_price", "total_price"].includes(column.name))
+            .filter((column: ColumnMetadata) => column.isAggregate)
             .map(column => new AggregateDraggable(column.name));
           let draggables = [...dimDraggables, ...aggregateDraggables];
           this.analyticsService.setAvailableDraggables(draggables);

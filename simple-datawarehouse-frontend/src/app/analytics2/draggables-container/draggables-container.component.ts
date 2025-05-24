@@ -4,6 +4,7 @@ import {AggregateDraggable, DimDraggable, Draggable, Metadata} from "@app/_model
 import {DragDropModule} from "primeng/dragdrop";
 import {ToolbarModule} from "primeng/toolbar";
 import {filter} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-draggables-container',
@@ -23,6 +24,7 @@ export class DraggablesContainerComponent {
     private analyticsService: AnalyticsService,
     private dragDropService: DragDropService) {
     this.analyticsService.availableDraggables$
+      .pipe(takeUntilDestroyed())
       .pipe(
         filter((draggables): draggables is Draggable[] => !!draggables)
       )

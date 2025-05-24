@@ -193,4 +193,8 @@ export class PivotQueryService {
     return foreignKeyMetadata.primaryKeyTableName + '.' + foreignKeyMetadata.primaryKeyColumnName;
   }
 
+  clear() {
+    this.pivotTableSubject.next(null);
+  }
+
 }

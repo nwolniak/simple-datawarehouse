@@ -27,7 +27,7 @@ export class BaseCreatorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.metadataService.metadata.subscribe(
+    this.metadataService.metadata$.subscribe(
       (metadata) => (this.metadata = metadata),
     );
     this.queryService.query.subscribe((query) => (this.query = query));

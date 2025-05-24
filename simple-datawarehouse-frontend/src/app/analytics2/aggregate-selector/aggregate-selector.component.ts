@@ -4,6 +4,8 @@ import {AnalyticsService, DragDropService, MetadataService} from "@app/_services
 import {AggregateDraggable} from "@app/_models";
 import {ToolbarModule} from "primeng/toolbar";
 import {AccordionModule} from "primeng/accordion";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-aggregate-selector',
@@ -23,8 +25,16 @@ export class AggregateSelectorComponent {
   constructor(
     private metadataService: MetadataService,
     private analyticsService: AnalyticsService,
-    private dragDropService: DragDropService) {
-    this.aggregates = this.analyticsService.getAggregates();
+    private dragDropService: DragDropService,
+    private messageService: MessageService,
+    ) {
+    this.analyticsService.aggregates$
+      .pipe(takeUntilDestroyed())
+      .subscribe(
+        (aggregates: AggregateDraggable[]) => {
+          this.aggregates = aggregates;
+        }
+      )
   }
 
   onDragStart(draggedItem: AggregateDraggable) {
@@ -46,6 +56,11 @@ export class AggregateSelectorComponent {
   onDrop() {
     const draggedItem = this.dragDropService.getDraggedItem();
     if (!draggedItem || !(draggedItem instanceof AggregateDraggable)) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'It can not be dropped here. Please select aggregate assignable item'
+      });
       return;
     }
     const selfDropEventHappened = this.aggregates.some(aggregate => aggregate.item == draggedItem.item);

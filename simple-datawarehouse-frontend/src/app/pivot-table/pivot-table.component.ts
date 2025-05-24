@@ -3,8 +3,9 @@ import {PivotTable} from "@app/_models";
 import {TableModule} from "primeng/table";
 import {KeyValuePipe, SlicePipe} from "@angular/common";
 import {LastKeyPipe} from "@app/_pipes";
-import {PivotQueryService} from "@app/_services";
-import {filter} from "rxjs";
+import {exportQueryResultToCSV, PivotQueryService, PivotTableExportService} from "@app/_services";
+import {MessageService} from "primeng/api";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-pivot-table',
@@ -20,38 +21,41 @@ import {filter} from "rxjs";
 })
 export class PivotTableComponent {
 
-  pivotTable!: PivotTable;
+  pivotTable: PivotTable | null = null;
 
-  constructor(private pivotTableService: PivotQueryService) {
+  constructor(
+    private pivotTableService: PivotQueryService,
+    private pivotTableExportService: PivotTableExportService,
+    private messageService: MessageService,
+  ) {
     this.pivotTableService.pivotTable
-      .pipe(
-        filter((pivotTable): pivotTable is PivotTable => !!pivotTable)
-      )
-      .subscribe((pivotTable: PivotTable) => {
+      .pipe(takeUntilDestroyed())
+      .subscribe((pivotTable: PivotTable | null) => {
           this.pivotTable = pivotTable;
           console.log(this.pivotTable);
         }
-      )
+      );
+    this.pivotTableExportService.exportRequested$
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        if (!this.pivotTable) {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Warning',
+            detail: 'No data available for download. Please run a query first.'}
+          );
+          return;
+        }
+        exportQueryResultToCSV(this.pivotTable.queryResult, 'pivot-table-data.csv');
+      });
   }
 
   protected checkRowLabelIsAvailable(key: string, value: string): boolean {
+    if (!this.pivotTable) {
+      return false;
+    }
     let keyValue = key + "=" + value;
     return this.pivotTable.rowLabelMap.has(keyValue);
-  }
-
-  protected getRowLabelSize(key: string, value: string): number {
-    let keyValue = key + "=" + value;
-    let result: number = this.pivotTable.rowLabelMap.get(keyValue)!;
-    return result;
-  }
-
-  isSameAsPrevious(rowIndex: number, key: string): boolean {
-    if (rowIndex === 0) return false;
-    const currMap = new Map(Object.entries(this.pivotTable.rowList[rowIndex]));
-    const prevMap = new Map(Object.entries(this.pivotTable.rowList[rowIndex - 1]));
-    const current = currMap.get(key);
-    const previous = prevMap.get(key);
-    return current === previous;
   }
 
   protected unsorted = () => 0;

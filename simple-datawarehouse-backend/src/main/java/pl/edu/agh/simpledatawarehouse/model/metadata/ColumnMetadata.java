@@ -8,6 +8,7 @@ public record ColumnMetadata(
         String size,
         String type,
         boolean isNullable,
-        boolean isAutoincrement
+        boolean isAutoincrement,
+        boolean isAggregate
 ) {
 }

@@ -32,6 +32,7 @@ public class PivotTableService {
 //        var rowRepresentationWithoutDuplicated = removeDuplicateRowLabels(rowRepresentation, rowLabelCountMap);
 
         return PivotTableResult.builder()
+                .queryResult(queryResult)
                 .rowLabelList(pivotTableQuery.rowLabels())
                 .rowLabelMap(rowLabelCountMap)
                 .columnLabelList(columnLabelCountList)

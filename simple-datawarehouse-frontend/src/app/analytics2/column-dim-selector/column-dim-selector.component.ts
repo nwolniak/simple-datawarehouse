@@ -3,6 +3,8 @@ import {DimDraggable} from "@app/_models";
 import {AnalyticsService, DragDropService, MetadataService} from "@app/_services";
 import {DragDropModule} from "primeng/dragdrop";
 import {ToolbarModule} from "primeng/toolbar";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-column-dim-selector',
@@ -21,8 +23,16 @@ export class ColumnDimSelectorComponent {
   constructor(
     private metadataService: MetadataService,
     private analyticsService: AnalyticsService,
-    private dragDropService: DragDropService) {
-    this.dimTables = this.analyticsService.getColumnDimTables();
+    private dragDropService: DragDropService,
+    private messageService: MessageService,
+  ) {
+    this.analyticsService.columnDimTables$
+      .pipe(takeUntilDestroyed())
+      .subscribe(
+        (dimTables: DimDraggable[]) => {
+          this.dimTables = dimTables;
+        }
+      )
   }
 
   onDragStart(draggedItem: DimDraggable) {
@@ -44,6 +54,11 @@ export class ColumnDimSelectorComponent {
   onDrop() {
     const draggedItem = this.dragDropService.getDraggedItem();
     if (!draggedItem || !(draggedItem instanceof DimDraggable)) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'It can not be dropped here. Please select a column assignable item'
+      });
       return;
     }
     const selfDropEventHappened = this.dimTables.some(dimTable => dimTable.item.tableName == draggedItem.item.tableName);

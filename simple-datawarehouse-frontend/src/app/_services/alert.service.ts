@@ -10,7 +10,7 @@ export class AlertService {
   private readonly _alerts: Observable<HttpErrorResponse[]>;
 
   constructor() {
-    this.alertsSubject = new BehaviorSubject<HttpErrorResponse[]>([]);
+    this.alertsSubject = new BehaviorSubject<HttpErrorResponse[]>(Array.of());
     this._alerts = this.alertsSubject.asObservable();
   }
 

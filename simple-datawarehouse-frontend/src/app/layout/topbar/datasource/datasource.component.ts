@@ -81,7 +81,7 @@ export class DatasourceComponent implements OnInit {
       this.parametersForm.value.password,
     );
     this.connectionService.connectToDatabase(connectionParameters).pipe(
-      switchMap(() => this.metadataService.getDatawarehouseMetadata().pipe(first())),
+      switchMap(() => this.metadataService.requestDatawarehouseMetadata().pipe(first())),
       tap((metadata: Metadata) => {
         this.createButtonSeverity = Severities.Primary;
         this.dialogVisible = false;

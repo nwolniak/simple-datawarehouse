@@ -29,6 +29,7 @@ export interface ColumnMetadata {
   type: string;
   isNullable: boolean;
   isAutoincrement: boolean;
+  isAggregate: boolean;
 
   isChecked?: boolean;
 }

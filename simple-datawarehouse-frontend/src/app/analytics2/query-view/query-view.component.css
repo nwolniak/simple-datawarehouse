@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  height: auto;
+}
+
+p-button {
+  display: flex;
+  height: 100%;
+}
+
+.query-block {
+  margin-bottom: 1rem;
+}
+
+.query-text {
+  font-size: 18px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

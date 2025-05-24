@@ -9,18 +9,18 @@ import {Metadata} from '@app/_models';
 })
 export class MetadataService {
   private metadataSubject: BehaviorSubject<Metadata | undefined>;
-  private readonly _metadata: Observable<Metadata | undefined>;
+  metadata$: Observable<Metadata | undefined>;
 
   constructor(private http: HttpClient) {
     this.metadataSubject = new BehaviorSubject<Metadata | undefined>(undefined);
-    this._metadata = this.metadataSubject.asObservable();
+    this.metadata$ = this.metadataSubject.asObservable();
   }
 
-  public get metadata(): Observable<Metadata | undefined> {
-    return this._metadata;
+  public get metadata(): Metadata | undefined {
+    return this.metadataSubject.getValue();
   }
 
-  getDatawarehouseMetadata(): Observable<Metadata> {
+  requestDatawarehouseMetadata(): Observable<Metadata> {
     return this.http.get<Metadata>(`${environment.metadataUrl}`).pipe(
       tap((metadata: Metadata) => {
         console.info('Metadata fetched successfully.');
@@ -32,4 +32,9 @@ export class MetadataService {
       })
     );
   }
+
+  reset() {
+    this.metadataSubject.next(this.metadataSubject.value);
+  }
+
 }

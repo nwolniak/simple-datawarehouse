@@ -20,6 +20,7 @@ public class MetadataService {
     public MetadataDto getMetadata() {
         var tablesMetadata = metaDataRepository.getTablesMetadata();
         var factTables = metadataExtractor.extractFactTables(tablesMetadata);
+        factTables = metadataExtractor.markAggregateColumns(factTables);
         var dimTables = metadataExtractor.extractDimTables(tablesMetadata, factTables);
         var metadata = Metadata.builder()
                                .database(metaDataRepository.getDatabase())
