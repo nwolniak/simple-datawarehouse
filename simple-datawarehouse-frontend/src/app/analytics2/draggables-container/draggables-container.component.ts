@@ -46,7 +46,7 @@ export class DraggablesContainerComponent {
     if (!this.dragDropService.selfDropEventHappened && this.dragDropService.wasDroppedSuccessfully) {
       this.draggables = this.draggables.reduce((accumulatedDraggables, draggable) => {
         if (draggable instanceof DimDraggable) {
-          if (draggable.item.tableName !== (draggedItem as DimDraggable).item.tableName) {
+          if (draggable.tableMetadata.tableName !== (draggedItem as DimDraggable).tableMetadata.tableName) {
             accumulatedDraggables.push(draggable);
           }
         } else if (draggable instanceof AggregateDraggable) {
@@ -67,7 +67,7 @@ export class DraggablesContainerComponent {
       return;
     }
     const selfDropEventHappened = this.draggables.some((draggable) =>
-      (draggable instanceof DimDraggable && draggable.item.tableName === (draggedItem as DimDraggable).item.tableName) ||
+      (draggable instanceof DimDraggable && draggable.tableMetadata.tableName === (draggedItem as DimDraggable).tableMetadata.tableName) ||
       (draggable instanceof AggregateDraggable && draggable.item === (draggedItem as AggregateDraggable).item)
     );
     if (selfDropEventHappened) {
@@ -84,7 +84,7 @@ export class DraggablesContainerComponent {
   }
 
   protected dimLabel(draggable: Draggable): string {
-    return (draggable as DimDraggable).item.tableName;
+    return (draggable as DimDraggable).tableName;
   }
 
   protected aggregateLabel(draggable: Draggable): string {

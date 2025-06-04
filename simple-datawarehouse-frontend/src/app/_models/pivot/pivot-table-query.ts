@@ -1,4 +1,4 @@
-import {Query} from "@app/_models/query";
+import {Query} from "@app/_models/query/query";
 
 export interface PivotTableQuery {
   query: Query;

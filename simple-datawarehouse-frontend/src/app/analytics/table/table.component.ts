@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Button } from 'primeng/button';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { NgForOf, NgIf } from '@angular/common';
-import { PrimeTemplate } from 'primeng/api';
-import { ExportCSVOptions, TableFilterEvent, TableModule } from 'primeng/table';
-import { TooltipModule } from 'primeng/tooltip';
-import { Having, Query, Table, Where } from '@app/_models';
-import { QueryService } from '@app/_services';
-import { Table as PrimeNGTable } from 'primeng/table/table';
-import { PaginatorModule } from 'primeng/paginator';
-import { DialogModule } from 'primeng/dialog';
-import { AlertListComponent } from '@app/analytics/table/alert-list/alert-list.component';
-import { cloneDeep } from 'lodash-es';
-import { QueryComponent } from '@app/analytics/table/query/query.component';
+import {Component, OnInit} from '@angular/core';
+import {Button} from 'primeng/button';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {NgForOf, NgIf} from '@angular/common';
+import {PrimeTemplate} from 'primeng/api';
+import {ExportCSVOptions, TableFilterEvent, TableModule} from 'primeng/table';
+import {TooltipModule} from 'primeng/tooltip';
+import {Condition, Query, Table} from '@app/_models';
+import {QueryService} from '@app/_services';
+import {Table as PrimeNGTable} from 'primeng/table/table';
+import {PaginatorModule} from 'primeng/paginator';
+import {DialogModule} from 'primeng/dialog';
+import {AlertListComponent} from '@app/analytics/table/alert-list/alert-list.component';
+import {cloneDeep} from 'lodash-es';
+import {QueryComponent} from '@app/analytics/table/query/query.component';
 import {delay} from "rxjs";
 
 @Component({
@@ -145,8 +145,8 @@ export class TableComponent implements OnInit {
 
   onColumnFilter(event: TableFilterEvent) {
     this.saveFilterState(event);
-    const whereList: Where[] = [];
-    const havingList: Having[] = [];
+    const whereList: Condition[] = [];
+    const havingList: Condition[] = [];
     const filters = event.filters;
     if (!filters) {
       return;
@@ -164,15 +164,15 @@ export class TableComponent implements OnInit {
       }
       if (column.aggregate !== 'None') {
         havingList.push({
-          columnName: column.name,
+          leftOperand: column.name,
           operator: this.filtersMap[operator],
-          value: value,
+          rightOperand: value,
         });
       } else {
         whereList.push({
-          columnName: column.name,
+          leftOperand: column.name,
           operator: this.filtersMap[operator],
-          value: value,
+          rightOperand: value,
         });
       }
     });

@@ -5,13 +5,17 @@ import {DragDropModule} from "primeng/dragdrop";
 import {ToolbarModule} from "primeng/toolbar";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MessageService} from "primeng/api";
+import {MultiSelectModule} from "primeng/multiselect";
+import {DimDraggableItemComponent} from "@app/analytics2/dim-draggable-item/dim-draggable-item.component";
 
 @Component({
   selector: 'app-column-dim-selector',
   standalone: true,
   imports: [
     DragDropModule,
-    ToolbarModule
+    ToolbarModule,
+    MultiSelectModule,
+    DimDraggableItemComponent
   ],
   templateUrl: './column-dim-selector.component.html',
   styleUrl: './column-dim-selector.component.css'
@@ -45,7 +49,7 @@ export class ColumnDimSelectorComponent {
       return;
     }
     if (!this.dragDropService.selfDropEventHappened && this.dragDropService.wasDroppedSuccessfully) {
-      this.dimTables = this.dimTables.filter(dimTable => dimTable.item.tableName !== draggedItem.item.tableName);
+      this.dimTables = this.dimTables.filter(dimTable => dimTable.tableMetadata.tableName !== draggedItem.tableMetadata.tableName);
       this.analyticsService.setColumnDimTables(this.dimTables);
     }
     this.dragDropService.clear();
@@ -61,7 +65,7 @@ export class ColumnDimSelectorComponent {
       });
       return;
     }
-    const selfDropEventHappened = this.dimTables.some(dimTable => dimTable.item.tableName == draggedItem.item.tableName);
+    const selfDropEventHappened = this.dimTables.some(dimTable => dimTable.tableMetadata.tableName == draggedItem.tableMetadata.tableName);
     if (selfDropEventHappened) {
       this.dragDropService.setSelfDropEventHappened();
       return;

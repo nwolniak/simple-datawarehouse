@@ -1,4 +1,4 @@
-import {QueryResult} from "@app/_models/query-result";
+import {QueryResult} from "@app/_models/query/query-result";
 
 export interface PivotTable {
   queryResult: QueryResult;
@@ -6,4 +6,5 @@ export interface PivotTable {
   rowLabelMap: Map<string, number>;
   columnLabelList: Map<string, number>[];
   rowList: Map<string, any>[];
+  isPivoted: boolean;
 }

@@ -25,14 +25,18 @@ public class PivotTableService {
     public PivotTableResult getPivotTable(PivotTableQuery pivotTableQuery) {
         log.info(pivotTableQuery.toString());
         QueryResult queryResult = queryService.executeQuery(pivotTableQuery.query());
+        var pivotTableResultBuilder = PivotTableResult.builder()
+                .queryResult(queryResult)
+                .isPivoted(pivotTableQuery.isPivoted());
+        if (!pivotTableQuery.isPivoted()) {
+            return pivotTableResultBuilder.build();
+        }
         var combinedRowList = combineRows(pivotTableQuery, queryResult.rowList());
         var rowRepresentation = rowRepresentation(combinedRowList);
         var rowLabelCountMap = countRowLabelSizes(combinedRowList);
         var columnLabelCountList = countColumnLabelSizes(combinedRowList);
 //        var rowRepresentationWithoutDuplicated = removeDuplicateRowLabels(rowRepresentation, rowLabelCountMap);
-
-        return PivotTableResult.builder()
-                .queryResult(queryResult)
+        return pivotTableResultBuilder
                 .rowLabelList(pivotTableQuery.rowLabels())
                 .rowLabelMap(rowLabelCountMap)
                 .columnLabelList(columnLabelCountList)

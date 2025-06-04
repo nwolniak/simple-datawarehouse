@@ -1,4 +1,4 @@
-@if (pivotTable) {
+@if (pivotTable && pivotTable.isPivoted) {
   <p-table
     [value]="pivotTable.rowList"
     [scrollable]="true"
@@ -35,7 +35,6 @@
         </tr>
       }
     </ng-template>
-
     <ng-template pTemplate="body" let-row>
       <tr>
         <!-- Data for Row Labels-->
@@ -60,6 +59,28 @@
       </tr>
     </ng-template>
 
+  </p-table>
+} @else if (pivotTable && !pivotTable.isPivoted) {
+  <p-table
+    [value]="pivotTable.queryResult.rowList"
+    [scrollable]="true"
+    scrollHeight="flex"
+    frozenWidth="20px"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        @for (columnLabel of pivotTable.queryResult.columnList; track columnLabel) {
+          <th>{{ columnLabel }}</th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr>
+        @for (rowElement of row | keyvalue; track rowElement) {
+          <td>{{ rowElement.value }}</td>
+        }
+      </tr>
+    </ng-template>
   </p-table>
 }
 

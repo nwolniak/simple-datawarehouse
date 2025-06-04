@@ -2,7 +2,18 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "@app/_services/alert.service";
 import {BehaviorSubject, catchError, Observable, Subscription, tap, throwError} from "rxjs";
-import {Column, Condition, Join, OrderBy, PivotTable, PivotTableQuery, TableMetadata} from "@app/_models";
+import {
+  Column,
+  ColumnFilter,
+  ColumnSelectable,
+  Condition,
+  DimDraggable,
+  Join,
+  OrderBy,
+  PivotTable,
+  PivotTableQuery,
+  TableMetadata
+} from "@app/_models";
 import {environment} from "@environments/environment";
 import {AnalyticsService} from "@app/_services/analytics.service";
 
@@ -10,13 +21,6 @@ import {AnalyticsService} from "@app/_services/analytics.service";
   providedIn: 'root'
 })
 export class PivotQueryService {
-
-  dimMappings = new Map(Object.entries({
-    "dim_time": "year",
-    "dim_products": "product_name",
-    "dim_customers": "last_name",
-    "dim_addresses": "city"
-  }));
 
   private querySubject: BehaviorSubject<PivotTableQuery>;
   query: Observable<PivotTableQuery>;
@@ -61,7 +65,7 @@ export class PivotQueryService {
         }))
       .subscribe({
         next: (table: PivotTable) => {
-          table.rowLabelMap = new Map(Object.entries(table.rowLabelMap));
+          table.rowLabelMap = new Map(Object.entries(table.rowLabelMap ?? {}));
           this.pivotTableSubject.next(table);
         },
         error: (error: HttpErrorResponse) => {
@@ -74,16 +78,18 @@ export class PivotQueryService {
     const factTable: TableMetadata = this.analyticsService.getFactTable()!;
     const table: string = factTable.tableName;
     const columns: Column[] = this.prepareQueryColumns(factTable);
+    const whereList: Condition[] = this.prepareWhereStatements();
     const joins: Join[] = this.prepareJoins(factTable);
     const groupByList: string[] = this.prepareGroupByList(columns);
     const orderByList: OrderBy[] = this.prepareOrderByList(columns);
 
     const rowLabels = this.prepareQueryRowLabels();
     const columnLabels = this.prepareQueryColumnLabels();
-    const aggregateLabels = this.prepareQueryAggregateLabels(factTable);
+    const aggregateLabels = this.prepareQueryAggregateLabels();
     const pivotQuery = this.querySubject.value;
     pivotQuery.query.table = table;
     pivotQuery.query.columnList = columns;
+    pivotQuery.query.whereList = whereList;
     pivotQuery.query.joinList = joins;
     pivotQuery.query.groupByList = groupByList;
     pivotQuery.query.orderByList = orderByList;
@@ -96,19 +102,15 @@ export class PivotQueryService {
   private prepareQueryColumns(factTable: TableMetadata): Column[] {
     // Row + Column Selections
     const rowColItems: Column[] = [...this.analyticsService.getRowDimTables(), ...this.analyticsService.getColumnDimTables()]
-      .map(draggable => draggable.item)
-      .filter(tableMetadata => this.dimMappings.has(tableMetadata.tableName))
-      .flatMap(tableMetadata => {
-        let tableName = tableMetadata.tableName;
-        let columnNames = tableMetadata.columnsMetadata
-          .filter(columnMetadata => columnMetadata.name == this.dimMappings.get(tableName))
-          .map(columnMetadata => columnMetadata.name);
-        return columnNames.map(columnName => new Column(
-          tableName + "." + columnName,
-          columnName,
+      .flatMap((dimDraggable: DimDraggable) => {
+        let columnsSelected = dimDraggable.selectedColumns
+          .filter((column: ColumnSelectable) => column.selected);
+        return columnsSelected.map(columnSelected => new Column(
+          dimDraggable.tableName + "." + columnSelected.columnName,
+          columnSelected.columnName,
           "None"
-        ));
-      })
+        ))
+      });
     // Aggregate Selections
     const aggregateItems: Column[] = this.analyticsService.getAggregates()
       .map(draggable => draggable.item)
@@ -120,24 +122,32 @@ export class PivotQueryService {
     return [...rowColItems, ...aggregateItems];
   }
 
+  private prepareWhereStatements(): Condition[] {
+    return [...this.analyticsService.getRowDimTables(), ...this.analyticsService.getColumnDimTables()]
+      .flatMap((dimDraggable: DimDraggable) => {
+        return dimDraggable.columnFilters.map((columnFilter: ColumnFilter) => new Condition(
+            columnFilter.columnName,
+            columnFilter.operator,
+            columnFilter.value
+          )
+        )
+      });
+  }
+
   private prepareJoins(factTable: TableMetadata): Join[] {
-    const joinItems: Join[] = [...this.analyticsService.getRowDimTables(), ...this.analyticsService.getColumnDimTables()]
-      .map(draggable => draggable.item)
-      .filter(tableMetadata => this.dimMappings.has(tableMetadata.tableName))
-      .map(tableMetadata => {
-        let tableName = tableMetadata.tableName;
+    return [...this.analyticsService.getRowDimTables(), ...this.analyticsService.getColumnDimTables()]
+      .map((dimDraggable: DimDraggable) => {
         let conditions: Condition[] = [new Condition(
-          this.leftOperand(factTable, tableMetadata),
+          this.leftOperand(factTable, dimDraggable.tableMetadata),
           "=",
-          this.rightOperand(factTable, tableMetadata)
-        )]
+          this.rightOperand(factTable, dimDraggable.tableMetadata)
+        )];
         return new Join(
           "INNER",
-          tableName,
+          dimDraggable.tableName,
           conditions
         );
-      })
-    return joinItems;
+      });
   }
 
   private prepareGroupByList(columns: Column[]): string[] {
@@ -156,18 +166,20 @@ export class PivotQueryService {
   }
 
   private prepareQueryRowLabels(): string[] {
-    const dimsSelected = this.analyticsService.getRowDimTables().map(draggable => draggable.item);
-    return dimsSelected
-      .map(dimSelected => this.dimMappings.get(dimSelected.tableName)!);
+    return this.analyticsService.getRowDimTables()
+      .flatMap((dimDraggable: DimDraggable) => dimDraggable.selectedColumns)
+      .filter((columnSelected: ColumnSelectable)=> columnSelected.selected)
+      .map((columnSelected: ColumnSelectable) => columnSelected.columnName);
   }
 
   private prepareQueryColumnLabels(): string[] {
-    const dimsSelected = this.analyticsService.getColumnDimTables().map(draggable => draggable.item);
-    return dimsSelected
-      .map(dimSelected => this.dimMappings.get(dimSelected.tableName)!);
+    return this.analyticsService.getColumnDimTables()
+      .flatMap((dimDraggable: DimDraggable) => dimDraggable.selectedColumns)
+      .filter((columnSelected: ColumnSelectable)=> columnSelected.selected)
+      .map((columnSelected: ColumnSelectable) => columnSelected.columnName);
   }
 
-  private prepareQueryAggregateLabels(factTable: TableMetadata): string[] {
+  private prepareQueryAggregateLabels(): string[] {
     return this.analyticsService.getAggregates().map(draggable => draggable.item);
   }
 

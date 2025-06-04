@@ -11,4 +11,5 @@ public record PivotTableResult(
         List<String> rowLabelList,
         Map<String, Long> rowLabelMap,
         List<Map<String, Long>> columnLabelList,
-        List<Map<String, Object>> rowList) {}
+        List<Map<String, Object>> rowList,
+        boolean isPivoted) {}

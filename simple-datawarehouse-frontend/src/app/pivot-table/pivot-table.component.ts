@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {PivotTable} from "@app/_models";
 import {TableModule} from "primeng/table";
-import {KeyValuePipe, SlicePipe} from "@angular/common";
+import {KeyValuePipe, NgForOf, SlicePipe} from "@angular/common";
 import {LastKeyPipe} from "@app/_pipes";
 import {exportQueryResultToCSV, PivotQueryService, PivotTableExportService} from "@app/_services";
 import {MessageService} from "primeng/api";
@@ -15,6 +15,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     KeyValuePipe,
     SlicePipe,
     LastKeyPipe,
+    NgForOf,
   ],
   templateUrl: './pivot-table.component.html',
   styleUrl: './pivot-table.component.css'

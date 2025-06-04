@@ -25,7 +25,7 @@ export function exportQueryResultToCSV(result: QueryResult, filename: string = '
   csv.push(result.columnList.join(','));
   //rows
   for (const row of result.rowList) {
-    const rowValues: string[] = result.columnList.map(colum => row[colum]);
+    const rowValues: string[] = result.columnList.map(colum => row.get(colum));
     csv.push(rowValues.join(','));
   }
   const csvContent = csv.join(';\n');

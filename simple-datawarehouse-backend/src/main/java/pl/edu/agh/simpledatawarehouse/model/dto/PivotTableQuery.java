@@ -8,4 +8,10 @@ public record PivotTableQuery(
         Query query,
         List<String> rowLabels,
         List<String> columnLabels,
-        List<String> valueLabels) {}
+        List<String> valueLabels) {
+
+    public boolean isPivoted() {
+        return !rowLabels.isEmpty();
+    }
+
+}

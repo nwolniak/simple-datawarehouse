@@ -10,14 +10,14 @@
 .left-wrapper {
   display: flex;
   flex-direction: column;
-  width: 10%;
+  width: 15%;
   height: 100%;
 }
 
 .right-wrapper {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 85%;
   min-height: 100%;
   max-height: 100%;
 }

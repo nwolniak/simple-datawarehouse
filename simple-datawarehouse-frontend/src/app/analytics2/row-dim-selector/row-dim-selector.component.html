@@ -7,7 +7,7 @@
          pDraggable
          (onDragStart)="onDragStart(dimTable)"
          (onDragEnd)="onDragEnd()">
-      {{ dimTable.item.tableName }}
+      <app-dim-draggable-item [dimDraggable]="dimTable"></app-dim-draggable-item>
     </div>
   }
 </div>

@@ -1,4 +1,4 @@
-import { Column } from '@app/_models/query';
+import { Column } from '@app/_models/query/query';
 
 export interface Table {
   tableName: string;
