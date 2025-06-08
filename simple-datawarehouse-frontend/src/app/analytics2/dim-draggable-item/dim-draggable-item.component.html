@@ -23,7 +23,7 @@
                  [options]="_selectableOptions"
                  [(ngModel)]="_selectedOptions"
                  (onChange)="onColumnOptionChange($event)"
-                 [filter]="true"
+                 [filter]="false"
                  styleClass="unstyled-multiselect">
   </p-multiSelect>
 </p-overlayPanel>
@@ -33,10 +33,10 @@
   <div class="filters-overlay-panel">
     <div class="p-fluid p-3" style="width: 250px;">
       <label for="columnSelected">Column</label>
-      <p-dropdown #columnSelected
-                  [options]="_selectedOptions"
-                  [(ngModel)]="_selectedColumnForFiltering"
-                  [style]="{ width: '100%' }">
+      <p-dropdown
+        [options]="_selectedOptions"
+        [(ngModel)]="_selectedColumnForFiltering"
+        [style]="{ width: '100%' }">
       </p-dropdown>
       <label for="filter">Filter</label>
       <p-dropdown #filter

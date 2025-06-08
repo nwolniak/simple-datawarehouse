@@ -14,15 +14,29 @@ p-table {
   max-height: 100%;
 }
 
-/*TODO refactor it - remove ::ng-deep*/
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-  padding: 0.1rem 0.3rem;
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  text-align: center;
+  vertical-align: middle;
+  padding: 5px;
   font-size: 0.8rem;
 }
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > th {
+  text-align: left;
+  vertical-align: middle;
+}
 
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > th, td {
   height: 40px;
+  padding: 5px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* fixes bug when more than 1 frozenColumn is used*/
+:host ::ng-deep .p-scroller {
+  overflow-anchor: none;
 }
 
 td, th {

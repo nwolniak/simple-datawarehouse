@@ -1,11 +1,12 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, ViewContainerRef} from '@angular/core';
 import {PivotTable} from "@app/_models";
-import {TableModule} from "primeng/table";
-import {KeyValuePipe, NgForOf, SlicePipe} from "@angular/common";
+import {TableLazyLoadEvent, TableModule} from "primeng/table";
+import {KeyValuePipe, SlicePipe} from "@angular/common";
 import {LastKeyPipe} from "@app/_pipes";
 import {exportQueryResultToCSV, PivotQueryService, PivotTableExportService} from "@app/_services";
 import {MessageService} from "primeng/api";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {SkeletonModule} from "primeng/skeleton";
 
 @Component({
   selector: 'app-pivot-table',
@@ -15,16 +16,26 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     KeyValuePipe,
     SlicePipe,
     LastKeyPipe,
-    NgForOf,
+    SkeletonModule,
+
   ],
   templateUrl: './pivot-table.component.html',
   styleUrl: './pivot-table.component.css'
 })
-export class PivotTableComponent {
+export class PivotTableComponent implements AfterViewInit, OnDestroy {
+
+  scrollHeight: string = '400px';
+  private resizeObserver!: ResizeObserver;
+  // rowsBuffered: number = 20;
+  // firstIndexResettable: number = 0;
+  // tableIsReady: boolean = false;
 
   pivotTable: PivotTable | null = null;
+  // virtualRowsPivoted!: Map<string, any>[];
+  // virtualRowsNotPivoted!: Map<string, any>[];
 
   constructor(
+    private host: ViewContainerRef,
     private pivotTableService: PivotQueryService,
     private pivotTableExportService: PivotTableExportService,
     private messageService: MessageService,
@@ -33,6 +44,18 @@ export class PivotTableComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((pivotTable: PivotTable | null) => {
           this.pivotTable = pivotTable;
+          if (!this.pivotTable) {
+            return;
+          }
+          // if (this.pivotTable.isPivoted) {
+          //   const rowsPivotedLength = this.pivotTable.rowList.length;
+          //   this.virtualRowsPivoted = Array.from({length: rowsPivotedLength});
+          //   this.lazyLoadPivoted({first: 0, rows: this.rowsBuffered})
+          // } else {
+          //   const rowsNotPivotedLength = this.pivotTable.queryResult.rowList.length;
+          //   this.virtualRowsNotPivoted = Array.from({length: rowsNotPivotedLength});
+          //   this.lazyLoadNotPivoted({first: 0, rows: this.rowsBuffered})
+          // }
           console.log(this.pivotTable);
         }
       );
@@ -41,23 +64,59 @@ export class PivotTableComponent {
       .subscribe(() => {
         if (!this.pivotTable) {
           this.messageService.add({
-            severity: 'warn',
-            summary: 'Warning',
-            detail: 'No data available for download. Please run a query first.'}
+              severity: 'warn',
+              summary: 'Warning',
+              detail: 'No data available for download. Please run a query first.'
+            }
           );
           return;
         }
         exportQueryResultToCSV(this.pivotTable.queryResult, 'pivot-table-data.csv');
       });
+
   }
 
-  protected checkRowLabelIsAvailable(key: string, value: string): boolean {
-    if (!this.pivotTable) {
-      return false;
-    }
-    let keyValue = key + "=" + value;
-    return this.pivotTable.rowLabelMap.has(keyValue);
+  ngAfterViewInit(): void {
+    this.resizeObserver = new ResizeObserver(() => this.updateScrollHeight());
+    this.resizeObserver.observe(this.host.element.nativeElement);
+    this.resizeObserver.observe(document.body);
   }
+
+  ngOnDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  updateScrollHeight() {
+    const offsetTop = this.host.element.nativeElement.getBoundingClientRect().top;
+    const availableHeight = window.innerHeight - offsetTop - 1;
+    this.scrollHeight = `${availableHeight}px`;
+  }
+
+  // lazyLoadPivoted(event: TableLazyLoadEvent) {
+  //   setTimeout(() => {
+  //     if (!this.pivotTable) {
+  //       return;
+  //     }
+  //     const first = event.first ?? 0;
+  //     const rows = event.rows ?? this.rowsBuffered;
+  //     let loadedRows = this.pivotTable.rowList.slice(first, first + rows);
+  //     Array.prototype.splice.apply(this.virtualRowsPivoted, [first, rows, ...loadedRows]);
+  //   }, 200);
+  // }
+  //
+  // lazyLoadNotPivoted(event: TableLazyLoadEvent) {
+  //   setTimeout(() => {
+  //     if (!this.pivotTable) {
+  //       return;
+  //     }
+  //     const first = event.first ?? 0;
+  //     const rows = event.rows ?? this.rowsBuffered;
+  //     let loadedRows = this.pivotTable.queryResult.rowList.slice(first, first + rows);
+  //     Array.prototype.splice.apply(this.virtualRowsNotPivoted, [first, rows, ...loadedRows]);
+  //   }, 200);
+  // }
 
   protected unsorted = () => 0;
 

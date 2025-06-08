@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
 import {DragDropModule} from "primeng/dragdrop";
 import {AnalyticsService, DragDropService, MetadataService} from "@app/_services";
-import {AggregateDraggable} from "@app/_models";
+import {AggregateDraggable, DimDraggable} from "@app/_models";
 import {ToolbarModule} from "primeng/toolbar";
 import {AccordionModule} from "primeng/accordion";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MessageService} from "primeng/api";
+import {OrderListModule} from "primeng/orderlist";
 
 @Component({
   selector: 'app-aggregate-selector',
@@ -13,7 +14,8 @@ import {MessageService} from "primeng/api";
   imports: [
     DragDropModule,
     ToolbarModule,
-    AccordionModule
+    AccordionModule,
+    OrderListModule
   ],
   templateUrl: './aggregate-selector.component.html',
   styleUrl: './aggregate-selector.component.css'
@@ -72,4 +74,6 @@ export class AggregateSelectorComponent {
     this.analyticsService.setAggregates(this.aggregates);
     this.dragDropService.setWasDroppedSuccessfully();
   }
+
+  protected readonly DimDraggable = DimDraggable;
 }

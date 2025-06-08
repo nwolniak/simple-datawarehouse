@@ -5,13 +5,15 @@ import {DragDropModule} from "primeng/dragdrop";
 import {ToolbarModule} from "primeng/toolbar";
 import {filter} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {OrderListModule} from "primeng/orderlist";
 
 @Component({
   selector: 'app-draggables-container',
   standalone: true,
   imports: [
     DragDropModule,
-    ToolbarModule
+    ToolbarModule,
+    OrderListModule
   ],
   templateUrl: './draggables-container.component.html',
   styleUrl: './draggables-container.component.css'
@@ -46,16 +48,16 @@ export class DraggablesContainerComponent {
     if (!this.dragDropService.selfDropEventHappened && this.dragDropService.wasDroppedSuccessfully) {
       this.draggables = this.draggables.reduce((accumulatedDraggables, draggable) => {
         if (draggable instanceof DimDraggable) {
-          if (draggable.tableMetadata.tableName !== (draggedItem as DimDraggable).tableMetadata.tableName) {
+          if (draggable.tableName !== (draggedItem as DimDraggable).tableName) {
             accumulatedDraggables.push(draggable);
           }
-        } else if (draggable instanceof AggregateDraggable) {
+        } else {
           if (draggable.item !== (draggedItem as AggregateDraggable).item) {
             accumulatedDraggables.push(draggable);
           }
         }
         return accumulatedDraggables;
-      }, [] as (DimDraggable | AggregateDraggable)[]);
+      }, [] as (Draggable)[]);
       this.analyticsService.setAvailableDraggables(this.draggables);
     }
     this.dragDropService.clear();
@@ -67,8 +69,8 @@ export class DraggablesContainerComponent {
       return;
     }
     const selfDropEventHappened = this.draggables.some((draggable) =>
-      (draggable instanceof DimDraggable && draggable.tableMetadata.tableName === (draggedItem as DimDraggable).tableMetadata.tableName) ||
-      (draggable instanceof AggregateDraggable && draggable.item === (draggedItem as AggregateDraggable).item)
+      (draggable instanceof DimDraggable && draggedItem instanceof DimDraggable && draggable.tableName === (draggedItem as DimDraggable).tableName) ||
+      (draggable instanceof AggregateDraggable && draggedItem instanceof AggregateDraggable && draggable.item === (draggedItem as AggregateDraggable).item)
     );
     if (selfDropEventHappened) {
       this.dragDropService.setSelfDropEventHappened();

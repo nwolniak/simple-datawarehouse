@@ -2,9 +2,12 @@
   <p-table
     [value]="pivotTable.rowList"
     [scrollable]="true"
-    scrollHeight="flex"
-    frozenWidth="20px"
-    responsiveLayout="scroll">
+    [virtualScroll]="true"
+    [virtualScrollItemSize]="40"
+    [scrollHeight]="scrollHeight">
+    <!--    [rows]="rowsBuffered"-->
+    <!--    [lazy]="true"-->
+    <!--    (onLazyLoad)="lazyLoadPivoted($event)"-->
     <ng-template pTemplate="header">
       <tr>
         <!-- Row Labels -->
@@ -35,49 +38,71 @@
         </tr>
       }
     </ng-template>
-    <ng-template pTemplate="body" let-row>
-      <tr>
+    <ng-template pTemplate="body" let-rowData>
+      <tr style="height: 40px">
         <!-- Data for Row Labels-->
-        @for (rowElement of row | keyvalue: unsorted | slice: 0:pivotTable.rowLabelList.length; track rowElement.key) {
-          @if (checkRowLabelIsAvailable(String(rowElement.key), String(rowElement.value))) {
-            <th
-              pFrozenColumn>
-              <!--[attr.rowspan]="getRowLabelSize(String(rowElement.key), String(rowElement.value))">-->
-              {{ rowElement.value ?? "-" }}
-            </th>
-          } @else {
-            <th pFrozenColumn>
-            </th>
-          }
+        @for (
+          rowElement of rowData | keyvalue: unsorted | slice: 0:pivotTable.rowLabelList.length; track rowElement.key) {
+          <th pFrozenColumn>
+            {{ rowElement.value ?? "-" }}
+          </th>
         }
         <!-- Data for Column Labels -->
         @for (columnLabel of pivotTable.columnLabelList.slice(-1)[0] | keyvalue: unsorted; track columnLabel.key) {
           <td>
-            {{ row[columnLabel.key] ?? "-" }}
+            {{ rowData[columnLabel.key] ?? "-" }}
           </td>
         }
       </tr>
     </ng-template>
-
+    <ng-template pTemplate="loadingbody">
+      <tr style="height: 40px">
+        @for (rowLabel of pivotTable.rowLabelList; track rowLabel) {
+          <td>
+            <p-skeleton></p-skeleton>
+          </td>
+        }
+        @for (columnLabel of pivotTable.columnLabelList.slice(-1)[0] | keyvalue: unsorted; track columnLabel) {
+          <td>
+            <p-skeleton></p-skeleton>
+          </td>
+        }
+      </tr>
+    </ng-template>
   </p-table>
 } @else if (pivotTable && !pivotTable.isPivoted) {
   <p-table
+    [columns]="pivotTable.queryResult.columnList"
     [value]="pivotTable.queryResult.rowList"
     [scrollable]="true"
-    scrollHeight="flex"
-    frozenWidth="20px"
-    responsiveLayout="scroll">
-    <ng-template pTemplate="header">
+    [virtualScroll]="true"
+    [virtualScrollItemSize]="40"
+    [scrollHeight]="scrollHeight">
+    <!--    [rows]="rowsBuffered"-->
+    <!--    [lazy]="true"-->
+    <!--    [lazyLoadOnInit]="true"-->
+    <!--    (onLazyLoad)="lazyLoadNotPivoted($event)"-->
+    <!--    [(first)]="firstIndexResettable"-->
+    <ng-template pTemplate="header" let-columns>
       <tr>
-        @for (columnLabel of pivotTable.queryResult.columnList; track columnLabel) {
+        @for (columnLabel of columns; track columnLabel) {
           <th>{{ columnLabel }}</th>
         }
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-row>
-      <tr>
-        @for (rowElement of row | keyvalue; track rowElement) {
+    <ng-template pTemplate="body" let-rowData>
+      <tr style="height: 40px">
+        @for (rowElement of rowData | keyvalue; track rowElement) {
           <td>{{ rowElement.value }}</td>
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="loadingbody" let-columns="columns">
+      <tr style="height: 40px">
+        @for (columnLabel of columns; track columnLabel) {
+          <td>
+            <p-skeleton></p-skeleton>
+          </td>
         }
       </tr>
     </ng-template>
