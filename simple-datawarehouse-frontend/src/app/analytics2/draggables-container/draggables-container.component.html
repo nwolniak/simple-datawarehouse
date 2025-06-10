@@ -1,12 +1,15 @@
-<div class="box-container" pDroppable (onDrop)="onDrop()">
+<div class="box-container"
+     id="draggables-container"
+     cdkDropList
+     [cdkDropListConnectedTo]="['column-selector', 'row-selector', 'aggregate-selector']"
+     (cdkDropListDropped)="onDrop($event)">
   <div class="caption">
     <h5>Options</h5>
   </div>
   @for (draggable of draggables; track draggable) {
     <div class="box-item"
-         pDraggable
-         (onDragStart)="onDragStart(draggable)"
-         (onDragEnd)="onDragEnd()">
+         cdkDrag
+         [cdkDragData]="draggable">
       @if (instanceof(draggable, DimDraggable)) {
         {{ dimLabel(draggable) }}
       } @else if (instanceof(draggable, AggregateDraggable)) {

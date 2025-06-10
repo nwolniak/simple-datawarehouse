@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
-import {DimDraggable} from "@app/_models";
-import {AnalyticsService, DragDropService, MetadataService} from "@app/_services";
+import {DimDraggable, Draggable} from "@app/_models";
+import {AnalyticsService} from "@app/_services";
 import {DragDropModule} from "primeng/dragdrop";
 import {ToolbarModule} from "primeng/toolbar";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {MessageService} from "primeng/api";
 import {MultiSelectModule} from "primeng/multiselect";
 import {DimDraggableItemComponent} from "@app/analytics2/dim-draggable-item/dim-draggable-item.component";
+import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-column-dim-selector',
@@ -15,7 +15,9 @@ import {DimDraggableItemComponent} from "@app/analytics2/dim-draggable-item/dim-
     DragDropModule,
     ToolbarModule,
     MultiSelectModule,
-    DimDraggableItemComponent
+    DimDraggableItemComponent,
+    CdkDropList,
+    CdkDrag
   ],
   templateUrl: './column-dim-selector.component.html',
   styleUrl: './column-dim-selector.component.css'
@@ -24,12 +26,7 @@ export class ColumnDimSelectorComponent {
 
   dimTables: DimDraggable[] = [];
 
-  constructor(
-    private metadataService: MetadataService,
-    private analyticsService: AnalyticsService,
-    private dragDropService: DragDropService,
-    private messageService: MessageService,
-  ) {
+  constructor(private analyticsService: AnalyticsService) {
     this.analyticsService.columnDimTables$
       .pipe(takeUntilDestroyed())
       .subscribe(
@@ -39,39 +36,32 @@ export class ColumnDimSelectorComponent {
       )
   }
 
-  onDragStart(draggedItem: DimDraggable) {
-    this.dragDropService.startDragging(draggedItem);
-  }
-
-  onDragEnd() {
-    const draggedItem = this.dragDropService.getDraggedItem();
-    if (!draggedItem || !(draggedItem instanceof DimDraggable)) {
-      return;
-    }
-    if (!this.dragDropService.selfDropEventHappened && this.dragDropService.wasDroppedSuccessfully) {
-      this.dimTables = this.dimTables.filter(dimTable => dimTable.tableMetadata.tableName !== draggedItem.tableMetadata.tableName);
+  onDrop(event: CdkDragDrop<Draggable>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(this.dimTables, event.previousIndex, event.currentIndex);
       this.analyticsService.setColumnDimTables(this.dimTables);
+    } else {
+      switch (event.previousContainer.id) {
+        case 'draggables-container':
+          let draggables = this.analyticsService.getAvailableDraggables()!;
+          transferArrayItem(draggables, this.dimTables, event.previousIndex, event.currentIndex);
+          this.analyticsService.setAvailableDraggables(draggables);
+          this.analyticsService.setColumnDimTables(this.dimTables);
+          break;
+        case 'row-selector':
+          let rowDimTables = this.analyticsService.getRowDimTables();
+          transferArrayItem(rowDimTables, this.dimTables, event.previousIndex, event.currentIndex);
+          this.analyticsService.setRowDimTables(rowDimTables);
+          this.analyticsService.setColumnDimTables(this.dimTables);
+          break;
+        default:
+          console.error("Unknown container for drag drop");
+          break;
+      }
     }
-    this.dragDropService.clear();
   }
 
-  onDrop() {
-    const draggedItem = this.dragDropService.getDraggedItem();
-    if (!draggedItem || !(draggedItem instanceof DimDraggable)) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Warning',
-        detail: 'It can not be dropped here. Please select a column assignable item'
-      });
-      return;
-    }
-    const selfDropEventHappened = this.dimTables.some(dimTable => dimTable.tableMetadata.tableName == draggedItem.tableMetadata.tableName);
-    if (selfDropEventHappened) {
-      this.dragDropService.setSelfDropEventHappened();
-      return;
-    }
-    this.dimTables = [...this.dimTables, draggedItem];
-    this.analyticsService.setColumnDimTables(this.dimTables);
-    this.dragDropService.setWasDroppedSuccessfully();
+  isDimDragged = (drag: CdkDrag): boolean => {
+    return drag.data instanceof DimDraggable;
   }
 }

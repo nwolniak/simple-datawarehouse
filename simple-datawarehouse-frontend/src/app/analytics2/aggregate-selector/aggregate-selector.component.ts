@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 import {DragDropModule} from "primeng/dragdrop";
-import {AnalyticsService, DragDropService, MetadataService} from "@app/_services";
-import {AggregateDraggable, DimDraggable} from "@app/_models";
+import {AnalyticsService} from "@app/_services";
+import {AggregateDraggable, Draggable} from "@app/_models";
 import {ToolbarModule} from "primeng/toolbar";
 import {AccordionModule} from "primeng/accordion";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {MessageService} from "primeng/api";
 import {OrderListModule} from "primeng/orderlist";
+import {CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-aggregate-selector',
@@ -24,12 +24,7 @@ export class AggregateSelectorComponent {
 
   aggregates: AggregateDraggable[] = [];
 
-  constructor(
-    private metadataService: MetadataService,
-    private analyticsService: AnalyticsService,
-    private dragDropService: DragDropService,
-    private messageService: MessageService,
-    ) {
+  constructor(private analyticsService: AnalyticsService) {
     this.analyticsService.aggregates$
       .pipe(takeUntilDestroyed())
       .subscribe(
@@ -39,41 +34,27 @@ export class AggregateSelectorComponent {
       )
   }
 
-  onDragStart(draggedItem: AggregateDraggable) {
-    this.dragDropService.startDragging(draggedItem);
-  }
-
-  onDragEnd() {
-    const draggedItem = this.dragDropService.getDraggedItem();
-    if (!draggedItem || !(draggedItem instanceof AggregateDraggable)) {
-      return;
-    }
-    if (!this.dragDropService.selfDropEventHappened && this.dragDropService.wasDroppedSuccessfully) {
-      this.aggregates = this.aggregates.filter(aggregate => aggregate.item !== draggedItem.item);
+  onDrop(event: CdkDragDrop<Draggable[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(this.aggregates, event.previousIndex, event.currentIndex);
       this.analyticsService.setAggregates(this.aggregates);
+    } else {
+      switch (event.previousContainer.id) {
+        case 'draggables-container':
+          let draggables = this.analyticsService.getAvailableDraggables()!;
+          transferArrayItem(draggables, this.aggregates, event.previousIndex, event.currentIndex);
+          this.analyticsService.setAvailableDraggables(draggables);
+          this.analyticsService.setAggregates(this.aggregates);
+          break;
+        default:
+          console.error("Unknown container for drag drop");
+          break;
+      }
     }
-    this.dragDropService.clear();
   }
 
-  onDrop() {
-    const draggedItem = this.dragDropService.getDraggedItem();
-    if (!draggedItem || !(draggedItem instanceof AggregateDraggable)) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Warning',
-        detail: 'It can not be dropped here. Please select aggregate assignable item'
-      });
-      return;
-    }
-    const selfDropEventHappened = this.aggregates.some(aggregate => aggregate.item == draggedItem.item);
-    if (selfDropEventHappened) {
-      this.dragDropService.setSelfDropEventHappened();
-      return;
-    }
-    this.aggregates = [...this.aggregates, draggedItem];
-    this.analyticsService.setAggregates(this.aggregates);
-    this.dragDropService.setWasDroppedSuccessfully();
+  isAggregateDragged = (drag: CdkDrag): boolean => {
+    return drag.data instanceof AggregateDraggable;
   }
 
-  protected readonly DimDraggable = DimDraggable;
 }

@@ -1,12 +1,16 @@
-<div class="box-container" pDroppable (onDrop)="onDrop()">
+<div class="box-container"
+     id="aggregate-selector"
+     cdkDropList
+     [cdkDropListConnectedTo]="['draggables-container']"
+     [cdkDropListEnterPredicate]="isAggregateDragged"
+     (cdkDropListDropped)="onDrop($event)">
   <div class="caption">
     <h5>Aggregates</h5>
   </div>
   @for (aggregate of aggregates; track aggregate) {
     <div class="box-item"
-         pDraggable
-         (onDragStart)="onDragStart(aggregate)"
-         (onDragEnd)="onDragEnd()">
+         cdkDrag
+         [cdkDragData]="aggregate">
       {{ aggregate.item }}
     </div>
   }
