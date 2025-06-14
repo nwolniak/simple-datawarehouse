@@ -67,7 +67,7 @@ export class Analytics2Component {
             .map(dimTable => new DimDraggable(
               dimTable,
               dimTable.tableName,
-              dimTable.columnsMetadata.map(column => new ColumnSelectable(column.name)))
+              dimTable.columnsMetadata.map(column => new ColumnSelectable(column.name, column.type)))
             );
           const aggregateDraggables = Array.from(factTables.values())[0].columnsMetadata
             .filter((column: ColumnMetadata) => column.isAggregate)

@@ -28,7 +28,7 @@ export class QueryViewComponent {
     private pivotQueryService: PivotQueryService,
     private messageService: MessageService,
   ) {
-    this.pivotQueryService.pivotTable
+    this.pivotQueryService.pivotTable$
       .subscribe((pivotTable: PivotTable | null) => {
           if (!pivotTable) {
             this.sql = "";

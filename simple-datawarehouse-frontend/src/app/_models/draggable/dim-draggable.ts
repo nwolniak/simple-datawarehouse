@@ -12,6 +12,7 @@ export class DimDraggable {
 export class ColumnSelectable {
   constructor(
     public columnName: string,
+    public type: string,
     public selected: boolean = false
   ) {}
 }

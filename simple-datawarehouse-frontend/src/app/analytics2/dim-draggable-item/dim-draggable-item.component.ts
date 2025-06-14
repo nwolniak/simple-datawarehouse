@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MultiSelect, MultiSelectModule} from "primeng/multiselect";
-import {ColumnFilter, DimDraggable} from "@app/_models";
+import {ColumnFilter, ColumnSelectable, DimDraggable} from "@app/_models";
 import {FormsModule} from "@angular/forms";
 import {OverlayPanel, OverlayPanelModule} from "primeng/overlaypanel";
 import {Button} from "primeng/button";
@@ -33,12 +33,21 @@ export class DimDraggableItemComponent implements OnInit {
   @ViewChild('filterOverlayPanel') filterOverlayPanel!: OverlayPanel;
   @Input() dimDraggable!: DimDraggable;
 
-  filters = [
-    {label: 'Starts With', value: 'startsWith'},
-    {label: 'Ends With', value: 'endsWith'},
+  private stringFilters = [
+    {label: 'Equals', value: 'equals'},
     {label: 'Contains', value: 'contains'},
     {label: 'Not Contains', value: 'notContains'},
-    {label: 'Equals', value: 'equals'}
+    {label: 'Starts With', value: 'startsWith'},
+    {label: 'Ends With', value: 'endsWith'}
+  ];
+
+  private numberFilters = [
+    { label: 'Equals', value: 'numericEquals' },
+    { label: 'Not Equals', value: 'numericNotEquals' },
+    { label: 'Greater Than', value: 'numericGreaterThan' },
+    { label: 'Greater Than or Equal', value: 'numericGreaterThanOrEqual' },
+    { label: 'Less Than', value: 'numericLessThan' },
+    { label: 'Less Than or Equal', value: 'numericLessThanOrEqual' }
   ];
 
   protected _selectableOptions: string[] = [];
@@ -77,6 +86,18 @@ export class DimDraggableItemComponent implements OnInit {
     return this._selectedColumnForFiltering === null
       || this._selectedFilter === null
       || this._selectedFilterValue.length === 0;
+  }
+
+  filtersByType(): { label: string, value: string }[] {
+    if (!this._selectedColumnForFiltering) {
+      return Array.of();
+    }
+    let selectedColumn: ColumnSelectable = this.dimDraggable.selectedColumns.find(column => column.columnName === this._selectedColumnForFiltering)!;
+    let type = selectedColumn.type.toLowerCase();
+    if (type.includes('serial') || type.includes('int') || type.includes('num')) {
+      return this.numberFilters;
+    }
+    return this.stringFilters;
   }
 
   onFilterButtonAddClick() {

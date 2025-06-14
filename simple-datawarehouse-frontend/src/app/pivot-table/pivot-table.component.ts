@@ -40,7 +40,7 @@ export class PivotTableComponent implements AfterViewInit, OnDestroy {
     private pivotTableExportService: PivotTableExportService,
     private messageService: MessageService,
   ) {
-    this.pivotTableService.pivotTable
+    this.pivotTableService.pivotTable$
       .pipe(takeUntilDestroyed())
       .subscribe((pivotTable: PivotTable | null) => {
           this.pivotTable = pivotTable;

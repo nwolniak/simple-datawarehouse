@@ -5,6 +5,7 @@ import {TooltipModule} from "primeng/tooltip";
 import {AnalyticsService, MetadataService, PivotQueryService, PivotTableExportService} from "@app/_services";
 import {QueryViewComponent} from "@app/analytics2/query-view/query-view.component";
 import {MessageService} from "primeng/api";
+import {PivotTableQuery} from "@app/_models";
 
 @Component({
   selector: 'app-analytics-toolbar',
@@ -39,7 +40,16 @@ export class AnalyticsToolBar {
       })
       return;
     }
-    this.pivotQueryService.sendPivotTableQuery();
+    const query: PivotTableQuery = this.pivotQueryService.preparePivotQuery();
+    if (!query.hasRequiredSearchData()) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warn',
+        detail: 'Please select at least one column.'
+      });
+      return;
+    }
+    this.pivotQueryService.sendPivotTableQuery(query);
   }
 
   clear() {

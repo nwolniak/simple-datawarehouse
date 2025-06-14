@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "@app/_services/alert.service";
-import {BehaviorSubject, catchError, Observable, Subscription, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
 import {
   Column,
   ColumnFilter,
@@ -11,7 +11,7 @@ import {
   Join,
   OrderBy,
   PivotTable,
-  PivotTableQuery,
+  PivotTableQuery, Query,
   TableMetadata
 } from "@app/_models";
 import {environment} from "@environments/environment";
@@ -23,40 +23,27 @@ import {AnalyticsService} from "@app/_services/analytics.service";
 export class PivotQueryService {
 
   private querySubject: BehaviorSubject<PivotTableQuery>;
-  query: Observable<PivotTableQuery>;
+  query$: Observable<PivotTableQuery>;
 
   private pivotTableSubject: BehaviorSubject<PivotTable | null>;
-  pivotTable: Observable<PivotTable | null>;
+  pivotTable$: Observable<PivotTable | null>;
 
   constructor(
     private http: HttpClient,
     private analyticsService: AnalyticsService,
-    private alertService: AlertService,
+    private alertService: AlertService
   ) {
-    let query: PivotTableQuery = {
-      query: {
-        columnList: [],
-        table: '',
-        groupByList: [],
-        havingList: [],
-        joinList: [],
-        orderByList: [],
-        whereList: [],
-      },
-      rowLabels: [],
-      columnLabels: [],
-      valueLabels: [],
-    };
+    let query: PivotTableQuery = new PivotTableQuery();
     this.querySubject = new BehaviorSubject<PivotTableQuery>(query);
-    this.query = this.querySubject.asObservable();
+    this.query$ = this.querySubject.asObservable();
 
     this.pivotTableSubject = new BehaviorSubject<PivotTable | null>(null);
-    this.pivotTable = this.pivotTableSubject.asObservable();
+    this.pivotTable$ = this.pivotTableSubject.asObservable();
   }
 
-  sendPivotTableQuery(): Subscription {
-    this.preparePivotQuery();
-    return this.http.post<PivotTable>(`${environment.queryPivotDataUrl}`, this.querySubject.value)
+  sendPivotTableQuery(query: PivotTableQuery): void {
+    this.querySubject.next(query);
+    this.http.post<PivotTable>(`${environment.queryPivotDataUrl}`, query)
       .pipe(
         tap(() => console.info('PivotTableQuery request success.')),
         catchError((error: HttpErrorResponse) => {
@@ -74,7 +61,7 @@ export class PivotQueryService {
       });
   }
 
-  private preparePivotQuery(): void {
+  preparePivotQuery(): PivotTableQuery {
     const factTable: TableMetadata = this.analyticsService.getFactTable()!;
     const table: string = factTable.tableName;
     const columns: Column[] = this.prepareQueryColumns(factTable);
@@ -96,7 +83,7 @@ export class PivotQueryService {
     pivotQuery.rowLabels = rowLabels;
     pivotQuery.columnLabels = columnLabels;
     pivotQuery.valueLabels = aggregateLabels;
-    this.querySubject.next(pivotQuery);
+    return pivotQuery;
   }
 
   private prepareQueryColumns(factTable: TableMetadata): Column[] {
@@ -168,14 +155,14 @@ export class PivotQueryService {
   private prepareQueryRowLabels(): string[] {
     return this.analyticsService.getRowDimTables()
       .flatMap((dimDraggable: DimDraggable) => dimDraggable.selectedColumns)
-      .filter((columnSelected: ColumnSelectable)=> columnSelected.selected)
+      .filter((columnSelected: ColumnSelectable) => columnSelected.selected)
       .map((columnSelected: ColumnSelectable) => columnSelected.columnName);
   }
 
   private prepareQueryColumnLabels(): string[] {
     return this.analyticsService.getColumnDimTables()
       .flatMap((dimDraggable: DimDraggable) => dimDraggable.selectedColumns)
-      .filter((columnSelected: ColumnSelectable)=> columnSelected.selected)
+      .filter((columnSelected: ColumnSelectable) => columnSelected.selected)
       .map((columnSelected: ColumnSelectable) => columnSelected.columnName);
   }
 

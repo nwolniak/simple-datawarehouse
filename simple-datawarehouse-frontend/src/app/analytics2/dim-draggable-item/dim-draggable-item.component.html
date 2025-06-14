@@ -40,7 +40,7 @@
       </p-dropdown>
       <label for="filter">Filter</label>
       <p-dropdown #filter
-                  [options]="filters"
+                  [options]="filtersByType()"
                   [(ngModel)]="_selectedFilter"
                   optionLabel="label"
                   optionValue="value"
