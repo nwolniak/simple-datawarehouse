@@ -1,5 +1,15 @@
 <p-toolbar class="topbar">
-  <div class="p-toolbar-group-center">
+  <ng-template pTemplate="start">
+  </ng-template>
+  <ng-template pTemplate="center">
     <datasource-component></datasource-component>
-  </div>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <p-button
+      class="theme-button"
+      [icon]="icon"
+      outlined="true"
+      (click)="toggleTheme()">
+    </p-button>
+  </ng-template>
 </p-toolbar>
