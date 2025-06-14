@@ -20,7 +20,6 @@ export class SidebarComponent implements OnInit{
       { label: 'ETL', routerLink: '/etl'},
       { label: 'Database', routerLink: '/database' },
       { label: 'Analytics', routerLink: '/analytics' },
-      { label: 'Analytics2', routerLink: '/analytics2' }
     ]
   }
 

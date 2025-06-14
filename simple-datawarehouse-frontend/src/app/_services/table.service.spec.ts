@@ -24,15 +24,7 @@ describe('TableService', () => {
 
   it('should query table successfully', () => {
     const tableName = 'tableName';
-    const expectedResponse: Table = {
-      tableName: '',
-      columnList: [],
-      rowList: [],
-      columnOptions: [],
-      selectedColumns: [],
-      selectedRows: [],
-      query: '',
-    };
+    const expectedResponse: Table = new Table();
 
     const tableSubjectSpy = spyOn(service['tableSubject'], 'next');
     spyOn(console, 'info');

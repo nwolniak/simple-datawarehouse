@@ -10,15 +10,11 @@ import {AlertService} from "@app/_services/alert.service";
 })
 export class TableService {
   private tableSubject: BehaviorSubject<Table | undefined>;
-  private readonly _table: Observable<Table | undefined>;
+  table$: Observable<Table | undefined>;
 
   constructor(private http: HttpClient, private alertService: AlertService) {
     this.tableSubject = new BehaviorSubject<Table | undefined>(undefined);
-    this._table = this.tableSubject.asObservable();
-  }
-
-  public get table(): Observable<Table | undefined> {
-    return this._table;
+    this.table$ = this.tableSubject.asObservable();
   }
 
   getTable(name: string): Observable<Table> {
