@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine AS build
 
 WORKDIR /simple-datawarehouse-frontend
 
@@ -16,4 +16,4 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=base /simple-datawarehouse-frontend/dist/simple-datawarehouse-frontend/browser /simple-datawarehouse-frontend
+COPY --from=build /simple-datawarehouse-frontend/dist/simple-datawarehouse-frontend/browser /simple-datawarehouse-frontend

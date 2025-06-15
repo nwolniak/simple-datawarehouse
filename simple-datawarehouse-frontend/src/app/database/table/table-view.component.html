@@ -1,4 +1,8 @@
-@if (table) {
+@if (!table) {
+  <div class="message">
+    <p>Please choose a data source first and select a table to display table data</p>
+  </div>
+} @else {
   <p-table
     #primeTable
     [columns]="table.columnList"
