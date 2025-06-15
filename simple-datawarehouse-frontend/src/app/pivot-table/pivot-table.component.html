@@ -1,4 +1,9 @@
-@if (pivotTable && pivotTable.isPivoted) {
+@if (!pivotTable) {
+  <div class="message">
+    <p>Please connect to the data warehouse to enable analytical queries</p>
+  </div>
+}
+@else if (pivotTable && pivotTable.isPivoted) {
   <p-table
     [value]="pivotTable.rowList"
     [scrollable]="true"
