@@ -1,7 +1,10 @@
 package pl.edu.agh.simpledatawarehouse.support;
 
 import org.springframework.stereotype.Component;
-import pl.edu.agh.simpledatawarehouse.model.metadata.*;
+import pl.edu.agh.simpledatawarehouse.model.metadata.ColumnMetadata;
+import pl.edu.agh.simpledatawarehouse.model.metadata.ForeignKeyMetadata;
+import pl.edu.agh.simpledatawarehouse.model.metadata.PrimaryKeyMetadata;
+import pl.edu.agh.simpledatawarehouse.model.metadata.TableMetadata;
 
 import java.util.LinkedList;
 import java.util.List;

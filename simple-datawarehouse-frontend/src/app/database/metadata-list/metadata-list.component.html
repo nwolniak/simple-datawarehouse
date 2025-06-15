@@ -1,11 +1,11 @@
 <ng-container *ngIf="metadata">
   <li (dblclick)="toggleMetadata(metadata)">
-    <button (click)="toggleMetadata(metadata)">
+    <button class="clickable" (click)="toggleMetadata(metadata)">
         <span
           [ngClass]="['fa-solid fa-sm fa-fw', metadata.metadataCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></span>
     </button>
-    <span class="fa-solid fa-database"></span>
-    <span> {{ metadata.database }} </span>
+    <span class="fa-solid fa-database clickable"></span>
+    <span class="clickable"> {{ metadata.database }} </span>
   </li>
   <ul *ngIf="metadata.metadataCollapsed">
     <ng-container [ngTemplateOutlet]="tables" [ngTemplateOutletContext]="{$implicit:metadata}"></ng-container>
@@ -16,12 +16,12 @@
 
 <ng-template #tables let-metadata>
   <li (dblclick)="toggleTablesCollapse(metadata)">
-    <button (click)="toggleTablesCollapse(metadata)">
+    <button class="clickable" (click)="toggleTablesCollapse(metadata)">
       <span
         [ngClass]="['fa-solid fa-sm fa-fw', metadata.tablesCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></span>
     </button>
-    <span class="fa-solid fa-folder"></span>
-    <span> Tables </span>
+    <span class="fa-solid fa-folder clickable"></span>
+    <span class="clickable"> Tables </span>
   </li>
   <ng-container *ngIf="metadata.tablesCollapsed">
     <ul *ngFor="let table of metadata.tables">
@@ -32,12 +32,12 @@
 
 <ng-template #factTables let-metadata>
   <li (dblclick)="toggleFactTablesCollapse(metadata)">
-    <button (click)="toggleFactTablesCollapse(metadata)">
+    <button class="clickable" (click)="toggleFactTablesCollapse(metadata)">
       <span
         [ngClass]="['fa-solid fa-sm fa-fw', metadata.factTablesCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></span>
     </button>
-    <span class="fa-solid fa-folder"></span>
-    <span> Fact Tables </span>
+    <span class="fa-solid fa-folder clickable"></span>
+    <span class="clickable"> Fact Tables </span>
   </li>
   <ng-container *ngIf="metadata.factTablesCollapsed">
     <ul *ngFor="let table of metadata.factTables">
@@ -48,12 +48,12 @@
 
 <ng-template #dimensions let-metadata>
   <li (dblclick)="toggleDimensionsCollapse(metadata)">
-    <button (click)="toggleDimensionsCollapse(metadata)">
+    <button class="clickable" (click)="toggleDimensionsCollapse(metadata)">
       <span
         [ngClass]="['fa-solid fa-sm fa-fw', metadata.dimensionsCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></span>
     </button>
-    <span class="fa-solid fa-folder"></span>
-    <span> Dimensions </span>
+    <span class="fa-solid fa-folder clickable"></span>
+    <span class="clickable"> Dimensions </span>
   </li>
   <ng-container *ngIf="metadata.dimensionsCollapsed">
     <ul *ngFor="let table of getAllMetadata(metadata)">
@@ -63,12 +63,12 @@
 </ng-template>
 
 <ng-template #tableNode let-table>
-  <li (dblclick)="getTable(table.tableName)">
-    <button (click)="toggleTableCollapse(table)">
+  <li (dblclick)="getTable(table)">
+    <button class="clickable" (click)="toggleTableCollapse(table)">
       <span [ngClass]="['fa-solid fa-sm fa-fw', table.tableCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></span>
     </button>
-    <span class="fa-solid fa-table"></span>
-    <span> {{ table.tableName }} </span>
+    <span class="fa-solid fa-table clickable"></span>
+    <span class="clickable"> {{ table.tableName }} </span>
   </li>
   <ul *ngIf="table.tableCollapsed && table.columnsMetadata.length != 0">
     <ng-container [ngTemplateOutlet]=" columnsNode"
@@ -86,12 +86,12 @@
 
 <ng-template #columnsNode let-table>
   <li (dblclick)="toggleColumnsCollapse(table)">
-    <button (click)="toggleColumnsCollapse(table)">
+    <button class="clickable" (click)="toggleColumnsCollapse(table)">
       <span
         [ngClass]="['fa-solid fa-sm fa-fw', table.columnsCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></span>
     </button>
-    <span class="fa-solid fa-folder"></span>
-    <span> Columns </span>
+    <span class="fa-solid fa-folder clickable"></span>
+    <span class="clickable"> Columns </span>
   </li>
   <ul *ngIf="table.columnsCollapsed">
     <li *ngFor="let column of table.columnsMetadata">
@@ -103,12 +103,12 @@
 
 <ng-template #primaryKeysNode let-table>
   <li (dblclick)="togglePrimaryKeysCollapse(table)">
-    <button (click)="togglePrimaryKeysCollapse(table)">
+    <button class="clickable" (click)="togglePrimaryKeysCollapse(table)">
       <span
         [ngClass]="['fa-solid fa-sm fa-fw', table.primaryKeysCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></span>
     </button>
-    <span class="fa-solid fa-folder"></span>
-    <span> Primary Keys </span>
+    <span class="fa-solid fa-folder clickable"></span>
+    <span class="clickable"> Primary Keys </span>
   </li>
   <ul *ngIf="table.primaryKeysCollapsed">
     <li *ngFor="let key of table.primaryKeysMetadata">
@@ -120,12 +120,12 @@
 
 <ng-template #foreignKeysNode let-table>
   <li (dblclick)="toggleForeignKeysCollapse(table)">
-    <button (click)="toggleForeignKeysCollapse(table)">
+    <button class="clickable" (click)="toggleForeignKeysCollapse(table)">
       <span
         [ngClass]="['fa-solid fa-sm fa-fw', table.foreignKeysCollapsed ? 'fa-chevron-down' : 'fa-chevron-right']"></span>
     </button>
-    <span class="fa-solid fa-folder"></span>
-    <span> Foreign Keys </span>
+    <span class="fa-solid fa-folder clickable"></span>
+    <span class="clickable"> Foreign Keys </span>
   </li>
   <ul *ngIf="table.foreignKeysCollapsed">
     <li *ngFor="let key of table.foreignKeysMetadata">

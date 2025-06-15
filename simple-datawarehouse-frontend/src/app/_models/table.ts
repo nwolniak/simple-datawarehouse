@@ -5,6 +5,7 @@ export class Table {
     public tableName: string = '',
     public columnList: string[] = Array.of(),
     public rowList: TableRow[] = Array.of(),
+    public totalRecords: number,
     public columnOptions: Column[] = Array.of(),
     public selectedColumns: Column[] = Array.of(),
     public selectedRows: TableRow[] = Array.of(),

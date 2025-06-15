@@ -6,15 +6,17 @@ export class Query {
     public groupByList: string[],
     public havingList: Condition[],
     public orderByList: OrderBy[],
-    public whereList: Condition[]) {
+    public whereList: Condition[],
+    public pageNumber: number = -1,
+    public pageSize: number = -1) {
   }
 }
 
 export class Column {
   constructor(
     public name: string,
-    public alias: string,
-    public aggregate: string) {
+    public alias: string = '',
+    public aggregate: string = '') {
   }
 }
 
@@ -37,6 +39,6 @@ export class Condition {
 export class OrderBy {
   constructor(
     public columnName: string,
-    public ascending: boolean) {
+    public ascending: boolean = true) {
   }
 }

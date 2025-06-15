@@ -11,7 +11,7 @@ public record PivotTableQuery(
         List<String> valueLabels) {
 
     public boolean isPivoted() {
-        return !rowLabels.isEmpty();
+        return !rowLabels.isEmpty() && !columnLabels.isEmpty() &&!valueLabels.isEmpty();
     }
 
 }

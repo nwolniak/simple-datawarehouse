@@ -1,0 +1,17 @@
+<div class="box-container"
+     id="row-selector"
+     cdkDropList
+     [cdkDropListConnectedTo]="['draggables-container', 'column-selector']"
+     [cdkDropListEnterPredicate]="isDimDragged"
+     (cdkDropListDropped)="onDrop($event)">
+  <div class="caption">
+    <h5>Rows</h5>
+  </div>
+  @for (dimTable of dimTables; track dimTable) {
+    <div class="box-item"
+         cdkDrag
+         [cdkDragData]="dimTable">
+      <app-dim-draggable-item [dimDraggable]="dimTable"></app-dim-draggable-item>
+    </div>
+  }
+</div>

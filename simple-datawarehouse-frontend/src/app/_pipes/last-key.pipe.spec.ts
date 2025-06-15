@@ -1,4 +1,4 @@
-import { LastKeyPipe } from './last-key.pipe';
+import {LastKeyPipe} from './last-key.pipe';
 
 describe('LastKeyPipe', () => {
   it('create an instance', () => {

@@ -13,7 +13,9 @@ public record Query(
         List<Join> joinList,
         List<String> groupByList,
         List<Condition> havingList,
-        List<OrderBy> orderByList
+        List<OrderBy> orderByList,
+        int pageNumber,
+        int pageSize
 ) {
 
     public Query {
@@ -25,9 +27,22 @@ public record Query(
         }
     }
 
-    @Override
-    public String toString() {
+    public String toSql() {
         return queryToSql(this);
+    }
+
+    public String toTotalRecordsSql() {
+        return queryToSql(new Query(
+                List.of(new Column("*", "total_records", "COUNT")),
+                table,
+                whereList,
+                joinList,
+                groupByList,
+                havingList,
+                List.of(),
+                0,
+                0
+        ));
     }
 
     private String queryToSql(final Query query) {
@@ -65,6 +80,13 @@ public record Query(
         if (!orderBy.isBlank()) {
             sql.append("\norder by ")
                .append(orderBy);
+        }
+        if (query.pageNumber != 0 && query.pageSize != 0) {
+            int offset = (query.pageNumber - 1) * query.pageSize;
+            sql.append("\nlimit ")
+                    .append(query.pageSize);
+            sql.append("\noffset ")
+                    .append(offset);
         }
         return sql.append(";").toString();
     }

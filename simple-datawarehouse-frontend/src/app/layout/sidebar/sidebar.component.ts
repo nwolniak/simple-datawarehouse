@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {NgOptimizedImage} from '@angular/common';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 import {MenubarModule} from "primeng/menubar";
 import {MenuItem} from "primeng/api";
 

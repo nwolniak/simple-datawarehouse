@@ -9,7 +9,7 @@ export const environment = {
   password: 'password',
   dbConnectionUrl: 'http://localhost:8080/simple-datawarehouse/connect',
   metadataUrl: 'http://localhost:8080/simple-datawarehouse/metadata',
-  tablesUrl: 'http://localhost:8080/simple-datawarehouse/tables',
+  tablesUrl: 'http://localhost:8080/simple-datawarehouse/table-query',
   queryUrl: 'http://localhost:8080/simple-datawarehouse/query',
   queryPivotDataUrl: 'http://localhost:8080/simple-datawarehouse/queryPivotData',
   nifiUrl: 'http://localhost:4200/nifi/',

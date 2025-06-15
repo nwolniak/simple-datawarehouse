@@ -6,5 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 @Builder
-public record QueryResult(List<String> columnList, List<Map<String, Object>> rowList, String sql) {
+public record QueryResult(
+        List<String> columnList,
+        List<Map<String, Object>> rowList,
+        String sql) {
 }

@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {AggregateDraggable, DimDraggable, Draggable, TableMetadata} from "@app/_models";
-import {moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ export class AnalyticsService {
   private factTableSubject = new BehaviorSubject<TableMetadata | null>(null);
   public factTable$ = this.factTableSubject.asObservable();
 
-  private availableDraggablesSubject = new BehaviorSubject<Draggable[] | null>(null);
+  private availableDraggablesSubject = new BehaviorSubject<Draggable[]>(Array.of());
   public availableDraggables$ = this.availableDraggablesSubject.asObservable();
 
   private rowDimTablesSubject = new BehaviorSubject<DimDraggable[]>(Array.of());
@@ -35,7 +34,7 @@ export class AnalyticsService {
     this.availableDraggablesSubject.next(draggables);
   }
 
-  getAvailableDraggables(): Draggable[] | null {
+  getAvailableDraggables(): Draggable[] {
     return this.availableDraggablesSubject.value;
   }
 
@@ -65,7 +64,7 @@ export class AnalyticsService {
 
   clear(): void {
     this.factTableSubject.next(null);
-    this.availableDraggablesSubject.next(null);
+    this.availableDraggablesSubject.next(Array.of());
     this.rowDimTablesSubject.next(Array.of());
     this.columnDimTablesSubject.next(Array.of());
     this.aggregatesSubject.next(Array.of());

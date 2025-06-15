@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {AlertService} from "@app/_services/alert.service";
-import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject, Observable, tap} from "rxjs";
 import {
   Column,
   ColumnFilter,
@@ -11,7 +10,7 @@ import {
   Join,
   OrderBy,
   PivotTable,
-  PivotTableQuery, Query,
+  PivotTableQuery,
   TableMetadata
 } from "@app/_models";
 import {environment} from "@environments/environment";
@@ -30,8 +29,7 @@ export class PivotQueryService {
 
   constructor(
     private http: HttpClient,
-    private analyticsService: AnalyticsService,
-    private alertService: AlertService
+    private analyticsService: AnalyticsService
   ) {
     let query: PivotTableQuery = new PivotTableQuery();
     this.querySubject = new BehaviorSubject<PivotTableQuery>(query);
@@ -44,21 +42,12 @@ export class PivotQueryService {
   sendPivotTableQuery(query: PivotTableQuery): void {
     this.querySubject.next(query);
     this.http.post<PivotTable>(`${environment.queryPivotDataUrl}`, query)
-      .pipe(
-        tap(() => console.info('PivotTableQuery request success.')),
-        catchError((error: HttpErrorResponse) => {
-          console.error('PivotTableQuery request error:', error.error);
-          return throwError(() => error);
-        }))
-      .subscribe({
-        next: (table: PivotTable) => {
+      .pipe(tap(() => console.info('PivotTableQuery request success.')))
+      .subscribe((table: PivotTable) => {
           table.rowLabelMap = new Map(Object.entries(table.rowLabelMap ?? {}));
           this.pivotTableSubject.next(table);
-        },
-        error: (error: HttpErrorResponse) => {
-          this.alertService.addAlert(error.error);
-        },
-      });
+        }
+      );
   }
 
   preparePivotQuery(): PivotTableQuery {

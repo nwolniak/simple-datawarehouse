@@ -1,26 +1,30 @@
-export interface Metadata {
-  host: string;
-  database: string;
-  tables: TableMetadata[];
-  factTables: TableMetadata[];
-  dimTables: Map<string, TableMetadata[]>;
-
-  metadataCollapsed?: boolean;
-  tablesCollapsed?: boolean;
-  factTablesCollapsed?: boolean;
-  dimensionsCollapsed?: boolean;
+export class Metadata {
+  public metadataCollapsed?: boolean = false;
+  public tablesCollapsed?: boolean = false;
+  public factTablesCollapsed?: boolean = false;
+  public dimensionsCollapsed?: boolean = false;
+  constructor(
+    public host: string,
+    public database: string,
+    public tables: TableMetadata[],
+    public factTables: TableMetadata[],
+    public dimTables: Map<string, TableMetadata[]>
+  ) {
+  }
 }
 
-export interface TableMetadata {
-  tableName: string;
-  columnsMetadata: ColumnMetadata[];
-  primaryKeysMetadata: PrimaryKeyMetadata[];
-  foreignKeysMetadata: ForeignKeyMetadata[];
-
-  tableCollapsed?: boolean;
-  columnsCollapsed?: boolean;
-  primaryKeysCollapsed?: boolean;
-  foreignKeysCollapsed?: boolean;
+export class TableMetadata {
+  public tableCollapsed?: boolean;
+  public columnsCollapsed?: boolean;
+  public primaryKeysCollapsed?: boolean;
+  public foreignKeysCollapsed?: boolean;
+  constructor(
+    public tableName: string,
+    public columnsMetadata: ColumnMetadata[],
+    public primaryKeysMetadata: PrimaryKeyMetadata[],
+    public foreignKeysMetadata: ForeignKeyMetadata[]
+  ) {
+  }
 }
 
 export interface ColumnMetadata {

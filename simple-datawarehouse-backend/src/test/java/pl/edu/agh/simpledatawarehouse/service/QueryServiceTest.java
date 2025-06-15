@@ -7,8 +7,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edu.agh.simpledatawarehouse.dao.DataRepository;
-import pl.edu.agh.simpledatawarehouse.mappers.QueryMapper;
-import pl.edu.agh.simpledatawarehouse.model.dto.QueryDto;
 import pl.edu.agh.simpledatawarehouse.model.dto.QueryResult;
 import pl.edu.agh.simpledatawarehouse.model.query.Column;
 import pl.edu.agh.simpledatawarehouse.model.query.Query;
@@ -27,9 +25,6 @@ class QueryServiceTest {
     @Mock
     private DataRepository dataRepository;
 
-    @Mock
-    private QueryMapper queryMapper;
-
     @Test
     void executeQuery() {
         Query query = new Query(
@@ -39,16 +34,15 @@ class QueryServiceTest {
                 List.of(),
                 List.of(),
                 List.of(),
-                List.of()
+                List.of(),
+                -1,
+                -1
         );
-        Mockito.doReturn(query)
-               .when(queryMapper)
-               .toQuery(Mockito.any(QueryDto.class));
         Mockito.doReturn(List.of())
-               .when(dataRepository)
-               .execute(anyString());
+                .when(dataRepository)
+                .execute(anyString());
 
-        QueryResult queryResult = queryService.executeQuery(new QueryDto());
+        QueryResult queryResult = queryService.executeQuery(query);
         assertThat(queryResult).isNotNull();
         assertThat(queryResult.columnList()).isNotEmpty();
         assertThat(queryResult.rowList()).isEmpty();

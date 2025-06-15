@@ -13,6 +13,10 @@ ul, li {
   list-style: none;
 }
 
+.clickable:hover {
+  cursor: pointer;
+}
+
 button {
   border: none;
   background-color: inherit;
@@ -21,6 +25,7 @@ button {
 }
 
 span {
+  user-select: none;
   white-space: nowrap;
 }
 

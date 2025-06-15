@@ -1,24 +1,33 @@
-<p-table
-  *ngIf="table"
-  [value]="table.rowList"
-  [paginator]="true"
-  [rowsPerPageOptions]="[10, 20, 50]"
-  [rows]="10"
-  [scrollable]="true"
-  scrollHeight="flex"
-  [showCurrentPageReport]="true"
-  paginatorPosition="bottom"
-  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-
-  <ng-template pTemplate="header">
-    <tr>
-      <th *ngFor="let column of table.columnList">{{ column }}</th>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="body" let-rowData>
-    <tr>
-      <td *ngFor="let column of table.columnList">{{ rowData[column] }}</td>
-    </tr>
-  </ng-template>
-</p-table>
+@if (table) {
+  <p-table
+    #primeTable
+    [columns]="table.columnList"
+    [value]="table.rowList"
+    [paginator]="true"
+    [rowsPerPageOptions]="[20, 50, 100]"
+    [(rows)]="rows"
+    [totalRecords]="totalRecords"
+    [scrollable]="true"
+    scrollHeight="flex"
+    [lazy]="true"
+    (onPage)="loadPage($event)"
+    [loading]="loading"
+    [showCurrentPageReport]="true"
+    paginatorPosition="bottom"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        @for (columnLabel of columns; track columnLabel) {
+          <th>{{ columnLabel }}</th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        @for (columnLabel of columns; track columnLabel) {
+          <td>{{ rowData[columnLabel] }}</td>
+        }
+      </tr>
+    </ng-template>
+  </p-table>
+}

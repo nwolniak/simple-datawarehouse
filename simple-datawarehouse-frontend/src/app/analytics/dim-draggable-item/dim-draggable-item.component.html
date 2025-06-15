@@ -1,0 +1,89 @@
+<p-button
+  (onClick)="onSelectButtonClick($event)"
+  [badge]="selectionBadge"
+  icon="pi pi-search"
+  outlined="true"
+  styleClass="p-button-sm">
+</p-button>
+<p-button
+  (onClick)="onFilterButtonClick($event)"
+  [badge]="filtersBadge"
+  icon="pi pi-filter"
+  outlined="true"
+  styleClass="p-button-sm">
+</p-button>
+<div class="truncate">
+  {{ dimDraggable.tableName }}
+</div>
+<p-overlayPanel #selectionOverlayPanel
+                [dismissable]="true"
+                [showCloseIcon]="false"
+                styleClass="hidden-overlay-panel">
+  <p-multiSelect #multiSelect
+                 [options]="_selectableOptions"
+                 [(ngModel)]="_selectedOptions"
+                 (onChange)="onColumnOptionChange($event)"
+                 [filter]="false"
+                 styleClass="unstyled-multiselect">
+  </p-multiSelect>
+</p-overlayPanel>
+<p-overlayPanel #filterOverlayPanel
+                [dismissable]="true"
+                [showCloseIcon]="false">
+  <div class="filters-overlay-panel">
+    <div class="p-fluid p-3" style="width: 250px;">
+      <label for="columnSelected">Column</label>
+      <p-dropdown
+        [options]="_selectedOptions"
+        [(ngModel)]="_selectedColumnForFiltering"
+        [style]="{ width: '100%' }">
+      </p-dropdown>
+      <label for="filter">Filter</label>
+      <p-dropdown #filter
+                  [options]="filtersByType()"
+                  [(ngModel)]="_selectedFilter"
+                  optionLabel="label"
+                  optionValue="value"
+                  [style]="{ width: '100%' }">
+      </p-dropdown>
+      <label for="searchInput" class="mt-2">Value</label>
+      <input id="searchInput" type="text" pInputText [(ngModel)]="_selectedFilterValue">
+      <p-button label="Add"
+                (click)="onFilterButtonAddClick()"
+                [disabled]="filterButtonDisabled"
+                [style]="{ width: '100%' }">
+      </p-button>
+    </div>
+    @if (dimDraggable.columnFilters.length > 0) {
+      <p-table
+        [value]="dimDraggable.columnFilters"
+        scrollable="true"
+        scrollHeight="flex"
+        class="mt-3">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Column</th>
+            <th>Filter</th>
+            <th>Value</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-filter let-i="rowIndex">
+          <tr>
+            <td>{{ filter.columnName }}</td>
+            <td>{{ filter.operand }}</td>
+            <td>{{ filter.value }}</td>
+            <td>
+              <p-button
+                type="button"
+                icon="pi pi-times"
+                class="p-button-danger p-button-sm"
+                (click)="onFilterRemove(i)">
+              </p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+  </div>
+</p-overlayPanel>

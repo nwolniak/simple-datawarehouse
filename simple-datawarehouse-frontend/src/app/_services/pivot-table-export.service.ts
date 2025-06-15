@@ -24,8 +24,10 @@ export function exportQueryResultToCSV(result: QueryResult, filename: string = '
   //header
   csv.push(result.columnList.join(','));
   //rows
+  const columnList: string[] = Object.values(result.columnList);
   for (const row of result.rowList) {
-    const rowValues: string[] = result.columnList.map(colum => row.get(colum));
+    const rowMap = new Map<string, any>(Object.entries(row));
+    const rowValues: string[] = columnList.map(colum => rowMap.get(colum));
     csv.push(rowValues.join(','));
   }
   const csvContent = csv.join(';\n');

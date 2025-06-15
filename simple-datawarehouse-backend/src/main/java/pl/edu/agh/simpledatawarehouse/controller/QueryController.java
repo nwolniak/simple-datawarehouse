@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.simpledatawarehouse.model.dto.PivotTableQuery;
 import pl.edu.agh.simpledatawarehouse.model.dto.PivotTableResult;
-import pl.edu.agh.simpledatawarehouse.model.dto.QueryDto;
-import pl.edu.agh.simpledatawarehouse.model.dto.QueryResult;
+import pl.edu.agh.simpledatawarehouse.model.dto.TableResult;
+import pl.edu.agh.simpledatawarehouse.model.query.Query;
 import pl.edu.agh.simpledatawarehouse.service.PivotTableService;
 import pl.edu.agh.simpledatawarehouse.service.QueryService;
 
@@ -21,32 +21,16 @@ public class QueryController {
     private final QueryService queryService;
     private final PivotTableService pivotTableService;
 
-    @PostMapping("query")
-    public ResponseEntity<QueryResult> getQueryResults(@RequestBody QueryDto queryDto) {
-        try {
-            var queryResult = queryService.executeQuery(queryDto);
-            return ResponseEntity
-                    .ok(queryResult);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
-        }
+    @PostMapping("table-query")
+    public ResponseEntity<TableResult> getQueryResults(@RequestBody Query query) {
+        var queryResult = queryService.executeTableQuery(query);
+        return ResponseEntity.ok(queryResult);
     }
 
     @PostMapping("queryPivotData")
     public ResponseEntity<PivotTableResult> getPivotTableResults(@RequestBody PivotTableQuery pivotTableQuery) {
-        try {
-            var pivotTableResult = pivotTableService.getPivotTable(pivotTableQuery);
-            return ResponseEntity
-                    .ok(pivotTableResult);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
-        }
+        var pivotTableResult = pivotTableService.getPivotTable(pivotTableQuery);
+        return ResponseEntity.ok(pivotTableResult);
     }
 
 }

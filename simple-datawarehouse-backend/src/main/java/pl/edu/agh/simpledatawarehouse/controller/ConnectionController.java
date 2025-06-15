@@ -18,17 +18,8 @@ public class ConnectionController {
 
     @PostMapping("connect")
     public ResponseEntity<String> connectToDatabase(@RequestBody ConnectionParametersDto connectionParametersDto) {
-        try {
-            connectionService.tryConnectToDatabase(connectionParametersDto);
-            return ResponseEntity
-                    .ok()
-                    .build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity
-                    .internalServerError()
-                    .body(e.getMessage());
-        }
+        connectionService.tryConnectToDatabase(connectionParametersDto);
+        return ResponseEntity.ok().build();
     }
 
 }

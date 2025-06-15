@@ -1,22 +1,15 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlertService {
-  private alertsSubject: BehaviorSubject<HttpErrorResponse[]>;
-  private readonly _alerts: Observable<HttpErrorResponse[]>;
+  private alertsSubject: BehaviorSubject<HttpErrorResponse[]> = new BehaviorSubject<HttpErrorResponse[]>(Array.of());
+  alerts$: Observable<HttpErrorResponse[]> = this.alertsSubject.asObservable();
 
-  constructor() {
-    this.alertsSubject = new BehaviorSubject<HttpErrorResponse[]>(Array.of());
-    this._alerts = this.alertsSubject.asObservable();
-  }
-
-  public get alert(): Observable<HttpErrorResponse[]> {
-    return this._alerts;
-  }
+  constructor() {}
 
   addAlert(alert: HttpErrorResponse) {
     const alerts = this.alertsSubject.getValue();

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { environment } from '@environments/environment';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {Component} from '@angular/core';
+import {environment} from '@environments/environment';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-etl',

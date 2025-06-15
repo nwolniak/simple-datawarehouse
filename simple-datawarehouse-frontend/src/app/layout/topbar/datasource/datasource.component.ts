@@ -70,7 +70,6 @@ export class DatasourceComponent implements OnInit {
       return;
     }
     this.createButtonLoading = true;
-    this.createButtonLoading = true;
     const connectionParameters: ConnectionParameters = new ConnectionParameters(
       this.parametersForm.value.driverClassName,
       this.parametersForm.value.driver,

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnDestroy, ViewContainerRef} from '@angular/core';
 import {PivotTable} from "@app/_models";
-import {TableLazyLoadEvent, TableModule} from "primeng/table";
+import {TableModule} from "primeng/table";
 import {KeyValuePipe, SlicePipe} from "@angular/common";
 import {LastKeyPipe} from "@app/_pipes";
 import {exportQueryResultToCSV, PivotQueryService, PivotTableExportService} from "@app/_services";
@@ -26,13 +26,7 @@ export class PivotTableComponent implements AfterViewInit, OnDestroy {
 
   scrollHeight: string = '400px';
   private resizeObserver!: ResizeObserver;
-  // rowsBuffered: number = 20;
-  // firstIndexResettable: number = 0;
-  // tableIsReady: boolean = false;
-
   pivotTable: PivotTable | null = null;
-  // virtualRowsPivoted!: Map<string, any>[];
-  // virtualRowsNotPivoted!: Map<string, any>[];
 
   constructor(
     private host: ViewContainerRef,
@@ -47,16 +41,6 @@ export class PivotTableComponent implements AfterViewInit, OnDestroy {
           if (!this.pivotTable) {
             return;
           }
-          // if (this.pivotTable.isPivoted) {
-          //   const rowsPivotedLength = this.pivotTable.rowList.length;
-          //   this.virtualRowsPivoted = Array.from({length: rowsPivotedLength});
-          //   this.lazyLoadPivoted({first: 0, rows: this.rowsBuffered})
-          // } else {
-          //   const rowsNotPivotedLength = this.pivotTable.queryResult.rowList.length;
-          //   this.virtualRowsNotPivoted = Array.from({length: rowsNotPivotedLength});
-          //   this.lazyLoadNotPivoted({first: 0, rows: this.rowsBuffered})
-          // }
-          console.log(this.pivotTable);
         }
       );
     this.pivotTableExportService.exportRequested$
@@ -71,12 +55,16 @@ export class PivotTableComponent implements AfterViewInit, OnDestroy {
           );
           return;
         }
-        exportQueryResultToCSV(this.pivotTable.queryResult, 'pivot-table-data.csv');
+        if (this.pivotTable.isPivoted) {
+          exportQueryResultToCSV(this.pivotTable.queryResult, 'pivot-table-data.csv');
+        } else {
+          exportQueryResultToCSV(this.pivotTable.queryResult, 'table-data.csv');
+        }
       });
-
   }
 
   ngAfterViewInit(): void {
+    setTimeout(() => this.updateScrollHeight(), 200);
     this.resizeObserver = new ResizeObserver(() => this.updateScrollHeight());
     this.resizeObserver.observe(this.host.element.nativeElement);
     this.resizeObserver.observe(document.body);
@@ -93,30 +81,6 @@ export class PivotTableComponent implements AfterViewInit, OnDestroy {
     const availableHeight = window.innerHeight - offsetTop - 1;
     this.scrollHeight = `${availableHeight}px`;
   }
-
-  // lazyLoadPivoted(event: TableLazyLoadEvent) {
-  //   setTimeout(() => {
-  //     if (!this.pivotTable) {
-  //       return;
-  //     }
-  //     const first = event.first ?? 0;
-  //     const rows = event.rows ?? this.rowsBuffered;
-  //     let loadedRows = this.pivotTable.rowList.slice(first, first + rows);
-  //     Array.prototype.splice.apply(this.virtualRowsPivoted, [first, rows, ...loadedRows]);
-  //   }, 200);
-  // }
-  //
-  // lazyLoadNotPivoted(event: TableLazyLoadEvent) {
-  //   setTimeout(() => {
-  //     if (!this.pivotTable) {
-  //       return;
-  //     }
-  //     const first = event.first ?? 0;
-  //     const rows = event.rows ?? this.rowsBuffered;
-  //     let loadedRows = this.pivotTable.queryResult.rowList.slice(first, first + rows);
-  //     Array.prototype.splice.apply(this.virtualRowsNotPivoted, [first, rows, ...loadedRows]);
-  //   }, 200);
-  // }
 
   protected unsorted = () => 0;
 
