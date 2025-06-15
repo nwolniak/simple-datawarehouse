@@ -5,7 +5,6 @@ import {AnalyticsService, MetadataService, PivotQueryService, PivotTableExportSe
 import {QueryViewComponent} from "@app/analytics/query-view/query-view.component";
 import {MessageService} from "primeng/api";
 import {PivotTableQuery} from "@app/_models";
-import {AlertListComponent} from "@app/analytics/analytics-toolbar/alert-list/alert-list.component";
 
 @Component({
   selector: 'app-analytics-toolbar',
@@ -13,8 +12,7 @@ import {AlertListComponent} from "@app/analytics/analytics-toolbar/alert-list/al
   imports: [
     Button,
     TooltipModule,
-    QueryViewComponent,
-    AlertListComponent
+    QueryViewComponent
   ],
   templateUrl: './analytics-toolbar.component.html',
   styleUrl: './analytics-toolbar.component.css'

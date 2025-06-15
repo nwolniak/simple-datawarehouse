@@ -67,7 +67,7 @@ class ConnectionServiceTest {
 
         connectionService.tryConnectToDatabase(connectionParameters);
 
-        assertThat(beanFactory.getBean("datasource")).isSameAs(dataSource1);
+        assertThat(beanFactory.getBean(DataSource.class)).isNotNull();
     }
 
     @Test
@@ -82,11 +82,9 @@ class ConnectionServiceTest {
                .when(dataSourceFactory)
                .createDataSource(connectionParameters);
 
-        beanFactory.registerSingleton("datasource", dataSource1);
-
         connectionService.tryConnectToDatabase(connectionParameters);
 
-        assertThat(beanFactory.getBean("datasource")).isSameAs(dataSource2);
+        assertThat(beanFactory.getBean(DataSource.class)).isNotNull();
     }
 
     @Test

@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  height: 100%;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+}
+
+.alert-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.alert-message {
+  color: red;
+  font-size: 1rem;
+}

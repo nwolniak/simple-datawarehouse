@@ -1,0 +1,37 @@
+<p-button
+  (click)="showAlerts()"
+  [badge]="badge()"
+  [outlined]="true"
+  [severity]="severity()"
+  icon="pi pi-exclamation-circle"
+  label="Alerts">
+</p-button>
+<p-dialog
+  header="Alerts"
+  [(visible)]="alertsVisible"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  [style]="{ width: '50rem' }">
+  <p-dataView [value]="alerts">
+    <ng-template pTemplate="list" let-alerts>
+      @for (alert of alerts; track alert; let i = $index) {
+        <div class="alert-item p-error">
+          <div class="alert-message">
+            {{ timestampPipe(alert.error.timestamp) }} - {{ alert.error.message }}
+          </div>
+          <p-button icon="pi pi-trash" (click)="removeAlert(i)"></p-button>
+        </div>
+      }
+    </ng-template>
+  </p-dataView>
+  <p-footer class="footer">
+    <p-button label="Clear Alerts"
+              icon="pi pi-trash"
+              (click)=clearAlerts()>
+    </p-button>
+  </p-footer>
+</p-dialog>
+
+
+

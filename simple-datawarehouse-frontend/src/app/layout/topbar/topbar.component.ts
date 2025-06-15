@@ -2,11 +2,12 @@ import {Component} from '@angular/core';
 import {DatasourceComponent} from '@app/layout/topbar/datasource/datasource.component';
 import {ToolbarModule} from "primeng/toolbar";
 import {Button} from "primeng/button";
+import {AlertListComponent} from "@app/layout/topbar/alert-list/alert-list.component";
 
 @Component({
   selector: 'app-topbar',
   standalone: true,
-  imports: [DatasourceComponent, ToolbarModule, Button],
+  imports: [DatasourceComponent, ToolbarModule, Button, AlertListComponent],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.css',
 })
