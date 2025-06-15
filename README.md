@@ -23,64 +23,58 @@ data warehouses world.
 
 ## Presentation
 
-1. ETL view
+1. Welcome Page
+
+<div align="center">
+  <img src="resources/img/welcome_page.png" width="600" height="340" alt="welcome_page">
+</div>
+
+2. ETL view
 
 <div align="center">
   <img src="resources/img/etl_view.png" width="600" height="340" alt="etl_view">
 </div>
 
-2. Datasouce view
+3. Datasource view
 
 <div align="center">
   <img src="resources/img/data_source_view.png" width="600" height="340" alt="data_source_view">
 </div>
 
-3. Database view
+4. Database view
 
 <div align="center">
   <img src="resources/img/database_view.png" width="600" height="340" alt="database_view">
 </div>
 
-4. Analytics view
+5. Database Table Lazy Pages
+
+<div align="center">
+  <img src="resources/gif/table_paginator.gif" width="600" height="340" alt="table_paginator">
+</div>
+
+6. Analytics view
 
 <div align="center">
   <img src="resources/img/analytics_view.png" width="600" height="340" alt="analytics_view">
 </div>
 
-5. Join advanced view
+7. Analytics Table Scrolling
 
 <div align="center">
-  <img src="resources/img/join_view.png" width="600" height="340" alt="join_view">
+  <img src="resources/gif/analytics_table_scrolling.gif" width="600" height="340" alt="analytics_table_scrolling">
 </div>
 
-6. Select advanced view
-
-<div align="center">
-  <img src="resources/img/select_advanced_view.png" width="600" height="340" alt="select_advanced_view">
-</div>
-
-7. SQL query view
+8. SQL query view
 
 <div align="center">
   <img src="resources/img/sql_query_view.png" width="600" height="340" alt="sql_query_view">
 </div>
 
-8. Dynamic data filtering
+9. Analytics Results Download
 
 <div align="center">
-  <img src="resources/filter_video.gif" width="600" height="340" alt="filter_video">
-</div>
-
-9. Dynamic column change
-
-<div align="center">
-  <img src="resources/column_change_video.gif" width="600" height="340" alt="column_change_video">
-</div>
-
-10. Selection only data download
-
-<div align="center">
-  <img src="resources/selection_only_download_video.gif" width="600" height="340" alt="selection_only_download_video">
+  <img src="resources/gif/data_download.gif" width="600" height="340" alt="data_download">
 </div>
 
 ## Instructions
@@ -135,19 +129,19 @@ resources/nifi_etl.json
 ```
 
 <div align="center">
-  <img src="resources/step1_video.gif" width="600" height="340" alt="step1">
+  <img src="resources/gif/step1_video.gif" width="600" height="340" alt="step1">
 </div>
 
 2. Enable all controller services required by NiFi components in that group.
 
 <div align="center">
-  <img src="resources/step2_video.gif" width="600" height="340" alt="step2">
+  <img src="resources/gif/step2_video.gif" width="600" height="340" alt="step2">
 </div>
 
 - ensure all services are enabled as below
 
 <div align="center">
-  <img src="resources/enabled_services.png" width="600" height="200" alt="enabled_services">
+  <img src="resources/img/enabled_services.png" width="600" height="200" alt="enabled_services">
 </div>
 
 - How to navigate between groups:
@@ -165,7 +159,7 @@ resources/nifi_etl.json
     - dim_orders
 
 <div align="center">
-  <img src="resources/step3_video.gif" width="600" height="340" alt="step3">
+  <img src="resources/gif/step3_video.gif" width="600" height="340" alt="step3">
 </div>
 
 4. Start & Wait & Stop ETL processes in 'Fact Table' group.
@@ -174,7 +168,7 @@ resources/nifi_etl.json
     - fact_table
 
 <div align="center">
-  <img src="resources/step4_video.gif" width="600" height="340" alt="step4">
+  <img src="resources/gif/step4_video.gif" width="600" height="340" alt="step4">
 </div>
 
 ### Application Containers

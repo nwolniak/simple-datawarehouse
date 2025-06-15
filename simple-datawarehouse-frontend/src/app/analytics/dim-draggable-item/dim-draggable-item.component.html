@@ -71,7 +71,7 @@
         <ng-template pTemplate="body" let-filter let-i="rowIndex">
           <tr>
             <td>{{ filter.columnName }}</td>
-            <td>{{ filter.operand }}</td>
+            <td>{{ getFilterName(filter.operator) }}</td>
             <td>{{ filter.value }}</td>
             <td>
               <p-button

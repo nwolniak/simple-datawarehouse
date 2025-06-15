@@ -147,4 +147,18 @@ export class DimDraggableItemComponent implements OnInit {
       .length.toString();
   }
 
+  protected getFilterName(filterValue: string): string {
+    for (let filter of this.stringFilters){
+      if (filterValue === filter.value) {
+        return filter.label;
+      }
+    }
+    for (let filter of this.numberFilters){
+      if (filterValue === filter.value) {
+        return filter.label;
+      }
+    }
+    return filterValue;
+  }
+
 }
