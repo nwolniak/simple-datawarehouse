@@ -10,10 +10,10 @@ data warehouses world.
 - [Instructions](#instructions)
     - [Requirements](#requirements)
     - [How to run application](#how-to-run-application)
+    - [Application Containers](#application-containers)
     - [How to connect to database](#how-to-connect-to-database)
     - [How to load Apache NiFi flow file](#how-to-load-apache-nifi-flow-file)
     - [How to execute analytic query](#analytics)
-    - [Application Containers](#application-containers)
 - [Database Schema](#database-schema)
 - [Datawarehouse Schema](#datawarehouse-schema)
 - [Development](#development)
@@ -78,8 +78,8 @@ data warehouses world.
 
 ### Requirements:
 
-- [⬇️ Download docker-compose.prod.yaml](https://raw.githubusercontent.com/nwolniak/simple-datawarehouse/refs/heads/main/docker-compose.prod.yaml)
-
+- Cloning repository is not necessary
+- Download [docker-compose.prod.yaml](https://raw.githubusercontent.com/nwolniak/simple-datawarehouse/refs/heads/main/docker-compose.prod.yaml) (Right-click and choose “Save link as...” to download)
 - [Docker Desktop](https://docs.docker.com/get-started/get-docker/) installed
 - docker command with minimum version 28.x.x installed
 
@@ -107,14 +107,37 @@ docker compose version
 - Execute command from directory where docker-compose.prod.yaml file is located
 
 ```
-docker compose -f docker-compose.prod.yaml up
+docker compose -f docker-compose.prod.yaml up -d
 ```
 - It will download all required prepopulated images from Docker Hub [repositories/wolniakn](https://hub.docker.com/repositories/wolniakn) and start containers.
 
-
+<div align="center">
+  <img src="resources/img/docker-compose-up.png" width="1200" height="100" alt="docker_desktop_update">
+</div>
 
 
 Application UI will be available at http://localhost:80/
+
+### Application Containers
+
+<div align="center">
+  <img src="resources/img/docker_view.png" width="600" height="200" alt="docker_view">
+</div>
+
+1. simple-datawarehouse-backend\
+   Java Spring Boot based application responsible for executing SQL queries on datawarehouse.
+2. simple-datawarehouse-frontend\
+   Angular web application providing a user interface.
+3. simple-datawarehouse-nifi\
+   ETL (Extract, Transform, Load) tool.
+4. postgres_ds\
+   PostgreSQL database that serves as a data source for ETL processes (prepopulated with data).
+5. postgres_dw\
+   PostgreSQL database where the datawarehouse is modelled (prepopulated with data schema).
+6. mysql_ds\
+   MySQL database that serves as a data source for ETL processes (prepopulated with data).
+7. mysql_dw\
+   MySQL database where the datawarehouse is modelled (prepopulated with data schema).
 
 ### How to connect to database
 
@@ -220,27 +243,6 @@ simple-datawarehouse/resources/nifi_etl_mysql.json
 - click Download button to download results as csv file
 - click Query button to lookup last send query as sql
 - the resulting Table will be pivoted/unpivoted based on query
-
-### Application Containers
-
-<div align="center">
-  <img src="resources/img/docker_view.png" width="600" height="200" alt="docker_view">
-</div>
-
-1. simple-datawarehouse-backend\
-   Java Spring Boot based application responsible for executing SQL queries on datawarehouse.
-2. simple-datawarehouse-frontend\
-   Angular web application providing a user interface.
-3. simple-datawarehouse-nifi\
-   ETL (Extract, Transform, Load) tool.
-4. postgres_ds\
-   PostgreSQL database that serves as a data source for ETL processes.
-5. postgres_dw\
-   PostgreSQL database where the datawarehouse is modelled.
-6. mysql_ds\
-   MySQL database that serves as a data source for ETL processes.
-7. mysql_dw\
-   MySQL database where the datawarehouse is modelled.
 
 ## Database Schema
 
