@@ -159,6 +159,9 @@ Application UI will be available at http://localhost:80/
 
 - Run ETL for postgresql or mysql datawarehouse to populate it for further processing.
 
+- Download [resources/nifi_etl_postgresql.json](https://raw.githubusercontent.com/nwolniak/simple-datawarehouse/refs/heads/main/resources/nifi_etl_postgresql.json) (Right-click and choose “Save link as...” to download)
+- Download [resources/nifi_etl_mysql.json](https://raw.githubusercontent.com/nwolniak/simple-datawarehouse/refs/heads/main/resources/nifi_etl_mysql.json) (Right-click and choose “Save link as...” to download)
+
 ```
 simple-datawarehouse/resources/nifi_etl_postgresql.json
 
