@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS orders
     customer_id int,
     address_id  int,
     order_date  datetime          NOT NULL,
-    total_price decimal(7, 2) NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES customers (customer_id),
     FOREIGN KEY (address_id) REFERENCES addresses (address_id)
 );
@@ -53,7 +52,6 @@ CREATE TABLE IF NOT EXISTS order_items
     order_id      int,
     product_id    int,
     quantity      int           NOT NULL,
-    sub_price     decimal(7, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders (order_id),
     FOREIGN KEY (product_id) REFERENCES products (product_id)
 );

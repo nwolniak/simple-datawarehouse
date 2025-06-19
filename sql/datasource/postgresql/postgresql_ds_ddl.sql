@@ -41,8 +41,7 @@ CREATE TABLE IF NOT EXISTS orders
     order_id    serial PRIMARY KEY,
     customer_id integer REFERENCES customers (customer_id),
     address_id  integer REFERENCES addresses (address_id),
-    order_date  timestamp          NOT NULL,
-    total_price numeric(7, 2) NOT NULL
+    order_date  timestamp          NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS order_items
@@ -50,8 +49,7 @@ CREATE TABLE IF NOT EXISTS order_items
     order_item_id serial PRIMARY KEY,
     order_id      integer REFERENCES orders (order_id),
     product_id    integer REFERENCES products (product_id),
-    quantity      integer       NOT NULL,
-    sub_price     numeric(7, 2) NOT NULL
+    quantity      integer       NOT NULL
 );
 
 CREATE UNIQUE INDEX ON products (product_id);

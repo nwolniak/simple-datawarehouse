@@ -7,6 +7,7 @@ import {exportQueryResultToCSV, PivotQueryService, PivotTableExportService} from
 import {MessageService} from "primeng/api";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {SkeletonModule} from "primeng/skeleton";
+import naturalCompare from 'natural-compare-lite';
 
 @Component({
   selector: 'app-pivot-table',
@@ -38,6 +39,7 @@ export class PivotTableComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntilDestroyed())
       .subscribe((pivotTable: PivotTable | null) => {
           this.pivotTable = pivotTable;
+          console.log(this.pivotTable);
           if (!this.pivotTable) {
             return;
           }
@@ -80,6 +82,14 @@ export class PivotTableComponent implements AfterViewInit, OnDestroy {
     const offsetTop = this.host.element.nativeElement.getBoundingClientRect().top;
     const availableHeight = window.innerHeight - offsetTop - 1;
     this.scrollHeight = `${availableHeight}px`;
+  }
+
+  getColumnLabelEntries(obj: Map<string, number>): { key: string, value: number }[] {
+    let entries = Object.entries(obj)
+      .map(([key, value]) => ({ key, value }))
+      .sort((a, b) => naturalCompare(a.key, b.key));
+    console.log(entries)
+    return entries;
   }
 
   protected unsorted = () => 0;

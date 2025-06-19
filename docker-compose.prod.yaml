@@ -1,0 +1,88 @@
+version: "3.8"
+services:
+  backend:
+    image: wolniakn/simple-datawarehouse-backend:latest
+    container_name: simple-datawarehouse-backend
+    networks:
+      - reverse-proxy
+    extra_hosts:
+      - "host:host-gateway"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  frontend:
+    image: wolniakn/simple-datawarehouse-frontend:latest
+    container_name: simple-datawarehouse-frontend
+    ports:
+      - "80:80"
+    networks:
+      - reverse-proxy
+    depends_on:
+      backend:
+        condition: service_healthy
+      nifi:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost/ || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  nifi:
+    image: wolniakn/simple-datawarehouse-nifi:latest
+    container_name: nifi
+    ports:
+      - "4201:8080"
+    networks:
+      - reverse-proxy
+    extra_hosts:
+      - "host:host-gateway"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/nifi || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  postgres_dw:
+    image: wolniakn/postgres_dw:latest
+    container_name: postgres_dw
+    ports:
+      - "5432:5432"
+
+  mysql_dw:
+    image: wolniakn/mysql_dw:latest
+    container_name: mysql_dw
+    ports:
+      - "3306:3306"
+
+  postgres_ds:
+    image: wolniakn/postgres_ds:latest
+    container_name: postgres_ds
+    ports:
+      - "5433:5432"
+
+  mysql_ds:
+    image: wolniakn/mysql_ds:latest
+    container_name: mysql_ds
+    ports:
+      - "3307:3306"
+
+volumes:
+  postgres_dw_data:
+    driver: local
+  postgres_ds_data:
+    driver: local
+  mysql_dw_data:
+    driver: local
+  mysql_ds_data:
+    driver: local
+
+networks:
+  reverse-proxy:
+    driver: bridge

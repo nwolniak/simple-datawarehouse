@@ -34,7 +34,7 @@
       <!-- The rest of Column Labels -->
       @for (columnLabel of pivotTable.columnLabelList | slice: 1; track columnLabel) {
         <tr>
-          @for (columnLabelElement of columnLabel | keyvalue: unsorted; track columnLabelElement.key) {
+          @for (columnLabelElement of getColumnLabelEntries(columnLabel); track columnLabelElement.key) {
             <th
               [attr.colspan]="columnLabelElement.value">
               {{ columnLabelElement.key | lastKey }}
@@ -53,7 +53,7 @@
           </th>
         }
         <!-- Data for Column Labels -->
-        @for (columnLabel of pivotTable.columnLabelList.slice(-1)[0] | keyvalue: unsorted; track columnLabel.key) {
+        @for (columnLabel of getColumnLabelEntries(pivotTable.columnLabelList.slice(-1)[0]); track columnLabel.key) {
           <td>
             {{ rowData[columnLabel.key] ?? "-" }}
           </td>

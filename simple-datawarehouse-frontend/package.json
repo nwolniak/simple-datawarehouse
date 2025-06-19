@@ -25,6 +25,7 @@
     "codemirror": "^6.0.1",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
+    "natural-compare-lite": "^1.4.0",
     "ngx-codemirror": "^1.0.0",
     "ngx-editor": "^16.0.1",
     "primeflex": "^4.0.0",
